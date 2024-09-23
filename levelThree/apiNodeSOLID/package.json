@@ -1,0 +1,27 @@
+{
+  "name": "apinodesolid",
+  "version": "1.0.0",
+  "description": "Gympass style app.",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "tsx watch src/server.ts",
+    "start": "node build/server.js",
+    "build": "tsup src --out-dir build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "16.4.5",
+    "fastify": "5.0.0",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@rocketseat/eslint-config": "2.2.2",
+    "@types/node": "22.5.5",
+    "eslint": "8.57.1",
+    "tsup": "8.3.0",
+    "tsx": "4.19.1",
+    "typescript": "5.6.2"
+  }
+}

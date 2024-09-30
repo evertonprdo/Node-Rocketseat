@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, expect, it, describe } from 'vitest'
-import resquest from 'supertest'
+import request from 'supertest'
 
 import { createAndAuthenticateUser } from '@/utils/test/create-and-authenticate-user'
 import { app } from '@/app'
@@ -15,7 +15,7 @@ describe('Validate Check-in (e2e)', () => {
   })
 
   it('should be able to validate a check-in', async () => {
-    const { token } = await createAndAuthenticateUser(app)
+    const { token } = await createAndAuthenticateUser(app, true)
 
     const user = await prisma.user.findFirstOrThrow()
 
@@ -34,7 +34,7 @@ describe('Validate Check-in (e2e)', () => {
       },
     })
 
-    const response = await resquest(app.server)
+    const response = await request(app.server)
       .patch(`/check-ins/${checkIn.id}/validate`)
       .set('Authorization', `Bearer ${token}`)
       .send()

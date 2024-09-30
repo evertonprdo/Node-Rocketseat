@@ -1,5 +1,5 @@
 import { it, describe, expect, beforeAll, afterAll } from 'vitest'
-import resquest from 'supertest'
+import request from 'supertest'
 
 import { app } from '@/app'
 
@@ -13,7 +13,7 @@ describe('Register User (e2e)', () => {
   })
 
   it('should be able to register', async () => {
-    const response = await resquest(app.server).post('/users').send({
+    const response = await request(app.server).post('/users').send({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: '123456',

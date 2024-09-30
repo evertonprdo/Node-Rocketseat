@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, expect, it, describe } from 'vitest'
-import resquest from 'supertest'
+import request from 'supertest'
 
 import { createAndAuthenticateUser } from '@/utils/test/create-and-authenticate-user'
 import { app } from '@/app'
@@ -14,9 +14,9 @@ describe('Search Gyms (e2e)', () => {
   })
 
   it('should be able to search gyms by title', async () => {
-    const { token } = await createAndAuthenticateUser(app)
+    const { token } = await createAndAuthenticateUser(app, true)
 
-    await resquest(app.server)
+    await request(app.server)
       .post('/gyms')
       .set('Authorization', `Bearer ${token}`)
       .send({
@@ -27,7 +27,7 @@ describe('Search Gyms (e2e)', () => {
         longitude: 35.2352054,
       })
 
-    await resquest(app.server)
+    await request(app.server)
       .post('/gyms')
       .set('Authorization', `Bearer ${token}`)
       .send({
@@ -38,7 +38,7 @@ describe('Search Gyms (e2e)', () => {
         longitude: 35.2352054,
       })
 
-    const response = await resquest(app.server)
+    const response = await request(app.server)
       .get('/gyms/search')
       .query({
         q: 'JavaScript',

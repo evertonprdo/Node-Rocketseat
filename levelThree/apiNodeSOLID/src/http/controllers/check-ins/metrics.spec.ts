@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, expect, it, describe } from 'vitest'
-import resquest from 'supertest'
+import request from 'supertest'
 
 import { createAndAuthenticateUser } from '@/utils/test/create-and-authenticate-user'
 import { app } from '@/app'
@@ -40,7 +40,7 @@ describe('Check-in Metrics (e2e)', () => {
       ],
     })
 
-    const response = await resquest(app.server)
+    const response = await request(app.server)
       .get('/check-ins/metrics')
       .set('Authorization', `Bearer ${token}`)
       .send()

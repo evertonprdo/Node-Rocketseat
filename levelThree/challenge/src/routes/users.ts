@@ -13,7 +13,7 @@ export async function usersRoutes(app: FastifyInstance) {
     { preHandler: checkSessionIdExists },
     async (request, reply) => {
       const user = await knex('users')
-        .select('id', 'name', 'email')
+        .select('name', 'email')
         .where({
           id: request.cookies.userId,
         })
@@ -23,7 +23,41 @@ export async function usersRoutes(app: FastifyInstance) {
         return reply.status(404).send()
       }
 
-      return { user }
+      const meals = await knex('meals')
+        .where('user_id', request.cookies.userId)
+        .orderBy('date_time', 'asc')
+        .select('*')
+
+      const statistics = {
+        meal_amount: 0,
+        within_diet: 0,
+        outside_diet: 0,
+        within_best_streak: 0,
+      }
+
+      let withinStreak = 0
+
+      meals.reduce((statistic, meal) => {
+        statistic.meal_amount++
+
+        if (meal.within_diet) {
+          withinStreak++
+          statistic.within_diet++
+
+          if (withinStreak > statistic.within_best_streak) {
+            statistic.within_best_streak = withinStreak
+          }
+
+          return statistic
+        }
+
+        statistic.outside_diet++
+        withinStreak = 0
+
+        return statistic
+      }, statistics)
+
+      return { user, statistics }
     },
   )
 
@@ -36,7 +70,7 @@ export async function usersRoutes(app: FastifyInstance) {
 
     const { name, email, password } = createUserBodySchema.parse(request.body)
 
-    const [userId] = await knex('users')
+    const [{ id }] = await knex('users')
       .insert({
         id: randomUUID(),
         name,
@@ -46,7 +80,7 @@ export async function usersRoutes(app: FastifyInstance) {
       .returning('id')
 
     return reply.status(201).send({
-      user_id: userId,
+      user_id: id,
     })
   })
 }

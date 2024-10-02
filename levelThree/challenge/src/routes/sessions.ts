@@ -29,6 +29,11 @@ export async function sessionsRoutes(app: FastifyInstance) {
 
     const sessionId = randomUUID()
 
+    await knex('users').where('id', user.id).update({
+      session_id: sessionId,
+      updated_at: new Date(),
+    })
+
     reply.cookie('userId', user.id, {
       path: '/',
       maxAge: 60 * 60 * 24 * 7, // 7 days

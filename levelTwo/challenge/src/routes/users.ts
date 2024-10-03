@@ -26,10 +26,10 @@ export async function usersRoutes(app: FastifyInstance) {
       const meals = await knex('meals')
         .where('user_id', request.cookies.userId)
         .orderBy('date_time', 'asc')
-        .select('*')
+        .select('date_time', 'within_diet')
 
       const statistics = {
-        meal_amount: 0,
+        meal_amount: meals.length,
         within_diet: 0,
         outside_diet: 0,
         within_best_streak: 0,
@@ -38,21 +38,19 @@ export async function usersRoutes(app: FastifyInstance) {
       let withinStreak = 0
 
       meals.reduce((statistic, meal) => {
-        statistic.meal_amount++
-
-        if (meal.within_diet) {
-          withinStreak++
-          statistic.within_diet++
-
-          if (withinStreak > statistic.within_best_streak) {
-            statistic.within_best_streak = withinStreak
-          }
+        if (!meal.within_diet) {
+          statistic.outside_diet++
+          withinStreak = 0
 
           return statistic
         }
 
-        statistic.outside_diet++
-        withinStreak = 0
+        withinStreak++
+        statistic.within_diet++
+
+        if (withinStreak > statistic.within_best_streak) {
+          statistic.within_best_streak = withinStreak
+        }
 
         return statistic
       }, statistics)

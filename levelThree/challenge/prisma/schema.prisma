@@ -37,8 +37,12 @@ model Pet {
   id          String @id @default(uuid())
   name        String
   description String @db.VarChar(300)
-  age         Int
-  size        Size
+
+  age                Int
+  size               Size
+  energy_level       EnergyLevel?
+  environment_need   EnvironmentNeed?
+  independence_level IndependenceLevel?
 
   org    Org    @relation(fields: [org_id], references: [id])
   org_id String
@@ -62,4 +66,24 @@ enum Size {
   SMALL
   MEDIUM
   LARGE
+}
+
+enum EnergyLevel {
+  VERY_LOW
+  LOW
+  MEDIUM
+  HIGH
+  VERY_HIGH
+}
+
+enum EnvironmentNeed {
+  SPACIOUS
+  COMPACT
+  BOTH
+}
+
+enum IndependenceLevel {
+  LOW
+  MEDIUM
+  HIGH
 }

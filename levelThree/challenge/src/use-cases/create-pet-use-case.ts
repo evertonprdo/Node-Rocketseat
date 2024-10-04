@@ -8,12 +8,12 @@ import { PetsRepository } from '@/repositories/pets-repository'
 interface CreatePetUseCaseRequest {
   name: string
   description: string
-  age: number
+  age: 'PUPPY' | 'ADULT' | 'SENIOR'
   size: 'SMALL' | 'MEDIUM' | 'LARGE'
 
-  energy_level: 'VERY_LOW' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH' | null
-  environment_need: 'SPACIOUS' | 'COMPACT' | 'BOTH' | null
-  independence_level: 'LOW' | 'MEDIUM' | 'HIGH' | null
+  energy_level: 'VERY_LOW' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH'
+  environment_need: 'SPACIOUS' | 'COMPACT' | 'BOTH'
+  independence_level: 'LOW' | 'MEDIUM' | 'HIGH'
 
   org_id: string
 }
@@ -23,13 +23,10 @@ interface CreatePetUseCaseResponse {
 }
 
 export class CreatePetUseCase {
-  private petsRepository: PetsRepository
-  private orgsRepository: OrgsRepository
-
-  constructor(petRepository: PetsRepository, orgsRepository: OrgsRepository) {
-    this.petsRepository = petRepository
-    this.orgsRepository = orgsRepository
-  }
+  constructor(
+    private petsRepository: PetsRepository,
+    private orgsRepository: OrgsRepository,
+  ) {}
 
   async execute(
     data: CreatePetUseCaseRequest,

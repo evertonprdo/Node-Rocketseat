@@ -28,7 +28,7 @@ model Org {
   latitude  Decimal
   longitude Decimal
 
-  Pet Pet[]
+  pets Pet[]
 
   @@map("orgs")
 }
@@ -38,16 +38,16 @@ model Pet {
   name        String
   description String @db.VarChar(300)
 
-  age                Int
+  age                Age
   size               Size
-  energy_level       EnergyLevel?
-  environment_need   EnvironmentNeed?
-  independence_level IndependenceLevel?
+  energy_level       EnergyLevel
+  environment_need   EnvironmentNeed
+  independence_level IndependenceLevel
 
   org    Org    @relation(fields: [org_id], references: [id])
   org_id String
 
-  adoptionRequirements AdoptionRequirement[]
+  adoption_requirements AdoptionRequirement[]
 
   @@map("pets")
 }
@@ -60,6 +60,12 @@ model AdoptionRequirement {
   pet_id String
 
   @@map("adoption_requirements")
+}
+
+enum Age {
+  PUPPY
+  ADULT
+  SENIOR
 }
 
 enum Size {

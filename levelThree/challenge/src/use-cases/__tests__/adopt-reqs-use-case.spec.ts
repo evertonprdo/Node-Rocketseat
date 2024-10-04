@@ -1,13 +1,15 @@
-import { Pet } from '@prisma/client'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { ResourceNotFoundError } from '../errors/resource-not-found-error'
 
+import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-repository'
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository'
 import { InMemoryAdoptReqsRepository } from '@/repositories/in-memory/in-memory-adopt-reqs-repository'
 
 import { AdoptReqsUseCase } from '../adopt-reqs-use-case'
+import { makeRandomPet } from '@__tests__/factories/make-random-pet'
 
+let orgsRepository: InMemoryOrgsRepository
 let adoptReqsRepository: InMemoryAdoptReqsRepository
 let petsRepository: InMemoryPetsRepository
 let sut: AdoptReqsUseCase
@@ -15,14 +17,19 @@ let sut: AdoptReqsUseCase
 describe('Use cases: Adoption Requirements', () => {
   beforeEach(() => {
     adoptReqsRepository = new InMemoryAdoptReqsRepository()
-    petsRepository = new InMemoryPetsRepository()
+    orgsRepository = new InMemoryOrgsRepository()
+    petsRepository = new InMemoryPetsRepository(
+      orgsRepository,
+      adoptReqsRepository,
+    )
+
     sut = new AdoptReqsUseCase(petsRepository, adoptReqsRepository)
   })
 
   it('should register a adoption requirements', async () => {
-    petsRepository.items.push(fakePet)
+    const pet = await petsRepository.create(makeRandomPet())
     const { adoptReqs } = await sut.execute({
-      petId: 'test-pet-id',
+      petId: pet.id,
       description: [
         'adoption-requirement-1',
         'adoption-requirement-2',
@@ -37,23 +44,9 @@ describe('Use cases: Adoption Requirements', () => {
   it('should throw not found error', async () => {
     expect(
       sut.execute({
-        petId: 'test-pet-id',
+        petId: 'unregistered-pet',
         description: [],
       }),
     ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })
-
-const fakePet: Pet = {
-  id: 'test-pet-id',
-  name: 'Test',
-  description: 'Test Description',
-  age: 3,
-  size: 'SMALL',
-
-  energy_level: null,
-  environment_need: null,
-  independence_level: null,
-
-  org_id: 'test-org-id',
-}

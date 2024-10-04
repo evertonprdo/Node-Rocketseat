@@ -25,11 +25,7 @@ interface RegisterUseCaseResponse {
 }
 
 export class RegisterOrgUseCase {
-  private orgsRepository
-
-  constructor(orgsRepository: OrgsRepository) {
-    this.orgsRepository = orgsRepository
-  }
+  constructor(private orgsRepository: OrgsRepository) {}
 
   async execute(
     data: RegisterOrgUseCaseRequest,

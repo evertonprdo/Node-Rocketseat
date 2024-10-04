@@ -15,28 +15,27 @@ interface RegisterAdoptReqsUseCaseResponse {
 }
 
 export class AdoptReqsUseCase {
-  private petRepository: PetsRepository
-  private adoptReqsRepository: AdoptReqsRepository
-
   constructor(
-    petRepository: PetsRepository,
-    adoptionRequirementsRepository: AdoptReqsRepository,
-  ) {
-    this.petRepository = petRepository
-    this.adoptReqsRepository = adoptionRequirementsRepository
-  }
+    private petsRepository: PetsRepository,
+    private adoptReqsRepository: AdoptReqsRepository,
+  ) {}
 
   async execute({
     petId,
     description,
   }: RegisterAdoptReqsUseCaseRequest): Promise<RegisterAdoptReqsUseCaseResponse> {
-    const pet = await this.petRepository.findById(petId)
+    const pet = await this.petsRepository.findById(petId)
 
     if (!pet) {
       throw new ResourceNotFoundError()
     }
 
-    const reqs = await this.adoptReqsRepository.createMany(petId, description)
-    return { adoptReqs: reqs }
+    const adoptReqsInput = description.map((item) => ({
+      pet_id: petId,
+      description: item,
+    }))
+
+    const adoptReqs = await this.adoptReqsRepository.createMany(adoptReqsInput)
+    return { adoptReqs }
   }
 }

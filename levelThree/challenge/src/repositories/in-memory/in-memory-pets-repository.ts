@@ -1,19 +1,63 @@
 import { randomUUID } from 'node:crypto'
 import { Pet, Prisma } from '@prisma/client'
 
-import { PetsRepository } from '../pets-repository'
+import { FindAllParams, PetsRepository } from '../pets-repository'
+
+import { OrgsRepository } from '../orgs-repository'
+import { AdoptReqsRepository } from '../adopt-req-repository'
 
 export class InMemoryPetsRepository implements PetsRepository {
   public items: Pet[] = []
 
-  async findById(id: string) {
-    const org = this.items.find((item) => item.id === id)
+  constructor(
+    private orgsRepository: OrgsRepository,
+    private adoptReqsRepository: AdoptReqsRepository,
+  ) {}
 
-    if (!org) {
+  async findAll({
+    city,
+    age,
+    energyLevel,
+    independenceLevel,
+    size,
+  }: FindAllParams) {
+    const orgsByCity = await this.orgsRepository.findManyByCity(city)
+
+    const pets = this.items
+      .filter((item) => orgsByCity.some((org) => org.id === item.org_id))
+      .filter((item) => (age ? item.age === age : true))
+      .filter((item) => (size ? item.size === size : true))
+      .filter((item) =>
+        energyLevel ? item.energy_level === energyLevel : true,
+      )
+      .filter((item) =>
+        independenceLevel
+          ? item.independence_level === independenceLevel
+          : true,
+      )
+
+    const petsWithAdoptReqs = await Promise.all(
+      pets.map(async (item) => ({
+        ...item,
+        adoption_requirements: await this.adoptReqsRepository.findAllByPetId(
+          item.id,
+        ),
+      })),
+    )
+
+    return petsWithAdoptReqs
+  }
+
+  async findById(id: string) {
+    const pet = this.items.find((item) => item.id === id)
+
+    if (!pet) {
       return null
     }
 
-    return org
+    const adoptReqs = await this.adoptReqsRepository.findAllByPetId(id)
+
+    return { ...pet, adoption_requirements: adoptReqs }
   }
 
   async create(data: Prisma.PetUncheckedCreateInput) {

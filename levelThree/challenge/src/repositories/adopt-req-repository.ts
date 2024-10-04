@@ -1,8 +1,8 @@
-import { AdoptionRequirement } from '@prisma/client'
+import { AdoptionRequirement, Prisma } from '@prisma/client'
 
 export interface AdoptReqsRepository {
+  findAllByPetId(petId: string): Promise<AdoptionRequirement[]>
   createMany(
-    pet_id: string,
-    description: string[],
+    adoptReqsInput: Prisma.AdoptionRequirementCreateManyInput[],
   ): Promise<AdoptionRequirement[]>
 }

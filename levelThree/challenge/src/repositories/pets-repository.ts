@@ -11,8 +11,8 @@ import {
 export interface FindAllParams {
   city: string
   age?: Age
-  energyLevel?: EnergyLevel
   size?: Size
+  energyLevel?: EnergyLevel
   independenceLevel?: IndependenceLevel
 }
 

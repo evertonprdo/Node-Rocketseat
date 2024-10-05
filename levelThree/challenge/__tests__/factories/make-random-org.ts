@@ -4,6 +4,7 @@ import { faker } from '@faker-js/faker/locale/en'
 import { Org } from '@prisma/client'
 
 type Overwrite = {
+  city: string
   email?: string
   password?: string
 }
@@ -24,7 +25,7 @@ export function makeRandomOrg(overwrite?: Overwrite): MakeRandomOrgResponse {
     whatsapp: faker.phone.number({ style: 'international' }),
     cep: faker.location.zipCode(),
     state: faker.location.state(),
-    city: faker.location.city(),
+    city: overwrite?.city ?? faker.location.city(),
     address: fakeAddress,
     latitude: faker.location.latitude(),
     longitude: faker.location.longitude(),

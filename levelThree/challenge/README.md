@@ -6,6 +6,7 @@
 - [x] It must be possible to view details of a pet for adoption
 - [x] It must be possible to register as an ORG
 - [ ] It must be possible to log in as an ORG
+- [ ] It must be possible to fetch for nearby orgs
 
 ### Business Rules
 
@@ -13,5 +14,5 @@
 - [x] An ORG must have an address and a WhatsApp number
 - [x] A pet must be linked to an ORG
 - [ ] The user who wants to adopt will contact the ORG via WhatsApp
-- [ ] All filters, besides the city, are optional
+- [x] All filters, besides the city, are optional
 - [ ] For an ORG to access the application as an admin, it needs to be logged in

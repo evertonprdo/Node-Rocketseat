@@ -4,9 +4,11 @@ import { faker } from '@faker-js/faker/locale/en'
 import { Org } from '@prisma/client'
 
 type Overwrite = {
-  city: string
+  city?: string
   email?: string
   password?: string
+  latitude?: number
+  longitude?: number
 }
 
 type MakeRandomOrgResponse = {
@@ -27,7 +29,7 @@ export function makeRandomOrg(overwrite?: Overwrite): MakeRandomOrgResponse {
     state: faker.location.state(),
     city: overwrite?.city ?? faker.location.city(),
     address: fakeAddress,
-    latitude: faker.location.latitude(),
-    longitude: faker.location.longitude(),
+    latitude: overwrite?.latitude ?? faker.location.latitude(),
+    longitude: overwrite?.longitude ?? faker.location.longitude(),
   }
 }

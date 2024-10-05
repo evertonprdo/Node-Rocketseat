@@ -1,6 +1,6 @@
 import {
-  PetsRepository,
   PetWithAdoptionRequirements,
+  PetsRepository,
 } from '@/repositories/pets-repository'
 
 import { ResourceNotFoundError } from './errors/resource-not-found-error'

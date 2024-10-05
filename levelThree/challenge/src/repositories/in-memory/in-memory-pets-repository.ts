@@ -4,14 +4,15 @@ import { Pet, Prisma } from '@prisma/client'
 import { FindAllParams, PetsRepository } from '../pets-repository'
 
 import { OrgsRepository } from '../orgs-repository'
-import { AdoptReqsRepository } from '../adopt-req-repository'
+import { InMemoryAdoptReqsRepository } from './in-memory-adopt-reqs-repository'
+import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
 
 export class InMemoryPetsRepository implements PetsRepository {
   public items: Pet[] = []
 
   constructor(
     private orgsRepository: OrgsRepository,
-    private adoptReqsRepository: AdoptReqsRepository,
+    private adoptReqsRepository: InMemoryAdoptReqsRepository,
   ) {}
 
   async findAll({
@@ -55,9 +56,15 @@ export class InMemoryPetsRepository implements PetsRepository {
       return null
     }
 
+    const org = await this.orgsRepository.findById(pet.org_id)
+
+    if (!org) {
+      throw new ResourceNotFoundError()
+    }
+
     const adoptReqs = await this.adoptReqsRepository.findAllByPetId(id)
 
-    return { ...pet, adoption_requirements: adoptReqs }
+    return { ...pet, adoption_requirements: adoptReqs, org }
   }
 
   async create(data: Prisma.PetUncheckedCreateInput) {

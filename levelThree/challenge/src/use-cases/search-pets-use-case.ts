@@ -1,6 +1,6 @@
 import {
-  PetsRepository,
   PetWithAdoptionRequirements,
+  PetsRepository,
 } from '@/repositories/pets-repository'
 
 interface SearchPetsUseCaseRequest {

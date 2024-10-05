@@ -1,11 +1,27 @@
 import fastify from 'fastify'
-import { appRoutes } from './http/routes'
+import fastifyJwt from '@fastify/jwt'
+import fastifyCookie from '@fastify/cookie'
 import { ZodError } from 'zod'
+
 import { env } from './env'
+import { orgRoutes } from './http/controllers/orgs/routes'
 
-export const app = fastify()
+const app = fastify()
 
-app.register(appRoutes)
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
+  cookie: {
+    cookieName: 'refreshToken',
+    signed: false,
+  },
+  sign: {
+    expiresIn: '12m',
+  },
+})
+
+app.register(fastifyCookie)
+
+app.register(orgRoutes)
 
 app.setErrorHandler((error, request, reply) => {
   if (error instanceof ZodError) {
@@ -22,3 +38,5 @@ app.setErrorHandler((error, request, reply) => {
 
   return reply.status(500).send({ message: 'Internal server error.' })
 })
+
+export { app }

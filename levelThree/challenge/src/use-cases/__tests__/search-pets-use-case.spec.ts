@@ -1,12 +1,20 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
+import { makeRandomOrg } from '@__tests__/factories/make-random-org'
+import { makeRandomPet } from '@__tests__/factories/make-random-pet'
+
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository'
 import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-repository'
 import { InMemoryAdoptReqsRepository } from '@/repositories/in-memory/in-memory-adopt-reqs-repository'
 
 import { SearchPetsUseCase } from '../search-pets-use-case'
-import { makeRandomOrg } from '@__tests__/factories/make-random-org'
-import { makeRandomPet } from '@__tests__/factories/make-random-pet'
+
+type FilterParamsForEachFilterProps = {
+  param: 'age' | 'size' | 'energy_level' | 'independence_level'
+  low: string
+  med: string
+  high: string
+}[]
 
 let adoptRepository: InMemoryAdoptReqsRepository
 let orgsRepository: InMemoryOrgsRepository
@@ -21,6 +29,13 @@ describe('Use Cases: Search Pets', () => {
 
     sut = new SearchPetsUseCase(petsRepository)
   })
+
+  const filterParamsForEachFilter: FilterParamsForEachFilterProps = [
+    { param: 'age', low: 'PUPPY', med: 'ADULT', high: 'SENIOR' },
+    { param: 'size', low: 'SMALL', med: 'MEDIUM', high: 'LARGE' },
+    { param: 'energy_level', low: 'LOW', med: 'MEDIUM', high: 'HIGH' },
+    { param: 'independence_level', low: 'LOW', med: 'MEDIUM', high: 'HIGH' },
+  ]
 
   it('should list all pets available for adoption in a city', async () => {
     const anOrgInNotThatOneCity = await orgsRepository.create(
@@ -67,8 +82,8 @@ describe('Use Cases: Search Pets', () => {
             org_id: org.id,
             age: 'PUPPY',
             size: 'SMALL',
-            energyLevel: 'LOW',
-            independenceLevel: 'LOW',
+            energy_level: 'LOW',
+            independence_level: 'LOW',
           }),
         )
       } else {
@@ -77,8 +92,8 @@ describe('Use Cases: Search Pets', () => {
             org_id: org.id,
             age: 'SENIOR',
             size: 'LARGE',
-            energyLevel: 'HIGH',
-            independenceLevel: 'HIGH',
+            energy_level: 'HIGH',
+            independence_level: 'HIGH',
           }),
         )
       }
@@ -88,8 +103,8 @@ describe('Use Cases: Search Pets', () => {
           org_id: org.id,
           age: 'ADULT',
           size: 'MEDIUM',
-          energyLevel: 'MEDIUM',
-          independenceLevel: 'MEDIUM',
+          energy_level: 'MEDIUM',
+          independence_level: 'MEDIUM',
         }),
       )
     }
@@ -148,190 +163,56 @@ describe('Use Cases: Search Pets', () => {
     expect(isNotAllHighestParams).toEqual(false)
   })
 
-  it('should list pets by age filter', async () => {
-    const org = await orgsRepository.create(makeRandomOrg())
+  filterParamsForEachFilter.forEach((filter) => {
+    it(`should list pets by ${filter.param} filer`, async () => {
+      const org = await orgsRepository.create(makeRandomOrg())
 
-    for (let i = 0; i < 30; i++) {
-      if (i % 2 === 0) {
+      for (let i = 0; i < 30; i++) {
+        if (i % 2 === 0) {
+          await petsRepository.create(
+            makeRandomPet({ org_id: org.id, [filter.param]: filter.low }),
+          )
+        } else {
+          await petsRepository.create(
+            makeRandomPet({ org_id: org.id, [filter.param]: filter.high }),
+          )
+        }
         await petsRepository.create(
-          makeRandomPet({ org_id: org.id, age: 'PUPPY' }),
-        )
-      } else {
-        await petsRepository.create(
-          makeRandomPet({ org_id: org.id, age: 'ADULT' }),
-        )
-      }
-      await petsRepository.create(
-        makeRandomPet({ org_id: org.id, age: 'SENIOR' }),
-      )
-    }
-
-    const puppySearch = await sut.execute({ city: org.city, age: 'PUPPY' })
-    const adultSearch = await sut.execute({ city: org.city, age: 'ADULT' })
-    const seniorSearch = await sut.execute({ city: org.city, age: 'SENIOR' })
-
-    expect(puppySearch.pets).toHaveLength(15)
-    expect(adultSearch.pets).toHaveLength(15)
-    expect(seniorSearch.pets).toHaveLength(30)
-
-    const hasAnImpostorAmongPuppies = puppySearch.pets.some(
-      (pet) => pet.age !== 'PUPPY',
-    )
-    expect(hasAnImpostorAmongPuppies).toEqual(false)
-
-    const hasAnImpostorAmongAdults = adultSearch.pets.some(
-      (pet) => pet.age !== 'ADULT',
-    )
-    expect(hasAnImpostorAmongAdults).toEqual(false)
-
-    const hasAnImpostorAmongSeniors = seniorSearch.pets.some(
-      (pet) => pet.age !== 'SENIOR',
-    )
-    expect(hasAnImpostorAmongSeniors).toEqual(false)
-  })
-
-  it('should list pets by size filter', async () => {
-    const org = await orgsRepository.create(makeRandomOrg())
-
-    for (let i = 0; i < 30; i++) {
-      if (i % 2 === 0) {
-        await petsRepository.create(
-          makeRandomPet({ org_id: org.id, size: 'SMALL' }),
-        )
-      } else {
-        await petsRepository.create(
-          makeRandomPet({ org_id: org.id, size: 'MEDIUM' }),
+          makeRandomPet({ org_id: org.id, [filter.param]: filter.med }),
         )
       }
-      await petsRepository.create(
-        makeRandomPet({ org_id: org.id, size: 'LARGE' }),
+
+      const lowParamSearchResponse = await sut.execute({
+        city: org.city,
+        [filter.param]: filter.low,
+      })
+      const mediumParamSearchResponse = await sut.execute({
+        city: org.city,
+        [filter.param]: filter.med,
+      })
+      const highParamSearchResponse = await sut.execute({
+        city: org.city,
+        [filter.param]: filter.high,
+      })
+
+      expect(lowParamSearchResponse.pets).toHaveLength(15)
+      expect(highParamSearchResponse.pets).toHaveLength(15)
+      expect(mediumParamSearchResponse.pets).toHaveLength(30)
+
+      const isNotAllLowParam = lowParamSearchResponse.pets.some(
+        (pet) => pet[filter.param] !== filter.low,
       )
-    }
+      expect(isNotAllLowParam).toEqual(false)
 
-    const smallPetSearch = await sut.execute({ city: org.city, size: 'SMALL' })
-    const mediumPetSearch = await sut.execute({
-      city: org.city,
-      size: 'MEDIUM',
-    })
-    const largeSearch = await sut.execute({ city: org.city, size: 'LARGE' })
-
-    expect(smallPetSearch.pets).toHaveLength(15)
-    expect(mediumPetSearch.pets).toHaveLength(15)
-    expect(largeSearch.pets).toHaveLength(30)
-
-    const isNotAllSmall = smallPetSearch.pets.some(
-      (pet) => pet.size !== 'SMALL',
-    )
-    expect(isNotAllSmall).toEqual(false)
-
-    const isNotAllMedium = mediumPetSearch.pets.some(
-      (pet) => pet.size !== 'MEDIUM',
-    )
-    expect(isNotAllMedium).toEqual(false)
-
-    const isNotAllLarge = largeSearch.pets.some((pet) => pet.size !== 'LARGE')
-    expect(isNotAllLarge).toEqual(false)
-  })
-
-  it('should list pets by energy level filter', async () => {
-    const org = await orgsRepository.create(makeRandomOrg())
-
-    for (let i = 0; i < 30; i++) {
-      if (i % 2) {
-        await petsRepository.create(
-          makeRandomPet({ org_id: org.id, energyLevel: 'LOW' }),
-        )
-      } else {
-        await petsRepository.create(
-          makeRandomPet({ org_id: org.id, energyLevel: 'MEDIUM' }),
-        )
-      }
-      await petsRepository.create(
-        makeRandomPet({ org_id: org.id, energyLevel: 'HIGH' }),
+      const isNotAllMediumParam = mediumParamSearchResponse.pets.some(
+        (pet) => pet[filter.param] !== filter.med,
       )
-    }
+      expect(isNotAllMediumParam).toEqual(false)
 
-    const lowEnergySearch = await sut.execute({
-      city: org.city,
-      energy_level: 'LOW',
-    })
-    const mediumEnergySearch = await sut.execute({
-      city: org.city,
-      energy_level: 'MEDIUM',
-    })
-    const highEnergySearch = await sut.execute({
-      city: org.city,
-      energy_level: 'HIGH',
-    })
-
-    expect(lowEnergySearch.pets).toHaveLength(15)
-    expect(mediumEnergySearch.pets).toHaveLength(15)
-    expect(highEnergySearch.pets).toHaveLength(30)
-
-    const isNotAllLowEnergy = lowEnergySearch.pets.some(
-      (pet) => pet.energy_level !== 'LOW',
-    )
-    expect(isNotAllLowEnergy).toEqual(false)
-
-    const isNotAllMediumEnergy = mediumEnergySearch.pets.some(
-      (pet) => pet.energy_level !== 'MEDIUM',
-    )
-    expect(isNotAllMediumEnergy).toEqual(false)
-
-    const isNotAllHighEnergy = highEnergySearch.pets.some(
-      (pet) => pet.energy_level !== 'HIGH',
-    )
-    expect(isNotAllHighEnergy).toEqual(false)
-  })
-
-  it('should list pets by independence level filter', async () => {
-    const org = await orgsRepository.create(makeRandomOrg())
-
-    for (let i = 0; i < 30; i++) {
-      if (i % 2 === 0) {
-        await petsRepository.create(
-          makeRandomPet({ org_id: org.id, independenceLevel: 'LOW' }),
-        )
-      } else {
-        await petsRepository.create(
-          makeRandomPet({ org_id: org.id, independenceLevel: 'MEDIUM' }),
-        )
-      }
-      await petsRepository.create(
-        makeRandomPet({ org_id: org.id, independenceLevel: 'HIGH' }),
+      const isNotAllHighParam = highParamSearchResponse.pets.some(
+        (pet) => pet[filter.param] !== filter.high,
       )
-    }
-
-    const lowIndependenceSearch = await sut.execute({
-      city: org.city,
-      independence_level: 'LOW',
+      expect(isNotAllHighParam).toEqual(false)
     })
-    const mediumIndependenceSearch = await sut.execute({
-      city: org.city,
-      independence_level: 'MEDIUM',
-    })
-    const highIndependenceSearch = await sut.execute({
-      city: org.city,
-      independence_level: 'HIGH',
-    })
-
-    expect(lowIndependenceSearch.pets).toHaveLength(15)
-    expect(mediumIndependenceSearch.pets).toHaveLength(15)
-    expect(highIndependenceSearch.pets).toHaveLength(30)
-
-    const isNotAllLowIndependence = lowIndependenceSearch.pets.some(
-      (pet) => pet.independence_level !== 'LOW',
-    )
-    expect(isNotAllLowIndependence).toEqual(false)
-
-    const isNotAllMediumIndependence = mediumIndependenceSearch.pets.some(
-      (pet) => pet.independence_level !== 'MEDIUM',
-    )
-    expect(isNotAllMediumIndependence).toEqual(false)
-
-    const isNotAllHighIndependence = highIndependenceSearch.pets.some(
-      (pet) => pet.independence_level !== 'HIGH',
-    )
-    expect(isNotAllHighIndependence).toEqual(false)
   })
 })

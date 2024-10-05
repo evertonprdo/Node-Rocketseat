@@ -6,18 +6,18 @@ import { makeRandomOrg } from '@__tests__/factories/make-random-org'
 
 import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-repository'
 
-import { RegisterOrgUseCase } from '../register-org-use-case'
+import { CreateOrgUseCase } from '../create-org-use-case'
 
 let orgsRepository: InMemoryOrgsRepository
-let sut: RegisterOrgUseCase
+let sut: CreateOrgUseCase
 
-describe('Use cases: Register Org', () => {
+describe('Use cases: Create Org', () => {
   beforeEach(() => {
     orgsRepository = new InMemoryOrgsRepository()
-    sut = new RegisterOrgUseCase(orgsRepository)
+    sut = new CreateOrgUseCase(orgsRepository)
   })
 
-  it('should register an org', async () => {
+  it('should create an org', async () => {
     const { org } = await sut.execute(makeRandomOrg())
 
     expect(org.id).toEqual(expect.any(String))

@@ -7,8 +7,8 @@ type Overwrite = {
   org_id?: string
   age?: Age
   size?: Size
-  energyLevel?: EnergyLevel
-  independenceLevel?: IndependenceLevel
+  energy_level?: EnergyLevel
+  independence_level?: IndependenceLevel
 }
 
 export function makeRandomPet(overwrite?: Overwrite): Pet {
@@ -24,7 +24,7 @@ export function makeRandomPet(overwrite?: Overwrite): Pet {
       overwrite?.size ??
       faker.helpers.arrayElement(['SMALL', 'MEDIUM', 'LARGE']),
     energy_level:
-      overwrite?.energyLevel ??
+      overwrite?.energy_level ??
       faker.helpers.arrayElement([
         'VERY_LOW',
         'LOW',
@@ -38,7 +38,7 @@ export function makeRandomPet(overwrite?: Overwrite): Pet {
       'BOTH',
     ]),
     independence_level:
-      overwrite?.independenceLevel ??
+      overwrite?.independence_level ??
       faker.helpers.arrayElement(['LOW', 'MEDIUM', 'HIGH']),
   }
 }

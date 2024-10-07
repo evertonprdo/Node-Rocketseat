@@ -9,7 +9,8 @@
     "build": "tsup src --out-dir build",
     "test": "vitest run --dir src/use-cases",
     "test:e2e": "vitest run --dir src/http",
-    "test:watch": "vitest --dir src/use-cases"
+    "test:watch": "vitest --dir src/use-cases",
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",

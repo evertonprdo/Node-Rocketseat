@@ -1,17 +1,17 @@
 import { randomUUID } from 'node:crypto'
 import { Pet, Prisma } from '@prisma/client'
 
-import { FindAllParams, PetsRepository } from '../pets-repository'
-
-import { OrgsRepository } from '../orgs-repository'
-import { InMemoryAdoptReqsRepository } from './in-memory-adopt-reqs-repository'
 import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
+import { InMemoryAdoptReqsRepository } from './in-memory-adopt-reqs-repository'
+import { InMemoryOrgsRepository } from './in-memory-orgs-repository'
+
+import { FindAllParams, PetsRepository } from '../pets-repository'
 
 export class InMemoryPetsRepository implements PetsRepository {
   public items: Pet[] = []
 
   constructor(
-    private orgsRepository: OrgsRepository,
+    private orgsRepository: InMemoryOrgsRepository,
     private adoptReqsRepository: InMemoryAdoptReqsRepository,
   ) {}
 

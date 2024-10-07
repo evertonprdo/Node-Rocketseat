@@ -16,9 +16,9 @@ describe('(e2e): Create Pet', () => {
   })
 
   it('should be able to create a pet', async () => {
-    const { token, org_id: orgId } = await createAndAuthenticateOrg(app)
+    const { token, org } = await createAndAuthenticateOrg(app)
 
-    const pet = makeRandomPet({ org_id: orgId })
+    const pet = makeRandomPet({ org_id: org.id })
     const response = await request(app.server)
       .post('/pets')
       .set('Authorization', `Bearer ${token}`)

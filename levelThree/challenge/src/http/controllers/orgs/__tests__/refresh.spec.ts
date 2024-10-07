@@ -1,8 +1,9 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
 
-import { app } from '@/app'
 import { makeRandomOrg } from '@__tests__/factories/make-random-org'
+
+import { app } from '@/app'
 
 describe('(e2e): Refresh', () => {
   beforeAll(async () => {

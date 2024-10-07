@@ -1,6 +1,13 @@
 import { Pet } from '@prisma/client'
 
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import {
+  Age,
+  EnergyLevel,
+  EnvironmentNeed,
+  IndependenceLevel,
+  Size,
+} from '@/utils/enums'
 
 import { OrgsRepository } from '@/repositories/orgs-repository'
 import { PetsRepository } from '@/repositories/pets-repository'
@@ -8,13 +15,11 @@ import { PetsRepository } from '@/repositories/pets-repository'
 interface CreatePetUseCaseRequest {
   name: string
   description: string
-  age: 'PUPPY' | 'ADULT' | 'SENIOR'
-  size: 'SMALL' | 'MEDIUM' | 'LARGE'
-
-  energy_level: 'VERY_LOW' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH'
-  environment_need: 'SPACIOUS' | 'COMPACT' | 'BOTH'
-  independence_level: 'LOW' | 'MEDIUM' | 'HIGH'
-
+  age: Age
+  size: Size
+  energy_level: EnergyLevel
+  environment_need: EnvironmentNeed
+  independence_level: IndependenceLevel
   org_id: string
 }
 

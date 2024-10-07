@@ -33,7 +33,7 @@ describe('Use cases: Adoption Requirements', () => {
     const pet = await petsRepository.create(makeRandomPet({ org_id: org.id }))
     const { adoptReqs } = await sut.execute({
       petId: pet.id,
-      description: [
+      descriptions: [
         'adoption-requirement-1',
         'adoption-requirement-2',
         'adoption-requirement-3',
@@ -48,7 +48,7 @@ describe('Use cases: Adoption Requirements', () => {
     expect(
       sut.execute({
         petId: 'unregistered-pet',
-        description: [],
+        descriptions: [],
       }),
     ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })

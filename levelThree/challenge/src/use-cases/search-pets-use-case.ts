@@ -2,13 +2,14 @@ import {
   PetWithAdoptionRequirements,
   PetsRepository,
 } from '@/repositories/pets-repository'
+import { Age, EnergyLevel, IndependenceLevel, Size } from '@/utils/enums'
 
 interface SearchPetsUseCaseRequest {
   city: string
-  age?: 'PUPPY' | 'ADULT' | 'SENIOR'
-  size?: 'SMALL' | 'MEDIUM' | 'LARGE'
-  energy_level?: 'VERY_LOW' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH'
-  independence_level?: 'LOW' | 'MEDIUM' | 'HIGH'
+  age?: Age
+  size?: Size
+  energy_level?: EnergyLevel
+  independence_level?: IndependenceLevel
 }
 
 interface SearchPetsUseCaseResponse {

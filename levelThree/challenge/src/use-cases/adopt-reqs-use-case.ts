@@ -7,7 +7,7 @@ import { AdoptReqsRepository } from '@/repositories/adopt-req-repository'
 
 interface RegisterAdoptReqsUseCaseRequest {
   petId: string
-  description: string[]
+  descriptions: string[]
 }
 
 interface RegisterAdoptReqsUseCaseResponse {
@@ -22,7 +22,7 @@ export class AdoptReqsUseCase {
 
   async execute({
     petId,
-    description,
+    descriptions: description,
   }: RegisterAdoptReqsUseCaseRequest): Promise<RegisterAdoptReqsUseCaseResponse> {
     const pet = await this.petsRepository.findById(petId)
 

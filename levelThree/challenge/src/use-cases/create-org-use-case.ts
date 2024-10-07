@@ -32,8 +32,6 @@ export class CreateOrgUseCase {
 
     const orgWithSameEmail = await this.orgsRepository.findByEmail(data.email)
 
-    throw Error()
-
     if (orgWithSameEmail) {
       throw new OrgAlreadyExistsError()
     }

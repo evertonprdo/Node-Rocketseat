@@ -1,5 +1,5 @@
 import {
-  PetWithAdoptionRequirements,
+  PetWithAllRelations,
   PetsRepository,
 } from '@/repositories/pets-repository'
 
@@ -10,7 +10,7 @@ interface GetPetUseCaseRequest {
 }
 
 interface GetPetUseCaseResponse {
-  pet: PetWithAdoptionRequirements
+  pet: PetWithAllRelations
 }
 
 export class GetPetUseCase {

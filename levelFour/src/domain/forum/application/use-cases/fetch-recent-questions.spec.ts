@@ -22,11 +22,12 @@ describe('Fetch Recent Questions', () => {
     vi.setSystemTime(new Date(2022, 0, 23))
     await inMemoryQuestionsRepository.create(makeQuestion())
 
-    const { question } = await sut.execute({
+    const result = await sut.execute({
       page: 1,
     })
 
-    expect(question).toEqual([
+    expect(result.isRight()).toBe(true)
+    expect(result.value?.question).toEqual([
       expect.objectContaining({ createdAt: new Date(2022, 0, 23) }),
       expect.objectContaining({ createdAt: new Date(2022, 0, 20) }),
       expect.objectContaining({ createdAt: new Date(2022, 0, 18) }),
@@ -40,10 +41,11 @@ describe('Fetch Recent Questions', () => {
 
     await Promise.all(createQuestionsPromises)
 
-    const { question } = await sut.execute({
+    const result = await sut.execute({
       page: 2,
     })
 
-    expect(question).toHaveLength(2)
+    expect(result.isRight()).toBe(true)
+    expect(result.value?.question).toHaveLength(2)
   })
 })

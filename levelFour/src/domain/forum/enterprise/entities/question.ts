@@ -6,7 +6,7 @@ import { Entity } from '@/core/entities/entity'
 
 import { Slug } from './value-objects/slug'
 
-interface QuestionProps {
+export interface QuestionProps {
   authorId: UniqueEntityID
   bestAnswerId?: UniqueEntityID
   title: string
@@ -81,7 +81,7 @@ export class Question extends Entity<QuestionProps> {
     const question = new Question(
       {
         ...props,
-        createdAt: new Date(),
+        createdAt: props.createdAt ?? new Date(),
         slug: props.slug ?? Slug.createFromText(props.title),
       },
       id,

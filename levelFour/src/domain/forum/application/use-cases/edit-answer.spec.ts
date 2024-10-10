@@ -1,18 +1,32 @@
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
+
+import { makeAnswerAttachment } from 'test/factories/make-answer-attachment'
 import { makeAnswer } from 'test/factories/make-answer'
 
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
-import { EditAnswerUseCase } from './edit-answer'
 import { NotAllowedError } from './errors/not-allowed-error'
 
+import { EditAnswerUseCase } from './edit-answer'
+
+let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let sut: EditAnswerUseCase
 
 describe('Edit Answer Use Case', () => {
   beforeEach(() => {
-    inMemoryAnswersRepository = new InMemoryAnswersRepository()
-    sut = new EditAnswerUseCase(inMemoryAnswersRepository)
+    inMemoryAnswerAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository()
+
+    inMemoryAnswersRepository = new InMemoryAnswersRepository(
+      inMemoryAnswerAttachmentsRepository,
+    )
+
+    sut = new EditAnswerUseCase(
+      inMemoryAnswersRepository,
+      inMemoryAnswerAttachmentsRepository,
+    )
   })
 
   it('should be able to edit a answer', async () => {
@@ -25,10 +39,24 @@ describe('Edit Answer Use Case', () => {
 
     await inMemoryAnswersRepository.create(newAnswer)
 
+    await inMemoryAnswersRepository.create(newAnswer)
+
+    inMemoryAnswerAttachmentsRepository.items.push(
+      makeAnswerAttachment({
+        answerId: newAnswer.id,
+        attachmentId: new UniqueEntityID('1'),
+      }),
+      makeAnswerAttachment({
+        answerId: newAnswer.id,
+        attachmentId: new UniqueEntityID('2'),
+      }),
+    )
+
     await sut.execute({
       answerId: newAnswer.id.toValue(),
       authorId: 'author-1',
       content: 'Test Content',
+      attachmentsIds: ['1', '3'],
     })
 
     expect(inMemoryAnswersRepository.items[0]).toMatchObject({
@@ -50,6 +78,7 @@ describe('Edit Answer Use Case', () => {
       answerId: newAnswer.id.toValue(),
       authorId: 'author-2',
       content: 'Test Content',
+      attachmentsIds: [],
     })
 
     expect(result.isLeft()).toBe(true)

@@ -4,37 +4,39 @@ import { JwtService } from '@nestjs/jwt'
 
 import request from 'supertest'
 
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { StudentFactory } from 'test/factories/make-student'
+
 import { AppModule } from '@/infra/app.module'
+import { DatabaseModule } from '@/infra/database/database.module'
+
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
 describe('Create question (E2E)', () => {
   let app: INestApplication
-  let prisma: PrismaService
   let jwt: JwtService
+
+  let prisma: PrismaService
+  let studentFactory: StudentFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [StudentFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
+    jwt = moduleRef.get(JwtService)
 
     prisma = moduleRef.get(PrismaService)
-    jwt = moduleRef.get(JwtService)
+    studentFactory = moduleRef.get(StudentFactory)
 
     await app.init()
   })
 
   test('[POST] /questions', async () => {
-    const user = await prisma.user.create({
-      data: {
-        name: 'John Doe',
-        email: 'johndoe@example.com',
-        password: '123456',
-      },
-    })
+    const user = await studentFactory.makePrismaStudent()
 
-    const accessToken = jwt.sign({ sub: user.id })
+    const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const response = await request(app.getHttpServer())
       .post('/questions')

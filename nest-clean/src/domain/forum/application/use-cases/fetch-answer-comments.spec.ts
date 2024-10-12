@@ -3,16 +3,16 @@ import { makeAnswerComment } from 'test/factories/make-answer-comment'
 
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
-import { FetchRecentAnswerCommentsUseCase } from './fetch-answer-comments'
+import { FetchAnswerCommentsUseCase } from './fetch-answer-comments'
 
 let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository
-let sut: FetchRecentAnswerCommentsUseCase
+let sut: FetchAnswerCommentsUseCase
 
 describe('Fetch Answers Comments', () => {
   beforeEach(() => {
     inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository()
 
-    sut = new FetchRecentAnswerCommentsUseCase(inMemoryAnswerCommentsRepository)
+    sut = new FetchAnswerCommentsUseCase(inMemoryAnswerCommentsRepository)
   })
 
   it('should be able to fetch answer comments', async () => {

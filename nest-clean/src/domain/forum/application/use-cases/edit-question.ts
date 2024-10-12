@@ -10,6 +10,7 @@ import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 import { QuestionsRepository } from '../repositories/questions-repository'
 import { QuestionAttachmentsRepository } from '../repositories/question-attachments-repository'
+import { Injectable } from '@nestjs/common'
 
 interface EditQuestionUseCaseRequest {
   authorId: string
@@ -26,6 +27,7 @@ type EditQuestionUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class EditQuestionUseCase {
   constructor(
     private questionsRepository: QuestionsRepository,

@@ -3,26 +3,28 @@ import { AnswerCommentsRepository } from '../repositories/answer-comments-reposi
 import { AnswerComment } from '../../enterprise/entities/answer-comment'
 
 import { Either, right } from '@/core/either'
+import { Injectable } from '@nestjs/common'
 
-interface FetchRecentAnswerCommentsUseCaseRequest {
+interface FetchAnswerCommentsUseCaseRequest {
   answerId: string
   page: number
 }
 
-type FetchRecentAnswerCommentsUseCaseResponse = Either<
+type FetchAnswerCommentsUseCaseResponse = Either<
   null,
   {
     answerComments: AnswerComment[]
   }
 >
 
-export class FetchRecentAnswerCommentsUseCase {
+@Injectable()
+export class FetchAnswerCommentsUseCase {
   constructor(private answerCommentsRepository: AnswerCommentsRepository) {}
 
   async execute({
     answerId,
     page,
-  }: FetchRecentAnswerCommentsUseCaseRequest): Promise<FetchRecentAnswerCommentsUseCaseResponse> {
+  }: FetchAnswerCommentsUseCaseRequest): Promise<FetchAnswerCommentsUseCaseResponse> {
     const answerComments =
       await this.answerCommentsRepository.findManyByAnswerId(answerId, {
         page,

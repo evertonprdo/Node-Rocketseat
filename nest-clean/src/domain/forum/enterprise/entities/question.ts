@@ -29,19 +29,23 @@ export class Question extends AggregateRoot<QuestionProps> {
   }
 
   set bestAnswerId(bestAnswerId: UniqueEntityID | undefined | null) {
-    if (!bestAnswerId) {
+    if (bestAnswerId === undefined) {
       return
     }
 
-    if (
-      !this.props.bestAnswerId ||
-      !this.props.bestAnswerId.equals(bestAnswerId)
-    ) {
-      this.addDomainEvent(new QuestionBestAnswerChosenEvent(this, bestAnswerId))
+    if (bestAnswerId !== null) {
+      const isBestAnswerChanging =
+        !this.props.bestAnswerId ||
+        !this.props.bestAnswerId.equals(bestAnswerId)
+
+      if (isBestAnswerChanging) {
+        this.addDomainEvent(
+          new QuestionBestAnswerChosenEvent(this, bestAnswerId),
+        )
+      }
     }
 
     this.props.bestAnswerId = bestAnswerId
-
     this.touch()
   }
 

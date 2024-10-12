@@ -3,7 +3,7 @@ import { EventHandler } from '@/core/events/event-handler'
 
 import { AnswersRepository } from '@/domain/forum/application/repositories/answers-repository'
 
-import { SendNotificationUseCase } from '../use-cases/send-notification-use-case'
+import { SendNotificationUseCase } from '../use-cases/send-notification'
 import { QuestionBestAnswerChosenEvent } from '@/domain/forum/enterprise/events/question-best-answer-chosen-event'
 
 export class OnQuestionBestAnswerChosen implements EventHandler {

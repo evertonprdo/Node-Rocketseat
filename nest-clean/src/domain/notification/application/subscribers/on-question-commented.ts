@@ -4,7 +4,7 @@ import { EventHandler } from '@/core/events/event-handler'
 import { QuestionCommentedEvent } from '@/domain/forum/enterprise/events/question-commented-event'
 import { QuestionsRepository } from '@/domain/forum/application/repositories/questions-repository'
 
-import { SendNotificationUseCase } from '../use-cases/send-notification-use-case'
+import { SendNotificationUseCase } from '../use-cases/send-notification'
 
 export class OnQuestionCommented implements EventHandler {
   constructor(

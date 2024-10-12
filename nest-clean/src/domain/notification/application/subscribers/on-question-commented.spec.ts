@@ -12,7 +12,7 @@ import {
   SendNotificationUseCase,
   SendNotificationUseCaseRequest,
   SendNotificationUseCaseResponse,
-} from '../use-cases/send-notification-use-case'
+} from '../use-cases/send-notification'
 
 import { OnQuestionCommented } from './on-question-commented'
 

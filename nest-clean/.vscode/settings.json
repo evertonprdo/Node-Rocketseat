@@ -3,6 +3,7 @@
     "encrypter",
     "Encrypter",
     "hasher",
-    "Hasher"
+    "Hasher",
+    "originalname"
   ]
 }

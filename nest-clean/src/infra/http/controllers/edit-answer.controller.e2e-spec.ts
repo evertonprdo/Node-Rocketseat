@@ -13,7 +13,7 @@ import { DatabaseModule } from '@/infra/database/database.module'
 
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
-describe('Create answer (E2E)', () => {
+describe('Edit answer (E2E)', () => {
   let app: INestApplication
   let jwt: JwtService
 

@@ -4,6 +4,7 @@ import { AnswerAttachmentsRepository } from '@/domain/forum/application/reposito
 
 import { PrismaService } from '../prisma.service'
 import { PrismaAnswerAttachmentMapper } from '../mappers/prisma-answer-attachment-mapper'
+import { AnswerAttachment } from '@/domain/forum/enterprise/entities/answer-attachment'
 
 @Injectable()
 export class PrismaAnswerAttachmentsRepository
@@ -19,6 +20,34 @@ export class PrismaAnswerAttachmentsRepository
     })
 
     return answerAttachments.map(PrismaAnswerAttachmentMapper.toDomain)
+  }
+
+  async createMany(attachments: AnswerAttachment[]) {
+    if (attachments.length === 0) {
+      return
+    }
+
+    const data = PrismaAnswerAttachmentMapper.toPrismaUpdateMany(attachments)
+
+    await this.prisma.attachment.updateMany(data)
+  }
+
+  async deleteMany(attachments: AnswerAttachment[]) {
+    if (attachments.length === 0) {
+      return
+    }
+
+    const attachmentIds = attachments.map((attachment) => {
+      return attachment.id.toString()
+    })
+
+    await this.prisma.attachment.deleteMany({
+      where: {
+        id: {
+          in: attachmentIds,
+        },
+      },
+    })
   }
 
   async deleteManyByAnswerId(answerId: string) {

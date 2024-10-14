@@ -8,9 +8,13 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 import { EditQuestionUseCase } from './edit-question'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
+let inMemoryStudentsRepository: InMemoryStudentsRepository
 let sut: EditQuestionUseCase
 
 describe('Edit Question Use Case', () => {
@@ -18,8 +22,13 @@ describe('Edit Question Use Case', () => {
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository()
 
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
+
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryStudentsRepository,
     )
 
     sut = new EditQuestionUseCase(

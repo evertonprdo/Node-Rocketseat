@@ -25,6 +25,9 @@ import { DeleteAnswerController } from './controllers/delete-answer.controller'
 import { AnswerQuestionController } from './controllers/answer-question.controller'
 import { FetchQuestionAnswersController } from './controllers/fetch-questions-answers.controller'
 
+import { ReadNotificationController } from './controllers/read-notification.controller'
+import { UploadAttachmentController } from './controllers/upload-attachment.controller'
+
 import { RegisterStudentUseCase } from '@/domain/forum/application/use-cases/register-student'
 import { AuthenticateStudentUseCase } from '@/domain/forum/application/use-cases/authenticate-student'
 
@@ -48,7 +51,7 @@ import { FetchQuestionAnswersUseCase } from '@/domain/forum/application/use-case
 import { FetchQuestionCommentsUseCase } from '@/domain/forum/application/use-cases/fetch-question-comments'
 import { FetchQuestionCommentsController } from './controllers/fetch-question-comments.controller'
 
-import { UploadAttachmentController } from './controllers/upload-attachment.controller'
+import { ReadNotificationUseCase } from '@/domain/notification/application/use-cases/read-notification'
 import { UploadAndCreateAttachmentUseCase } from '@/domain/forum/application/use-cases/upload-and-create-attachments'
 
 @Module({
@@ -64,6 +67,7 @@ import { UploadAndCreateAttachmentUseCase } from '@/domain/forum/application/use
     AnswerQuestionController,
     CommentOnAnswerController,
     UploadAttachmentController,
+    ReadNotificationController,
     CommentOnQuestionController,
     GetQuestionBySlugController,
     DeleteAnswerCommentController,
@@ -83,6 +87,7 @@ import { UploadAndCreateAttachmentUseCase } from '@/domain/forum/application/use
     AnswerQuestionUseCase,
     RegisterStudentUseCase,
     CommentOnAnswerUseCase,
+    ReadNotificationUseCase,
     GetQuestionBySlugUseCase,
     CommentOnQuestionUseCase,
     DeleteAnswerCommentUseCase,

@@ -18,12 +18,16 @@ import {
 import { OnAnswerCommented } from './on-answer-commented'
 import { makeAnswerComment } from 'test/factories/make-answer-comment'
 import { makeQuestion } from 'test/factories/make-question'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
+let inMemoryStudentsRepository: InMemoryStudentsRepository
 
 let inMemoryNotificationRepository: InMemoryNotificationsRepository
 let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository
@@ -40,8 +44,13 @@ describe('On Answer Created', () => {
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository()
 
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
+
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryStudentsRepository,
     )
 
     inMemoryAnswerAttachmentsRepository =
@@ -57,7 +66,9 @@ describe('On Answer Created', () => {
       inMemoryNotificationRepository,
     )
 
-    inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository()
+    inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository(
+      inMemoryStudentsRepository,
+    )
 
     sendNotificationExecuteSpy = vi.spyOn(sendNotificationUseCase, 'execute')
 

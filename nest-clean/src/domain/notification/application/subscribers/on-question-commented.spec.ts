@@ -15,12 +15,16 @@ import {
 } from '../use-cases/send-notification'
 
 import { OnQuestionCommented } from './on-question-commented'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 
 let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
+let inMemoryStudentsRepository: InMemoryStudentsRepository
 
 let inMemoryNotificationRepository: InMemoryNotificationsRepository
 
@@ -36,8 +40,13 @@ describe('On Answer Created', () => {
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository()
 
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
+
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryStudentsRepository,
     )
 
     inMemoryNotificationRepository = new InMemoryNotificationsRepository()
@@ -46,8 +55,9 @@ describe('On Answer Created', () => {
       inMemoryNotificationRepository,
     )
 
-    inMemoryQuestionCommentsRepository =
-      new InMemoryQuestionCommentsRepository()
+    inMemoryQuestionCommentsRepository = new InMemoryQuestionCommentsRepository(
+      inMemoryStudentsRepository,
+    )
 
     sendNotificationExecuteSpy = vi.spyOn(sendNotificationUseCase, 'execute')
 

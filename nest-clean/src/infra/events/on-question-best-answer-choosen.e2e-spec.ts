@@ -4,30 +4,29 @@ import { JwtService } from '@nestjs/jwt'
 
 import request from 'supertest'
 
+import { AnswerFactory } from 'test/factories/make-answer'
 import { StudentFactory } from 'test/factories/make-student'
+import { QuestionFactory } from 'test/factories/make-question'
 
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
 
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
-import { QuestionFactory } from 'test/factories/make-question'
-import { AttachmentFactory } from 'test/factories/make-attachment'
+import { DomainEvents } from '@/core/events/domain-events'
 
-vi.importMock('@/core/events/domain-events')
-
-describe('Answer question (E2E)', () => {
+describe('On question best answer Choose (E2E)', () => {
   let app: INestApplication
   let jwt: JwtService
 
   let prisma: PrismaService
   let studentFactory: StudentFactory
+  let answerFactory: AnswerFactory
   let questionFactory: QuestionFactory
-  let attachmentFactory: AttachmentFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [StudentFactory, QuestionFactory, AttachmentFactory],
+      providers: [StudentFactory, AnswerFactory, QuestionFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -35,13 +34,15 @@ describe('Answer question (E2E)', () => {
 
     prisma = moduleRef.get(PrismaService)
     studentFactory = moduleRef.get(StudentFactory)
+    answerFactory = moduleRef.get(AnswerFactory)
     questionFactory = moduleRef.get(QuestionFactory)
-    attachmentFactory = moduleRef.get(AttachmentFactory)
+
+    DomainEvents.shouldRun = true
 
     await app.init()
   })
 
-  test.only('[POST] /questions/:questionId/answers', async () => {
+  it('should send a notification when question best answer is chosen', async () => {
     const user = await studentFactory.makePrismaStudent()
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
@@ -50,33 +51,23 @@ describe('Answer question (E2E)', () => {
       authorId: user.id,
     })
 
-    const attachment1 = await attachmentFactory.makePrismaAttachment()
-    const attachment2 = await attachmentFactory.makePrismaAttachment()
+    const answer = await answerFactory.makePrismaAnswer({
+      authorId: user.id,
+      questionId: question.id,
+    })
 
-    const response = await request(app.getHttpServer())
-      .post(`/questions/${question.id.toString()}/answers`)
+    await request(app.getHttpServer())
+      .patch(`/answers/${answer.id.toString()}/choose-as-best`)
       .set('Authorization', `Bearer ${accessToken}`)
-      .send({
-        content: 'New answer',
-        attachments: [attachment1.id.toString(), attachment2.id.toString()],
+
+    await vi.waitFor(async () => {
+      const notificationOnDatabase = await prisma.notification.findFirst({
+        where: {
+          recipientId: user.id.toString(),
+        },
       })
 
-    expect(response.statusCode).toBe(201)
-
-    const answerOnDatabase = await prisma.answer.findFirst({
-      where: {
-        content: 'New answer',
-      },
+      expect(notificationOnDatabase).not.toBeNull()
     })
-
-    expect(answerOnDatabase).toBeTruthy()
-
-    const attachmentsOnDatabase = await prisma.attachment.findMany({
-      where: {
-        answerId: answerOnDatabase?.id,
-      },
-    })
-
-    expect(attachmentsOnDatabase).toHaveLength(2)
   })
 })

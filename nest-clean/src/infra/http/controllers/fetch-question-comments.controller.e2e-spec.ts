@@ -65,8 +65,14 @@ describe('Fetch question comments (E2E)', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual({
       comments: expect.arrayContaining([
-        expect.objectContaining({ content: 'Comment 1' }),
-        expect.objectContaining({ content: 'Comment 2' }),
+        expect.objectContaining({
+          content: 'Comment 1',
+          authorName: user.name,
+        }),
+        expect.objectContaining({
+          content: 'Comment 2',
+          authorName: user.name,
+        }),
       ]),
     })
   })

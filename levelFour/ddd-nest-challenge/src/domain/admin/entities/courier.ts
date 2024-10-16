@@ -1,28 +1,49 @@
-import { Entity } from '@/core/entities/entity'
-import { CPF } from './value-objects/cpf'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Optional } from '@/core/types/optional'
 
-interface CourierProps {
-  name: string
-  cpf: CPF
-  password: string
+import { Employee, EmployeeProps } from './employee'
+import { Position } from './value-objects/location'
+
+export interface CourierProps extends EmployeeProps {
+  createdAt: Date
+  lastPosition?: Position
+  updatedAt?: Date
 }
 
-export class Courier extends Entity<CourierProps> {
-  get name() {
-    return this.props.name
+export class Courier extends Employee<CourierProps> {
+  get createdAt() {
+    return this.props.createdAt
   }
 
-  get cpf() {
-    return this.props.cpf
+  get lastPosition() {
+    return this.props.lastPosition
   }
 
-  get password() {
-    return this.props.password
+  get updatedAt() {
+    return this.props.updatedAt
   }
 
-  static create(props: CourierProps, id?: UniqueEntityId) {
-    const courier = new Courier(props, id)
+  updatePosition(location: Position) {
+    this.props.lastPosition = location
+
+    this.touch()
+  }
+
+  touch() {
+    this.props.updatedAt = new Date()
+  }
+
+  static create(
+    props: Optional<CourierProps, 'createdAt'>,
+    id?: UniqueEntityId,
+  ) {
+    const courier = new Courier(
+      {
+        ...props,
+        createdAt: props.createdAt ?? new Date(),
+      },
+      id,
+    )
 
     return courier
   }

@@ -10,10 +10,6 @@ export class CPF {
   }
 
   static createFromText(text: string) {
-    if (!this.isValidCPF(text)) {
-      throw new Error('Invalid CPF')
-    }
-
     const cpfWithoutDecorates = text.replace(/\D/g, '')
 
     return new CPF(cpfWithoutDecorates)

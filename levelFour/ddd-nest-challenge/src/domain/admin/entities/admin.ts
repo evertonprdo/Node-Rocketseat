@@ -1,27 +1,10 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { Entity } from '@/core/entities/entity'
 
-import { CPF } from './value-objects/cpf'
+import { Employee, EmployeeProps } from './employee'
 
-interface AdminProps {
-  name: string
-  cpf: CPF
-  password: string
-}
+interface AdminProps extends EmployeeProps {}
 
-export class Admin extends Entity<AdminProps> {
-  get name() {
-    return this.props.name
-  }
-
-  get cpf() {
-    return this.cpf
-  }
-
-  get password() {
-    return this.password
-  }
-
+export class Admin extends Employee<AdminProps> {
   static create(props: AdminProps, id?: UniqueEntityId) {
     const student = new Admin(props, id)
 

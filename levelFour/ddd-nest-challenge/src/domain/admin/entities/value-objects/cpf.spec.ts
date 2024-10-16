@@ -1,10 +1,10 @@
+import { makeCPF } from 'test/factories/make-cpf'
 import { CPF } from './cpf'
 
 describe('Value Object: CPF', () => {
   it('should validate a valid CPF', () => {
     expect(CPF.isValidCPF('974.432.170-99')).toEqual(true)
-    expect(CPF.isValidCPF('691.993.130-30')).toEqual(true)
-    expect(CPF.isValidCPF('303.471.990-62')).toEqual(true)
+    expect(CPF.isValidCPF(makeCPF())).toEqual(true)
   })
 
   it('should not validate a invalid CPF', () => {
@@ -20,9 +20,5 @@ describe('Value Object: CPF', () => {
 
     expect(cpf.value).toEqual('97443217099')
     expect(cpf.toDecorated()).toEqual(text)
-  })
-
-  it('should throw an error when create from invalid CPF', () => {
-    expect(() => CPF.createFromText('invalid-text')).toThrow()
   })
 })

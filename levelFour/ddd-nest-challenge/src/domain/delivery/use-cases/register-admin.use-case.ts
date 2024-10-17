@@ -1,7 +1,7 @@
 import { Either, left, right } from '@/core/either'
 
 import { Admin } from '../entities/admin'
-import { CPF } from '../entities/value-objects/cpf'
+import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
 
 import { HashGenerator } from '../cryptography/hash-compare'
 import { AdminsRepository } from '../repositories/admins.repository'

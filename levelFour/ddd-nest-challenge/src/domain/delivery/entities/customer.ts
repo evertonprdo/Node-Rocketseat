@@ -1,7 +1,7 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-import { AddressProps } from '@/core/entities/address'
+import { AddressProps } from '@/core/contracts/address'
 
 export interface CustomerProps {
   name: string

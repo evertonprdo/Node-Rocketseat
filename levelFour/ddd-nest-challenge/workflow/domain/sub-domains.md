@@ -1,5 +1,6 @@
 # Sub Domains
 
-- [ ] Administration
-- [ ] Delivery
+- [x] Delivery
 - [ ] Notification
+
+- [-] Administration // to avoid unrequired features, it will not be implemented

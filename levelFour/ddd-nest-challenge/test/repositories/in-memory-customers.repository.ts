@@ -1,7 +1,7 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
 
-import { Customer } from '@/domain/admin/entities/customer'
-import { CustomersRepository } from '@/domain/admin/repositories/customers.repository'
+import { Customer } from '@/domain/delivery/entities/customer'
+import { CustomersRepository } from '@/domain/delivery/repositories/customers.repository'
 
 export class InMemoryCustomersRepository implements CustomersRepository {
   public items: Customer[] = []

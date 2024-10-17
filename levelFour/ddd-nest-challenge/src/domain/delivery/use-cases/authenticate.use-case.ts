@@ -1,6 +1,6 @@
 import { Either, left, right } from '@/core/either'
 
-import { CPF } from '../entities/value-objects/cpf'
+import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
 
 import { AdminsRepository } from '../repositories/admins.repository'
 import { HashCompare } from '../cryptography/hash-generator'

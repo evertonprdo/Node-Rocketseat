@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker'
 
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { Customer, CustomerProps } from '@/domain/admin/entities/customer'
-import { CEP } from '@/domain/admin/entities/value-objects/cep'
+import { Customer, CustomerProps } from '@/domain/delivery/entities/customer'
+import { CEP } from '@/domain/delivery/entities/value-objects/cep'
 import { makeCEP } from './make-cep'
 
 export function makeCustomer(

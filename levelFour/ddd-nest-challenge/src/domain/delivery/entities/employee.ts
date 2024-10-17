@@ -1,5 +1,5 @@
 import { Entity } from '@/core/entities/entity'
-import { CPF } from './value-objects/cpf'
+import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
 
 export interface EmployeeProps {
   name: string

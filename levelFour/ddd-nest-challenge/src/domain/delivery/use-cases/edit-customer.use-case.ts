@@ -1,7 +1,7 @@
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found.error'
 
-import { CEP } from '../entities/value-objects/cep'
+import { CEP } from '@/domain/delivery/entities/value-objects/cep'
 import { Customer } from '../entities/customer'
 
 import { CustomersRepository } from '../repositories/customers.repository'

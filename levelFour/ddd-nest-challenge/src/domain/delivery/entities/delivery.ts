@@ -1,5 +1,8 @@
-import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Entity } from '@/core/entities/entity'
+
+import { Attachment } from '@/core/entities/attachment'
+import { Optional } from '@/core/types/optional'
 
 const StatusMap = {
   PENDING: 'Pending',
@@ -8,13 +11,16 @@ const StatusMap = {
   RETURNED: 'Returned',
 }
 
-interface DeliveryProps {
+type StatusKeys = keyof typeof StatusMap
+
+export interface DeliveryProps {
   customerId: UniqueEntityId
-  courierId: UniqueEntityId
-  status?: keyof typeof StatusMap
-  createdAt?: Date
+  status: StatusKeys
+  courierId?: UniqueEntityId
+  createdAt: Date
   pickupDate?: Date
   deliveredAt?: Date
+  deliveryAttachment?: Attachment
   updatedAt?: Date
 }
 
@@ -44,13 +50,15 @@ export class Delivery extends Entity<DeliveryProps> {
   }
 
   get status() {
-    return StatusMap[this.props.status]
+    return this.props.status
   }
 
-  markAsPending() {
-    this.props.status = 'PENDING'
+  set courierId(courierId: UniqueEntityId) {
+    this.props.courierId = courierId
+  }
 
-    this.touch()
+  getStatusName() {
+    return StatusMap[this.status]
   }
 
   markAsPickedUp() {
@@ -77,8 +85,18 @@ export class Delivery extends Entity<DeliveryProps> {
     this.props.updatedAt = new Date()
   }
 
-  static create(props: DeliveryProps, id?: UniqueEntityId) {
-    const delivery = new Delivery(props, id)
+  static create(
+    props: Optional<DeliveryProps, 'courierId' | 'createdAt' | 'status'>,
+    id?: UniqueEntityId,
+  ) {
+    const delivery = new Delivery(
+      {
+        ...props,
+        status: props.status ?? 'PENDING',
+        createdAt: props.createdAt ?? new Date(),
+      },
+      id,
+    )
 
     return delivery
   }

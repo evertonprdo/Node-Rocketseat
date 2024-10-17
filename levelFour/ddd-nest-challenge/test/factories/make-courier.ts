@@ -2,8 +2,8 @@ import { faker } from '@faker-js/faker'
 import { makeCPF } from './make-cpf'
 
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { CPF } from '@/domain/admin/entities/value-objects/cpf'
-import { Courier, CourierProps } from '@/domain/admin/entities/courier'
+import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
+import { Courier, CourierProps } from '@/domain/delivery/entities/courier'
 
 export function makeCourier(
   overwrite?: Partial<CourierProps>,

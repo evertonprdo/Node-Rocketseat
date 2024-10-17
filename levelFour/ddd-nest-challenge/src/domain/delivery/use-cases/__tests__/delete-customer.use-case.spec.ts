@@ -15,7 +15,7 @@ describe('Use Cases: Delete Customer', () => {
 
   it('should delete a customer', async () => {
     const customer = makeCustomer()
-    customersRepository.create(customer)
+    customersRepository.items.push(customer)
 
     const result = await sut.execute({ customerId: customer.id.toString() })
 

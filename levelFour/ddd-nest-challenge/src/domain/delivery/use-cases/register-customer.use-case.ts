@@ -2,7 +2,7 @@ import { Either, left, right } from '@/core/either'
 
 import { CustomersRepository } from '../repositories/customers.repository'
 
-import { CEP } from '../entities/value-objects/cep'
+import { CEP } from '@/domain/delivery/entities/value-objects/cep'
 import { Customer } from '../entities/customer'
 
 import { InvalidCEPError } from './errors/invalid-cep.error'

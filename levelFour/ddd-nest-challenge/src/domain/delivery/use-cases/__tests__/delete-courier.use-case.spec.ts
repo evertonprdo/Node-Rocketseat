@@ -15,7 +15,7 @@ describe('Use Cases: Delete Courier', () => {
 
   it('should delete a courier', async () => {
     const courier = makeCourier()
-    couriersRepository.create(courier)
+    couriersRepository.items.push(courier)
 
     const result = await sut.execute({ courierId: courier.id.toString() })
 

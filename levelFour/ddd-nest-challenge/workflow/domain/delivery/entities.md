@@ -1,16 +1,34 @@
 # Entities
 
-- [ ] **Courier**
-  - name
-  - cpf
-  - password
+- [x] **Admin**
+  - Name
+  - CPF
+  - Password
 
-- [ ] **Recipient**
-  - name
-  - address
+- [x] **Courier**
+  - Name
+  - CPF
+  - Password
 
-- [ ] **Delivery**
-  - courierId
-  - recipientId
-  - status
+- [x] **Customer**
+  - Name
+  - Email
+  - Address
+    - Street, number, city, state, zip code
 
+- [-] **Order** // to avoid unrequired features, it will not be implemented
+  - deliveryId
+  - delivery price
+  - weight
+  - width
+  - height
+  - length
+  - getVolume()
+
+- [x] **Delivery**
+  - Deliverer
+  - Recipient
+  - Status
+  - Withdrawal date
+  - Delivery date
+  - Photo of the order at the recipient's location

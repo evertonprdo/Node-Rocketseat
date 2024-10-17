@@ -1,4 +1,4 @@
-import { Encrypter } from '@/domain/admin/cryptography/encrypter'
+import { Encrypter } from '@/domain/delivery/cryptography/encrypter'
 
 export class FakeEncrypter implements Encrypter {
   async encrypt(payload: Record<string, unknown>) {

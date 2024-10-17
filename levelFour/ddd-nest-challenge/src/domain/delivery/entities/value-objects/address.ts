@@ -1,4 +1,4 @@
-import { CEP } from '../../domain/admin/entities/value-objects/cep'
+import { CEP } from '@/domain/delivery/entities/value-objects/cep'
 
 export interface AddressProps {
   cep: CEP

@@ -1,7 +1,7 @@
 import { Either, left, right } from '@/core/either'
 
 import { Courier } from '../entities/courier'
-import { CPF } from '../entities/value-objects/cpf'
+import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
 
 import { CouriersRepository } from '../repositories/couriers.repository'
 import { HashGenerator } from '../cryptography/hash-compare'

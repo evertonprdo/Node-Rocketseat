@@ -3,9 +3,9 @@
 - [x] Map sub domains
 - [x] Map entities
 - [x] Map use cases
-- [ ] Map repositories
 
 - [ ] Implement sub domains
+
 - [ ] Implement entities
 - [ ] Implement use cases
 - [ ] Test use cases

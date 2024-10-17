@@ -1,24 +1,25 @@
 # Entities
 
-- [ ] **Admin**
+- [x] **Admin**
   - Name
   - CPF
   - Password
 
-- [ ] **Deliverer**
+- [x] **Courier**
   - Name
   - CPF
   - Password
 
-- [ ] **Recipient**
+- [x] **Customer**
   - Name
+  - Email
   - Address
     - Street, number, city, state, zip code
 
 - [ ] **Order**
   - Order details
 
-- [ ] **Delivery**
+- [x] **Delivery**
   - Order
   - Deliverer
   - Recipient
@@ -26,13 +27,3 @@
   - Withdrawal date
   - Delivery date
   - Photo of the order at the recipient's location
-
-- [ ] **Notification**
-  - recipient
-  - title
-  - message
-
-- [ ] **Location**
-  - deliverer
-  - latitude
-  - longitude

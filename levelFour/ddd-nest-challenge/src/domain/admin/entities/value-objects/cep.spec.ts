@@ -6,14 +6,10 @@ describe('Value Object: CEP', () => {
     expect(cep).toBeInstanceOf(CEP)
   })
 
-  it('should throw a error if cep is invalid', () => {
-    expect(() => CEP.createFromText('invalid-cep')).toThrow()
-  })
-
   it('should validated the CEP digits', () => {
-    expect(CEP.validateCEP('19865-756')).toEqual(true)
-    expect(CEP.validateCEP('123')).toEqual(false)
-    expect(CEP.validateCEP('11111111')).toEqual(false)
+    expect(CEP.isValidCEP('19865-756')).toEqual(true)
+    expect(CEP.isValidCEP('123')).toEqual(false)
+    expect(CEP.isValidCEP('11111111')).toEqual(false)
   })
 
   it('should return a decorated CEP', () => {

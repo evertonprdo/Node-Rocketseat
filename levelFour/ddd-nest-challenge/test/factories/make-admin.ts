@@ -1,15 +1,15 @@
 import { faker } from '@faker-js/faker'
-import { makeCPF } from './make-cpf'
 
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Admin, AdminProps } from '@/domain/admin/entities/admin'
+import { makeCPF } from './make-cpf'
 import { CPF } from '@/domain/admin/entities/value-objects/cpf'
-import { Courier, CourierProps } from '@/domain/admin/entities/courier'
 
-export function makeCourier(
-  overwrite?: Partial<CourierProps>,
+export function makeAdmin(
+  overwrite?: Partial<AdminProps>,
   id?: UniqueEntityId,
 ) {
-  const courier = Courier.create(
+  const admin = Admin.create(
     {
       name: faker.person.fullName(),
       cpf: CPF.createFromText(makeCPF()),
@@ -19,5 +19,5 @@ export function makeCourier(
     id,
   )
 
-  return courier
+  return admin
 }

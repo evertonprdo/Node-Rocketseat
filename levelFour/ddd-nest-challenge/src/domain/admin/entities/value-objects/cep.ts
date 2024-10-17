@@ -10,10 +10,6 @@ export class CEP {
   }
 
   static createFromText(value: string) {
-    if (!this.validateCEP(value)) {
-      throw new Error('Invalid CEP')
-    }
-
     const cepWithoutDecorations = value.replace(/\D/g, '')
 
     return new CEP(cepWithoutDecorations)
@@ -23,7 +19,7 @@ export class CEP {
     return `${this.value.slice(0, 5)}-${this.value.slice(5)}`
   }
 
-  static validateCEP(value: string) {
+  static isValidCEP(value: string) {
     const cepWithoutDecorations = value.replace(/\D/g, '')
 
     if (cepWithoutDecorations.length !== 8) {

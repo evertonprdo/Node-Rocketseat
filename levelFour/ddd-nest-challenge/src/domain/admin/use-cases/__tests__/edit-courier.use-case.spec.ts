@@ -1,6 +1,8 @@
-import { FakeHasher } from 'test/cryptography/fake-hasher'
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers.repository'
+
 import { makeCourier } from 'test/factories/make-courier'
+import { FakeHasher } from 'test/cryptography/fake-hasher'
+
 import { EditCourierUseCase } from '../edit-courier.use-case'
 
 let fakeHasher: FakeHasher

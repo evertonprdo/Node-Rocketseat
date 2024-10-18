@@ -6,7 +6,7 @@ import { CEP } from '@/domain/delivery/entities/value-objects/cep'
 import { makeCEP } from './make-cep'
 
 export function makeCustomer(
-  overwrite?: Partial<CustomerProps>,
+  overwrite: Partial<CustomerProps> = {},
   id?: UniqueEntityId,
 ) {
   const customer = Customer.create(

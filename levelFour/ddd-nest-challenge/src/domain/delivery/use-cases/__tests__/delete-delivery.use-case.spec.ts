@@ -2,13 +2,16 @@ import { InMemoryDeliveriesRepository } from 'test/repositories/in-memory-delive
 import { makeDelivery } from 'test/factories/make-delivery'
 
 import { DeleteDeliveryUseCase } from '../delete-delivery.use-case'
+import { InMemoryCustomersRepository } from 'test/repositories/in-memory-customers.repository'
 
+let customersRepository: InMemoryCustomersRepository
 let deliveriesRepository: InMemoryDeliveriesRepository
 let sut: DeleteDeliveryUseCase
 
 describe('Use Cases: Delete Delivery', () => {
   beforeEach(() => {
-    deliveriesRepository = new InMemoryDeliveriesRepository()
+    customersRepository = new InMemoryCustomersRepository()
+    deliveriesRepository = new InMemoryDeliveriesRepository(customersRepository)
 
     sut = new DeleteDeliveryUseCase(deliveriesRepository)
   })

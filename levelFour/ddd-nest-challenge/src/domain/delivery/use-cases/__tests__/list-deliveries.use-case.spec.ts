@@ -2,13 +2,16 @@ import { InMemoryDeliveriesRepository } from 'test/repositories/in-memory-delive
 import { makeDelivery } from 'test/factories/make-delivery'
 
 import { ListDeliveriesUseCase } from '../list-deliveries.use-case'
+import { InMemoryCustomersRepository } from 'test/repositories/in-memory-customers.repository'
 
+let customersRepository: InMemoryCustomersRepository
 let deliveriesRepository: InMemoryDeliveriesRepository
 let sut: ListDeliveriesUseCase
 
 describe('Use Cases: List deliveries', () => {
   beforeEach(() => {
-    deliveriesRepository = new InMemoryDeliveriesRepository()
+    customersRepository = new InMemoryCustomersRepository()
+    deliveriesRepository = new InMemoryDeliveriesRepository(customersRepository)
     sut = new ListDeliveriesUseCase(deliveriesRepository)
   })
 
@@ -20,8 +23,8 @@ describe('Use Cases: List deliveries', () => {
     const result = await sut.execute({ page: 1 })
 
     expect(result.isRight()).toEqual(true)
-    expect(result.value.delivery).toHaveLength(5)
-    expect(result.value.delivery).toEqual(expect.arrayContaining(deliveries))
+    expect(result.value?.delivery).toHaveLength(5)
+    expect(result.value?.delivery).toEqual(expect.arrayContaining(deliveries))
   })
 
   it('should list deliveries paginated', async () => {
@@ -31,6 +34,6 @@ describe('Use Cases: List deliveries', () => {
     const result = await sut.execute({ page: 2 })
 
     expect(result.isRight()).toEqual(true)
-    expect(result.value.delivery).toHaveLength(7)
+    expect(result.value?.delivery).toHaveLength(7)
   })
 })

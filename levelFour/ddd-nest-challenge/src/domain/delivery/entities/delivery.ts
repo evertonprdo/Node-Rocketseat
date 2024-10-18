@@ -1,8 +1,8 @@
+import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { Entity } from '@/core/entities/entity'
-
-import { Attachment } from '@/core/entities/attachment'
 import { Optional } from '@/core/types/optional'
+
+import { DeliveryAttachment } from './delivery-attachment'
 
 const StatusMap = {
   PENDING: 'Pending',
@@ -18,13 +18,13 @@ export interface DeliveryProps {
   status: StatusKeys
   courierId?: UniqueEntityId
   createdAt: Date
-  pickupDate?: Date
+  pickedUpDate?: Date
   deliveredAt?: Date
-  deliveryAttachment?: Attachment
+  deliveryAttachment?: DeliveryAttachment
   updatedAt?: Date
 }
 
-export class Delivery extends Entity<DeliveryProps> {
+export class Delivery extends AggregateRoot<DeliveryProps> {
   get customerId() {
     return this.props.customerId
   }
@@ -37,8 +37,8 @@ export class Delivery extends Entity<DeliveryProps> {
     return this.props.createdAt
   }
 
-  get pickupDate() {
-    return this.props.pickupDate
+  get pickedUpDate() {
+    return this.props.pickedUpDate
   }
 
   get deliveredAt() {
@@ -53,24 +53,26 @@ export class Delivery extends Entity<DeliveryProps> {
     return this.props.status
   }
 
-  set courierId(courierId: UniqueEntityId) {
-    this.props.courierId = courierId
+  get deliveryAttachment() {
+    return this.props.deliveryAttachment
   }
 
   getStatusName() {
     return StatusMap[this.status]
   }
 
-  markAsPickedUp() {
+  markAsPickedUp(courierId: UniqueEntityId) {
     this.props.status = 'PICKED_UP'
-    this.props.pickupDate = new Date()
+    this.props.pickedUpDate = new Date()
+    this.props.courierId = courierId
 
     this.touch()
   }
 
-  markAsDelivered() {
+  markAsDelivered(attachment: DeliveryAttachment) {
     this.props.status = 'DELIVERED'
     this.props.deliveredAt = new Date()
+    this.props.deliveryAttachment = attachment
 
     this.touch()
   }

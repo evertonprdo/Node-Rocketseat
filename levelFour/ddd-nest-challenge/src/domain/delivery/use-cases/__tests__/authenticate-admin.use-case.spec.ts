@@ -7,7 +7,7 @@ import { makeAdmin } from 'test/factories/make-admin'
 import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
 import { WrongCredentialsError } from '../errors/wrong-credentials-error'
 
-import { AuthenticateAdminUseCase } from '../authenticate.use-case'
+import { AuthenticateAdminUseCase } from '../authenticate-admin.use-case'
 
 let fakeHasher: FakeHasher
 let fakeEncrypter: FakeEncrypter

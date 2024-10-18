@@ -6,7 +6,7 @@ import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
 import { Courier, CourierProps } from '@/domain/delivery/entities/courier'
 
 export function makeCourier(
-  overwrite?: Partial<CourierProps>,
+  overwrite: Partial<CourierProps> = {},
   id?: UniqueEntityId,
 ) {
   const courier = Courier.create(

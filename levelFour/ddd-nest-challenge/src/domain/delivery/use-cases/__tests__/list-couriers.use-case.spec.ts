@@ -20,8 +20,8 @@ describe('Use Cases: List couriers', () => {
     const result = await sut.execute({ page: 1 })
 
     expect(result.isRight()).toEqual(true)
-    expect(result.value.courier).toHaveLength(5)
-    expect(result.value.courier).toEqual(expect.arrayContaining(couriers))
+    expect(result.value?.courier).toHaveLength(5)
+    expect(result.value?.courier).toEqual(expect.arrayContaining(couriers))
   })
 
   it('should list couriers paginated', async () => {
@@ -31,6 +31,6 @@ describe('Use Cases: List couriers', () => {
     const result = await sut.execute({ page: 2 })
 
     expect(result.isRight()).toEqual(true)
-    expect(result.value.courier).toHaveLength(7)
+    expect(result.value?.courier).toHaveLength(7)
   })
 })

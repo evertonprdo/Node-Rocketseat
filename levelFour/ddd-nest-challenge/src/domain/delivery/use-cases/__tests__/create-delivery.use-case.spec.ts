@@ -13,7 +13,7 @@ let sut: CreateDeliveryUseCase
 describe('Use Cases: Create Delivery', () => {
   beforeEach(() => {
     customersRepository = new InMemoryCustomersRepository()
-    deliveriesRepository = new InMemoryDeliveriesRepository()
+    deliveriesRepository = new InMemoryDeliveriesRepository(customersRepository)
 
     sut = new CreateDeliveryUseCase(deliveriesRepository, customersRepository)
   })

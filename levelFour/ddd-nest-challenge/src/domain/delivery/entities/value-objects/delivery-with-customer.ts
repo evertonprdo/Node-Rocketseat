@@ -1,11 +1,13 @@
 import { Attachment } from '@/core/entities/attachment'
 import { ValueObject } from '@/core/entities/value-object'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { AddressProps } from './address'
 
-export interface DeliveryWithCostumerProps {
-  costumerId: UniqueEntityId
-  name: string
+export interface DeliveryWithCustomerProps {
+  customerId: UniqueEntityId
+  customerName: string
   status: string
+  customerAddress: AddressProps
   courierId?: UniqueEntityId | null
   createdAt: Date
   pickupDate?: Date | null
@@ -14,13 +16,17 @@ export interface DeliveryWithCostumerProps {
   updatedAt?: Date | null
 }
 
-export class DeliveryWithCostumer extends ValueObject<DeliveryWithCostumerProps> {
-  get costumerId() {
-    return this.props.costumerId
+export class DeliveryWithCustomer extends ValueObject<DeliveryWithCustomerProps> {
+  get customerId() {
+    return this.props.customerId
   }
 
-  get name() {
-    return this.props.name
+  get customerName() {
+    return this.props.customerName
+  }
+
+  get customerAddress() {
+    return this.props.customerAddress
   }
 
   get status() {
@@ -51,7 +57,7 @@ export class DeliveryWithCostumer extends ValueObject<DeliveryWithCostumerProps>
     return this.props.updatedAt
   }
 
-  static create(props: DeliveryWithCostumerProps) {
-    return new DeliveryWithCostumer(props)
+  static create(props: DeliveryWithCustomerProps) {
+    return new DeliveryWithCustomer(props)
   }
 }

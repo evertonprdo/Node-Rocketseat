@@ -2,11 +2,11 @@ import { Either, left, right } from '@/core/either'
 
 import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
 
-import { AdminsRepository } from '../repositories/admins.repository'
 import { HashCompare } from '../cryptography/hash-generator'
+import { Encrypter } from '../cryptography/encrypter'
+import { AdminsRepository } from '../repositories/admins.repository'
 
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
-import { Encrypter } from '../cryptography/encrypter'
 
 interface AuthenticateAdminUseCaseRequest {
   cpf: string

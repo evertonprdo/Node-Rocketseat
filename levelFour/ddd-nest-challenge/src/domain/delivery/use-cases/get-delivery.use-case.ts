@@ -1,8 +1,8 @@
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found.error'
 
-import { Delivery } from '../entities/delivery'
 import { DeliveriesRepository } from '../repositories/deliveries.repository'
+import { DeliveryWithCustomer } from '../entities/value-objects/delivery-with-customer'
 
 interface GetDeliveryUseCaseRequest {
   deliveryId: string
@@ -11,7 +11,7 @@ interface GetDeliveryUseCaseRequest {
 type GetDeliveryUseCaseResponse = Either<
   ResourceNotFoundError,
   {
-    delivery: Delivery
+    delivery: DeliveryWithCustomer
   }
 >
 
@@ -21,7 +21,8 @@ export class GetDeliveryUseCase {
   async execute({
     deliveryId,
   }: GetDeliveryUseCaseRequest): Promise<GetDeliveryUseCaseResponse> {
-    const delivery = await this.deliveriesRepository.findById(deliveryId)
+    const delivery =
+      await this.deliveriesRepository.findByIdWithCustomer(deliveryId)
 
     if (!delivery) {
       return left(new ResourceNotFoundError())

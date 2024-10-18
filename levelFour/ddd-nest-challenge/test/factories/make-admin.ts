@@ -6,7 +6,7 @@ import { makeCPF } from './make-cpf'
 import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
 
 export function makeAdmin(
-  overwrite?: Partial<AdminProps>,
+  overwrite: Partial<AdminProps> = {},
   id?: UniqueEntityId,
 ) {
   const admin = Admin.create(

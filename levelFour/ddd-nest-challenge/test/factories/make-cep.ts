@@ -3,5 +3,11 @@ export function makeCEP() {
     Math.floor(Math.random() * 10),
   )
 
-  return cepArray.join('')
+  const cepWithoutDecorations = cepArray.join('')
+
+  if (/^(\d)\1{7}$/.test(cepWithoutDecorations)) {
+    return makeCEP()
+  }
+
+  return cepWithoutDecorations
 }

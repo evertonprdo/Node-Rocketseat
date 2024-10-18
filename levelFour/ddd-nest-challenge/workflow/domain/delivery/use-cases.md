@@ -6,7 +6,7 @@
 - [x] Authenticate admin
 
 - [x] Create courier
-- [x] Create costumer
+- [x] Create customer
 - [x] Create delivery
 
 - [x] Edit courier
@@ -17,11 +17,11 @@
 - [x] Delete delivery
 
 - [x] get courier
-- [x] get costumer
+- [x] get customer
 - [x] get delivery
 
 - [x] List couriers
-- [x] List costumers
+- [x] List customers
 - [x] List deliveries
 
 - [x] When create a new delivery mark as awaiting pickup
@@ -29,11 +29,11 @@
 ## Only Courier
 
 - [ ] Authenticate courier
-- [ ] Withdraw order
+- [x] Pick up delivery
 
-- [ ] Mark order as delivered
-  - [ ] Requires sending a photo
-  - [ ] Only the courier who withdrew the order can mark it as delivered
+- [x] Mark order as delivered
+  - [x] Requires sending a photo
+  - [x] Only the courier who withdrew the order can mark it as delivered
 
 - [ ] Mark order as returned
 - [ ] List deliveries near the courier

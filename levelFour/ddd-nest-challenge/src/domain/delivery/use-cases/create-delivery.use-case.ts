@@ -26,14 +26,14 @@ export class CreateDeliveryUseCase {
   async execute({
     customerId,
   }: CreateDeliveryUseCaseRequest): Promise<CreateDeliveryUseCaseResponse> {
-    const costumer = await this.customersRepository.findById(customerId)
+    const customer = await this.customersRepository.findById(customerId)
 
-    if (!costumer) {
+    if (!customer) {
       return left(new ResourceNotFoundError())
     }
 
     const delivery = Delivery.create({
-      customerId: costumer.id,
+      customerId: customer.id,
     })
 
     await this.deliveriesRepository.create(delivery)

@@ -14,6 +14,7 @@ export function makeCourier(
       name: faker.person.fullName(),
       cpf: CPF.createFromText(makeCPF()),
       password: faker.internet.password(),
+      operationCity: faker.location.city(),
       ...overwrite,
     },
     id,

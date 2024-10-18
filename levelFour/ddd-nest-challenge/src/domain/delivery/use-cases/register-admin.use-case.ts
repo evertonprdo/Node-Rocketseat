@@ -3,7 +3,7 @@ import { Either, left, right } from '@/core/either'
 import { Admin } from '../entities/admin'
 import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
 
-import { HashGenerator } from '../cryptography/hash-compare'
+import { HashCompare } from '../cryptography/hash-compare'
 import { AdminsRepository } from '../repositories/admins.repository'
 
 import { InvalidCPFError } from './errors/invalid-cpf.error'
@@ -23,7 +23,7 @@ type RegisterAdminUseCaseResponse = Either<
 export class RegisterAdminUseCase {
   constructor(
     private adminsRepository: AdminsRepository,
-    private hashGenerator: HashGenerator,
+    private hashGenerator: HashCompare,
   ) {}
 
   async execute({

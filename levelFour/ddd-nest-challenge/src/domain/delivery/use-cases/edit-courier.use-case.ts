@@ -4,7 +4,7 @@ import { ResourceNotFoundError } from '@/core/errors/resource-not-found.error'
 import { Courier } from '../entities/courier'
 
 import { CouriersRepository } from '../repositories/couriers.repository'
-import { HashGenerator } from '../cryptography/hash-compare'
+import { HashCompare } from '../cryptography/hash-compare'
 
 interface EditCourierUseCaseRequest {
   courierId: string
@@ -20,7 +20,7 @@ type EditCourierUseCaseResponse = Either<
 export class EditCourierUseCase {
   constructor(
     private couriersRepository: CouriersRepository,
-    private hashGenerator: HashGenerator,
+    private hashGenerator: HashCompare,
   ) {}
 
   async execute({

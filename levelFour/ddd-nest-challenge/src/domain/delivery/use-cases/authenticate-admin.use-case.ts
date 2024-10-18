@@ -2,7 +2,7 @@ import { Either, left, right } from '@/core/either'
 
 import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
 
-import { HashCompare } from '../cryptography/hash-generator'
+import { HashGenerator } from '../cryptography/hash-generator'
 import { Encrypter } from '../cryptography/encrypter'
 import { AdminsRepository } from '../repositories/admins.repository'
 
@@ -23,7 +23,7 @@ type AuthenticateAdminUseCaseResponse = Either<
 export class AuthenticateAdminUseCase {
   constructor(
     private adminsRepository: AdminsRepository,
-    private hashCompare: HashCompare,
+    private hashCompare: HashGenerator,
     private encrypter: Encrypter,
   ) {}
 

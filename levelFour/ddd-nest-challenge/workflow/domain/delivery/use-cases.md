@@ -35,6 +35,6 @@
   - [x] Requires sending a photo
   - [x] Only the courier who withdrew the order can mark it as delivered
 
-- [ ] Mark order as returned
-- [ ] List deliveries near the courier
-- [ ] List deliveries (Only the courier's deliveries)
+- [x] Mark order as returned
+- [x] List deliveries near the courier
+- [x] List deliveries (Only the courier's deliveries)

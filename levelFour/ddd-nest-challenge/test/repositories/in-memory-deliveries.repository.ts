@@ -3,18 +3,45 @@ import { PaginationParams } from '@/core/repositories/pagination-params'
 import { Delivery } from '@/domain/delivery/entities/delivery'
 import { DeliveryWithCustomer } from '@/domain/delivery/entities/value-objects/delivery-with-customer'
 
-import { DeliveriesRepository } from '@/domain/delivery/repositories/deliveries.repository'
+import {
+  DeliveriesRepository,
+  FindManyByCourierIdProps,
+} from '@/domain/delivery/repositories/deliveries.repository'
+
 import { InMemoryCustomersRepository } from './in-memory-customers.repository'
+import { DomainEvents } from '@/core/events/domain-events'
 
 export class InMemoryDeliveriesRepository implements DeliveriesRepository {
   public items: Delivery[] = []
 
-  constructor(private customerDetails: InMemoryCustomersRepository) {}
+  constructor(private customerRepository: InMemoryCustomersRepository) {}
 
   async findMany({ page }: PaginationParams) {
     const take = 20
 
     const deliveries = this.items.slice((page - 1) * take, page * take)
+
+    return deliveries
+  }
+
+  async findManyPendingByCity(city: string) {
+    const deliveriesByCity = this.items.filter((item) => {
+      const customer = this.customerRepository.items.find(
+        (customer) =>
+          customer.id.equals(item.customerId) && customer.address.city === city,
+      )
+      return customer !== undefined && item.status === 'PENDING'
+    })
+
+    return deliveriesByCity
+  }
+
+  async findManyByCourierId({ courierId, page }: FindManyByCourierIdProps) {
+    const take = 20
+
+    const deliveries = this.items
+      .filter((item) => item.courierId?.toString() === courierId)
+      .slice((page - 1) * take, page * take)
 
     return deliveries
   }
@@ -26,7 +53,7 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
       return null
     }
 
-    const customer = await this.customerDetails.findById(
+    const customer = await this.customerRepository.findById(
       delivery.customerId.toString(),
     )
 
@@ -62,6 +89,8 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
 
   async create(delivery: Delivery) {
     this.items.push(delivery)
+
+    DomainEvents.dispatchEventsForAggregate(delivery.id)
   }
 
   async save(delivery: Delivery) {
@@ -70,6 +99,8 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
     )
 
     this.items[deliveryIndex] = delivery
+
+    DomainEvents.dispatchEventsForAggregate(delivery.id)
   }
 
   async delete(delivery: Delivery) {

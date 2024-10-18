@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  COURIER
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  cpf      String @unique
+  password String
+
+  role UserRole
+
+  courier Courier?
+
+  @@map("users")
+}
+
+model Courier {
+  userId        String @unique
+  operationCity String
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  deliveries Delivery[]
+
+  @@map("couriers")
+}
+
+model Customer {
+  id           String @id @default(uuid())
+  name         String
+  email        String @unique
+  cep          String
+  state        String
+  city         String
+  street       String
+  number       String
+  neighborhood String
+
+  deliveries Delivery[]
+
+  @@map("customers")
+}
+
+enum Status {
+  PENDING
+  PICKED_UP
+  DELIVERED
+  RETURNED
+}
+
+model Delivery {
+  id     String @id @default(uuid())
+  status Status
+
+  createdAt   DateTime  @default(now()) @map("created_at")
+  pickedUpAt  DateTime? @map("picked_up_at")
+  deliveredAt DateTime? @map("delivered_at")
+  updatedAt   DateTime? @updatedAt @map("updated_at")
+
+  customerId   String  @map("customer_id")
+  courierId    String? @map("courier_id")
+  attachmentId String  @map("attachment_id")
+
+  customer   Customer    @relation(fields: [customerId], references: [id])
+  courier    Courier?    @relation(fields: [courierId], references: [userId])
+  attachment Attachment? @relation(fields: [attachmentId], references: [id])
+}
+
+model Attachment {
+  id    String @id @default(uuid())
+  title String
+  url   String
+
+  deliveries Delivery[]
+
+  @@map("attachments")
+}

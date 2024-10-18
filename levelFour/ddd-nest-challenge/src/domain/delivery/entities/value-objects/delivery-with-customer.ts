@@ -1,7 +1,8 @@
-import { Attachment } from '@/core/entities/attachment'
 import { ValueObject } from '@/core/entities/value-object'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+
 import { AddressProps } from './address'
+import { DeliveryAttachment } from '../delivery-attachment'
 
 export interface DeliveryWithCustomerProps {
   customerId: UniqueEntityId
@@ -12,7 +13,7 @@ export interface DeliveryWithCustomerProps {
   createdAt: Date
   pickupDate?: Date | null
   deliveredAt?: Date | null
-  deliveryAttachment?: Attachment
+  deliveryAttachment?: DeliveryAttachment
   updatedAt?: Date | null
 }
 

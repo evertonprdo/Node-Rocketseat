@@ -4,7 +4,7 @@ import { Courier } from '../entities/courier'
 import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
 
 import { CouriersRepository } from '../repositories/couriers.repository'
-import { HashGenerator } from '../cryptography/hash-compare'
+import { HashCompare } from '../cryptography/hash-compare'
 
 import { InvalidCPFError } from './errors/invalid-cpf.error'
 import { CourierAlreadyExistError } from './errors/courier-already-exists.error'
@@ -13,6 +13,7 @@ interface RegisterCourierUseCaseRequest {
   name: string
   cpf: string
   password: string
+  operationCity: string
 }
 
 type RegisterCourierUseCaseResponse = Either<
@@ -23,13 +24,14 @@ type RegisterCourierUseCaseResponse = Either<
 export class RegisterCourierUseCase {
   constructor(
     private couriersRepository: CouriersRepository,
-    private hashGenerator: HashGenerator,
+    private hashGenerator: HashCompare,
   ) {}
 
   async execute({
     name,
     cpf,
     password,
+    operationCity,
   }: RegisterCourierUseCaseRequest): Promise<RegisterCourierUseCaseResponse> {
     if (!CPF.isValidCPF(cpf)) {
       return left(new InvalidCPFError(cpf))
@@ -50,6 +52,7 @@ export class RegisterCourierUseCase {
       name,
       cpf: courierCPF,
       password: passwordHash,
+      operationCity,
     })
 
     await this.couriersRepository.create(courier)

@@ -1,0 +1,11 @@
+@baseUrl = http://localhost:3333
+
+# @name register_admin
+POST {{baseUrl}}/admin/register
+Content-Type: application/json
+
+{
+  "name": "Everton Prdo",
+  "cpf": "975.079.290-43",
+  "password": "123456"
+}

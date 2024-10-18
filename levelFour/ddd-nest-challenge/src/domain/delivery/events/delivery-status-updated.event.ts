@@ -1,7 +1,7 @@
 import { DomainEvent } from '@/core/events/domain-event'
 import { Delivery } from '../entities/delivery'
 
-export class DeliveryCreatedEvent implements DomainEvent {
+export class DeliveryStatusUpdatedEvent implements DomainEvent {
   public ocurredAt: Date
   public delivery: Delivery
 

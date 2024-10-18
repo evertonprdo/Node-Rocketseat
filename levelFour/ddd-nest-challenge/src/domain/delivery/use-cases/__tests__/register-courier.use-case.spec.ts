@@ -25,6 +25,7 @@ describe('Use Cases: Register Courier', () => {
       name: 'John Doe',
       cpf: '011.971.470-12',
       password: '123456',
+      operationCity: 'New York',
     })
 
     expect(result.isRight()).toBe(true)
@@ -45,6 +46,7 @@ describe('Use Cases: Register Courier', () => {
       name: 'John Doe',
       cpf: 'invalid-cpf',
       password: '123456',
+      operationCity: 'New York',
     })
 
     expect(result.isLeft()).toBe(true)
@@ -61,6 +63,7 @@ describe('Use Cases: Register Courier', () => {
       name: 'John Doe',
       cpf: courier.cpf.toDecorated(),
       password: '123456',
+      operationCity: 'New York',
     })
 
     expect(result.isLeft()).toBe(true)

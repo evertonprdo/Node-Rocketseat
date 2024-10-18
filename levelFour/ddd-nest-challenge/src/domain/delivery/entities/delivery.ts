@@ -3,6 +3,7 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
 import { DeliveryAttachment } from './delivery-attachment'
+import { DeliveryStatusUpdatedEvent } from '../events/delivery-status-updated.event'
 
 const StatusMap = {
   PENDING: 'Pending',
@@ -66,6 +67,8 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
     this.props.pickedUpDate = new Date()
     this.props.courierId = courierId
 
+    this.addDomainEvent(new DeliveryStatusUpdatedEvent(this))
+
     this.touch()
   }
 
@@ -74,11 +77,15 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
     this.props.deliveredAt = new Date()
     this.props.deliveryAttachment = attachment
 
+    this.addDomainEvent(new DeliveryStatusUpdatedEvent(this))
+
     this.touch()
   }
 
   markAsReturned() {
     this.props.status = 'RETURNED'
+
+    this.addDomainEvent(new DeliveryStatusUpdatedEvent(this))
 
     this.touch()
   }
@@ -99,6 +106,12 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
       },
       id,
     )
+
+    const isNewDelivery = !id
+
+    if (isNewDelivery) {
+      delivery.addDomainEvent(new DeliveryStatusUpdatedEvent(delivery))
+    }
 
     return delivery
   }

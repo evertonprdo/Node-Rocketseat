@@ -1,7 +1,7 @@
 import { InMemoryCustomersRepository } from 'test/repositories/in-memory-customers.repository'
 import { makeCustomer } from 'test/factories/make-customer'
 
-import { CustomerAlreadyExistError } from '../errors/customer-already-exists.error'
+import { CustomerAlreadyExistError } from '../../../delivery/use-cases/errors/customer-already-exists.error'
 
 import { RegisterCustomerUseCase } from '../register-customer.use-case'
 

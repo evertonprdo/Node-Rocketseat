@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 
-import { RegisterAdminUseCase } from '@/domain/delivery/use-cases/register-admin.use-case'
+import { RegisterAdminUseCase } from '@/domain/authentication/use-cases/register-user.use-case'
 
 import { BcryptHasher } from '@/infra/cryptography/bcrypt-hasher'
 import { PrismaAdminsRepository } from '@/infra/database/prisma/repositories/prisma-admins.repository'

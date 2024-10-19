@@ -1,10 +1,12 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-import { Employee, EmployeeProps } from './employee'
+import { Entity } from '@/core/entities/entity'
 
-export interface AdminProps extends EmployeeProps {}
+export interface AdminProps {
+  name: string
+}
 
-export class Admin extends Employee<AdminProps> {
+export class Admin extends Entity<AdminProps> {
   static create(props: AdminProps, id?: UniqueEntityId) {
     const student = new Admin(props, id)
 

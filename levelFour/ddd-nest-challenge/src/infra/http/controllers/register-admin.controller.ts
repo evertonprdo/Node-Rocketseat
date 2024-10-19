@@ -9,7 +9,7 @@ import {
 
 import { z } from 'zod'
 
-import { InvalidCPFError } from '@/domain/delivery/use-cases/errors/invalid-cpf.error'
+import { InvalidCPFError } from '@/domain/authentication/use-cases/errors/invalid-cpf.error'
 import { AdminAlreadyExistError } from '@/domain/delivery/use-cases/errors/admin-already-exists.error'
 
 import { NestRegisterAdminUseCase } from '@/infra/use-cases/delivery/nest-register-admin.use-case'
@@ -22,7 +22,7 @@ const registerAdminBodySchema = z.object({
 
 type RegisterAdminBodySchema = z.infer<typeof registerAdminBodySchema>
 
-@Controller('/admin/register')
+@Controller('/admins/register')
 export class RegisterAdminController {
   constructor(private registerAdminUseCase: NestRegisterAdminUseCase) {}
 

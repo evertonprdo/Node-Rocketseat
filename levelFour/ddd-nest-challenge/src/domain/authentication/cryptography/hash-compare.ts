@@ -1,3 +1,3 @@
-export interface HashGenerator {
+export interface HashCompare {
   compare(plain: string, hash: string): Promise<boolean>
 }

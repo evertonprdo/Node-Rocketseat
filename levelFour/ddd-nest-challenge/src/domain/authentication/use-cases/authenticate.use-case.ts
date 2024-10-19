@@ -1,50 +1,50 @@
 import { Either, left, right } from '@/core/either'
 
-import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
+import { CPF } from '@/core/entities/value-objects/cpf'
 
-import { HashGenerator } from '../cryptography/hash-generator'
+import { UsersRepository } from '../repositories/users.repository'
+import { HashCompare } from '../cryptography/hash-compare'
 import { Encrypter } from '../cryptography/encrypter'
-import { AdminsRepository } from '../repositories/admins.repository'
 
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
 
-interface AuthenticateAdminUseCaseRequest {
+interface AuthenticateUseCaseRequest {
   cpf: string
   password: string
 }
 
-type AuthenticateAdminUseCaseResponse = Either<
+type AuthenticateUseCaseResponse = Either<
   WrongCredentialsError,
   {
     accessToken: string
   }
 >
 
-export class AuthenticateAdminUseCase {
+export class AuthenticateUseCase {
   constructor(
-    private adminsRepository: AdminsRepository,
-    private hashCompare: HashGenerator,
+    private usersRepository: UsersRepository,
+    private hashCompare: HashCompare,
     private encrypter: Encrypter,
   ) {}
 
   async execute({
     cpf,
     password,
-  }: AuthenticateAdminUseCaseRequest): Promise<AuthenticateAdminUseCaseResponse> {
+  }: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse> {
     if (!CPF.isValidCPF(cpf)) {
       return left(new WrongCredentialsError())
     }
 
-    const adminCPF = CPF.createFromText(cpf)
-    const admin = await this.adminsRepository.findByCPF(adminCPF.value)
+    const userCPF = CPF.createFromText(cpf)
+    const user = await this.usersRepository.findByCPF(userCPF.value)
 
-    if (!admin) {
+    if (!user) {
       return left(new WrongCredentialsError())
     }
 
     const isPasswordValid = await this.hashCompare.compare(
       password,
-      admin.password,
+      user.password,
     )
 
     if (!isPasswordValid) {
@@ -52,7 +52,7 @@ export class AuthenticateAdminUseCase {
     }
 
     const accessToken = await this.encrypter.encrypt({
-      sub: admin.id.toString(),
+      sub: user.id.toString(),
     })
 
     return right({

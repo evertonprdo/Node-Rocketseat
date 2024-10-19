@@ -1,7 +1,7 @@
 import { Either, right } from '@/core/either'
 
-import { Courier } from '../entities/courier'
-import { CouriersRepository } from '../repositories/couriers.repository'
+import { Courier } from '../../delivery/entities/courier'
+import { CouriersRepository } from '../../delivery/repositories/couriers.repository'
 
 interface ListCouriersUseCaseRequest {
   page: number

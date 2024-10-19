@@ -4,34 +4,30 @@ import { FakeHasher } from 'test/cryptography/fake-hasher'
 import { FakeEncrypter } from 'test/cryptography/fake-encrypter'
 import { makeAdmin } from 'test/factories/make-admin'
 
-import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
+import { CPF } from '@/core/entities/value-objects/cpf'
 import { WrongCredentialsError } from '../errors/wrong-credentials-error'
 
-import { AuthenticateAdminUseCase } from '../authenticate-admin.use-case'
+import { AuthenticateUseCase } from '../authenticate.use-case'
 
 let fakeHasher: FakeHasher
 let fakeEncrypter: FakeEncrypter
-let adminsRepository: InMemoryAdminsRepository
+let usersRepository: InMemoryAdminsRepository
 
-let sut: AuthenticateAdminUseCase
+let sut: AuthenticateUseCase
 
-describe('Use Cases: Authenticate admin', () => {
+describe('Use Cases: Authenticate', () => {
   beforeEach(() => {
     fakeHasher = new FakeHasher()
     fakeEncrypter = new FakeEncrypter()
-    adminsRepository = new InMemoryAdminsRepository()
+    usersRepository = new InMemoryAdminsRepository()
 
-    sut = new AuthenticateAdminUseCase(
-      adminsRepository,
-      fakeHasher,
-      fakeEncrypter,
-    )
+    sut = new AuthenticateUseCase(usersRepository, fakeHasher, fakeEncrypter)
   })
 
   it('should be able to authenticate an admin', async () => {
     const admin = makeAdmin({ password: await fakeHasher.hash('123456') })
 
-    adminsRepository.items.push(admin)
+    usersRepository.items.push(admin)
 
     const result = await sut.execute({
       cpf: admin.cpf.toDecorated(),
@@ -45,7 +41,7 @@ describe('Use Cases: Authenticate admin', () => {
   })
 
   it('should not be able to authenticate with wrong credentials', async () => {
-    adminsRepository.items.push(
+    usersRepository.items.push(
       makeAdmin({
         cpf: CPF.createFromText('974.432.170-99'),
         password: await fakeHasher.hash('correct-password'),

@@ -4,7 +4,7 @@ import { ResourceNotFoundError } from '@/core/errors/resource-not-found.error'
 import { Courier } from '../entities/courier'
 
 import { CouriersRepository } from '../repositories/couriers.repository'
-import { HashCompare } from '../cryptography/hash-compare'
+import { HashCompare } from '../../authentication/cryptography/hash-compare'
 
 interface EditCourierUseCaseRequest {
   courierId: string

@@ -1,12 +1,12 @@
+import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-import { Employee, EmployeeProps } from './employee'
-
-export interface CourierProps extends EmployeeProps {
+export interface CourierProps {
+  name: string
   operationCity: string
 }
 
-export class Courier extends Employee<CourierProps> {
+export class Courier extends Entity<CourierProps> {
   get operationCity() {
     return this.props.operationCity
   }

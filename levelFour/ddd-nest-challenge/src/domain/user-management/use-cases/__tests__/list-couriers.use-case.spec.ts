@@ -1,7 +1,7 @@
 import { InMemoryCouriersRepository } from 'test/repositories/in-memory-couriers.repository'
 import { makeCourier } from 'test/factories/make-courier'
 
-import { ListCouriersUseCase } from '../list-courier.use-case'
+import { ListCouriersUseCase } from '../../../user-management/use-cases/list-courier.use-case'
 
 let couriersRepository: InMemoryCouriersRepository
 let sut: ListCouriersUseCase

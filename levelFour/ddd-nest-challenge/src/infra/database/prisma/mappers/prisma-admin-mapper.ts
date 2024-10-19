@@ -1,6 +1,6 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Admin } from '@/domain/delivery/entities/admin'
-import { CPF } from '@/domain/delivery/entities/value-objects/cpf'
+import { CPF } from '@/core/entities/value-objects/cpf'
 import { Prisma, User as PrismaAdmin } from '@prisma/client'
 
 export class PrismaAdminMapper {

@@ -2,7 +2,8 @@ import { Either, left, right } from '@/core/either'
 
 import { CPF } from '@/core/entities/value-objects/cpf'
 
-import { UsersRepository } from '../repositories/users.repository'
+import { AccountsRepository } from '../repositories/accounts.repository'
+
 import { HashCompare } from '../cryptography/hash-compare'
 import { Encrypter } from '../cryptography/encrypter'
 
@@ -22,7 +23,7 @@ type AuthenticateUseCaseResponse = Either<
 
 export class AuthenticateUseCase {
   constructor(
-    private usersRepository: UsersRepository,
+    private accountsRepository: AccountsRepository,
     private hashCompare: HashCompare,
     private encrypter: Encrypter,
   ) {}
@@ -35,16 +36,16 @@ export class AuthenticateUseCase {
       return left(new WrongCredentialsError())
     }
 
-    const userCPF = CPF.createFromText(cpf)
-    const user = await this.usersRepository.findByCPF(userCPF.value)
+    const entityCPF = CPF.createFromText(cpf)
+    const account = await this.accountsRepository.findByCPF(entityCPF.value)
 
-    if (!user) {
+    if (!account) {
       return left(new WrongCredentialsError())
     }
 
     const isPasswordValid = await this.hashCompare.compare(
       password,
-      user.password,
+      account.password,
     )
 
     if (!isPasswordValid) {
@@ -52,7 +53,7 @@ export class AuthenticateUseCase {
     }
 
     const accessToken = await this.encrypter.encrypt({
-      sub: user.id.toString(),
+      sub: account.id.toString(),
     })
 
     return right({

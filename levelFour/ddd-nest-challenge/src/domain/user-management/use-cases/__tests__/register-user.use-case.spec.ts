@@ -1,13 +1,15 @@
-import { InMemoryUsersRepository } from 'test/repositories/in-memory-users.repository'
 import { FakeHasher } from 'test/cryptography/fake-hasher'
-import { makeUser } from 'test/factories/make-user'
 
-import { UserAlreadyExistError } from '../../../authentication/use-cases/errors/user-already-exists.error'
+import { UserAlreadyExistError } from '../errors/user-already-exists.error'
+
+import { makeUser } from '../../__tests__/factories/makeUser'
+import { InMemoryUsersRepository } from '../../__tests__/repositories/in-memory-users.repository'
 
 import { RegisterUserUseCase } from '../register-user.use-case'
 
 let fakeHasher: FakeHasher
 let usersRepository: InMemoryUsersRepository
+
 let sut: RegisterUserUseCase
 
 describe('Use Cases: Register user', () => {
@@ -29,12 +31,10 @@ describe('Use Cases: Register user', () => {
     expect(usersRepository.items).toHaveLength(1)
 
     expect(usersRepository.items[0].id.toString()).toEqual(expect.any(String))
-    expect(usersRepository.items[0]).toEqual(
-      expect.objectContaining({
-        name: 'John Doe',
-        password: await fakeHasher.hash('123456'),
-      }),
-    )
+    expect(usersRepository.items[0]).toMatchObject({
+      name: 'John Doe',
+      password: await fakeHasher.hash('123456'),
+    })
   })
 
   it('should not register user with same CPF twice', async () => {

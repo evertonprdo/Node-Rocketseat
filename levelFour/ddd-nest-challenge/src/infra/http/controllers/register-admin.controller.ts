@@ -9,7 +9,7 @@ import {
 
 import { z } from 'zod'
 
-import { InvalidCPFError } from '@/domain/authentication/use-cases/errors/invalid-cpf.error'
+import { InvalidCPFError } from '@/core/errors/invalid-cpf.error'
 import { AdminAlreadyExistError } from '@/domain/delivery/use-cases/errors/admin-already-exists.error'
 
 import { NestRegisterAdminUseCase } from '@/infra/use-cases/delivery/nest-register-admin.use-case'

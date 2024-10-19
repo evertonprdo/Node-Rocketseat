@@ -2,18 +2,15 @@ import { Either, left, right } from '@/core/either'
 
 import { User } from '../entities/user'
 import { CPF } from '@/core/entities/value-objects/cpf'
-
-import { HashGenerator } from '../cryptography/hash-generator'
-import { UsersRepository } from '../repositories/users.repository'
-
+import { InvalidCPFError } from '@/core/errors/invalid-cpf.error'
 import { UserAlreadyExistError } from './errors/user-already-exists.error'
-import { InvalidCPFError } from './errors/invalid-cpf.error'
+import { UsersRepository } from '../repositories/users.repository'
+import { HashGenerator } from '../cryptography/hash-generator'
 
 interface RegisterUserUseCaseRequest {
   name: string
   cpf: string
   password: string
-  role: 'ADMIN' | 'COURIER'
 }
 
 type RegisterUserUseCaseResponse = Either<
@@ -31,7 +28,6 @@ export class RegisterUserUseCase {
     name,
     cpf,
     password,
-    role,
   }: RegisterUserUseCaseRequest): Promise<RegisterUserUseCaseResponse> {
     if (!CPF.isValidCPF(cpf)) {
       return left(new InvalidCPFError(cpf))
@@ -50,7 +46,6 @@ export class RegisterUserUseCase {
       name,
       cpf: userCPF,
       password: passwordHash,
-      role,
     })
 
     this.usersRepository.create(user)

@@ -29,8 +29,9 @@ describe('Use Cases: Register user', () => {
       operationZone: 'New York',
     })
 
-    console.log(result.value)
-
     expect(result.isRight()).toEqual(true)
+
+    expect(deliveryWorkersRepository.items).toHaveLength(1)
+    expect(deliveryWorkersRepository.items[0].id).toEqual(user.id)
   })
 })

@@ -5,19 +5,19 @@ import { UserAlreadyExistError } from '../errors/user-already-exists.error'
 import { makeUser } from '../../__tests__/factories/makeUser'
 import { InMemoryUsersRepository } from '../../__tests__/repositories/in-memory-users.repository'
 
-import { RegisterUserUseCase } from '../register-user.use-case'
+import { RegisterUseCase } from '../register.use-case'
 
 let fakeHasher: FakeHasher
 let usersRepository: InMemoryUsersRepository
 
-let sut: RegisterUserUseCase
+let sut: RegisterUseCase
 
 describe('Use Cases: Register user', () => {
   beforeEach(() => {
     usersRepository = new InMemoryUsersRepository()
     fakeHasher = new FakeHasher()
 
-    sut = new RegisterUserUseCase(usersRepository, fakeHasher)
+    sut = new RegisterUseCase(usersRepository, fakeHasher)
   })
 
   it('should register an user', async () => {

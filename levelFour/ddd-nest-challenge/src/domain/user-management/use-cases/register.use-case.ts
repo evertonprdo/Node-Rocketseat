@@ -7,18 +7,18 @@ import { UserAlreadyExistError } from './errors/user-already-exists.error'
 import { UsersRepository } from '../repositories/users.repository'
 import { HashGenerator } from '../cryptography/hash-generator'
 
-interface RegisterUserUseCaseRequest {
+interface RegisterUseCaseRequest {
   name: string
   cpf: string
   password: string
 }
 
-type RegisterUserUseCaseResponse = Either<
+type RegisterUseCaseResponse = Either<
   InvalidCPFError | UserAlreadyExistError,
   { user: User }
 >
 
-export class RegisterUserUseCase {
+export class RegisterUseCase {
   constructor(
     private usersRepository: UsersRepository,
     private hashGenerator: HashGenerator,
@@ -28,7 +28,7 @@ export class RegisterUserUseCase {
     name,
     cpf,
     password,
-  }: RegisterUserUseCaseRequest): Promise<RegisterUserUseCaseResponse> {
+  }: RegisterUseCaseRequest): Promise<RegisterUseCaseResponse> {
     if (!CPF.isValidCPF(cpf)) {
       return left(new InvalidCPFError(cpf))
     }

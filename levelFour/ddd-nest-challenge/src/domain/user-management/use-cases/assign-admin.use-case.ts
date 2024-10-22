@@ -1,14 +1,13 @@
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found.error'
 
-import { Admin } from '../entities/admin'
-
 import { UsersRepository } from '../repositories/users.repository'
 import { AdminsRepository } from '../repositories/admins.repository'
 
+import { Admin } from '../entities/admin'
+
 interface AssignAdminUseCaseRequest {
   userId: string
-  operationZone: string
 }
 
 type AssignAdminUseCaseResponse = Either<ResourceNotFoundError, null>
@@ -28,11 +27,14 @@ export class AssignAdminUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    const admin = Admin.create({
-      name: user.name,
-      cpf: user.cpf,
-      password: user.password,
-    })
+    const admin = Admin.create(
+      {
+        name: user.name,
+        cpf: user.cpf,
+        password: user.password,
+      },
+      user.id,
+    )
 
     await this.adminsRepository.assign(admin)
 

@@ -1,10 +1,13 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+
 import { CPF } from '@/domain/_shared/entities/value-objects/cpf'
 
 interface UserProps {
   cpf: CPF
   password: string
+  adminId?: string
+  deliveryWorkerId?: string
 }
 
 export class User extends Entity<UserProps> {

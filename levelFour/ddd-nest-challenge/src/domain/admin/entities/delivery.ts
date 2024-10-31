@@ -5,14 +5,7 @@ import { Optional } from '@/core/types/optional'
 import {
   DeliveryProps,
   StatusKeys,
-} from '@/domain/_shared/entities/contracts/delivery'
-
-const StatusMap = {
-  PENDING: 'Pending',
-  PICKED_UP: 'Picked up',
-  DELIVERED: 'Delivered',
-  RETURNED: 'Returned',
-}
+} from '@/domain/_shared/entities/types/delivery'
 
 export class Delivery extends AggregateRoot<DeliveryProps> {
   get customerId() {
@@ -50,10 +43,6 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
   set status(key: StatusKeys) {
     this.props.status = key
     this.touch()
-  }
-
-  getStatusName() {
-    return StatusMap[this.status]
   }
 
   private touch() {

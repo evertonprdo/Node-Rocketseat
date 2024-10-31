@@ -30,15 +30,10 @@ export class AssignDeliveryWorkerUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    const deliveryWorker = DeliveryWorker.create(
-      {
-        name: user.name,
-        cpf: user.cpf,
-        password: user.password,
-        operationZone,
-      },
-      user.id,
-    )
+    const deliveryWorker = DeliveryWorker.create({
+      userId: user.id,
+      operationZone,
+    })
 
     await this.deliveryWorkersRepository.assign(deliveryWorker)
 

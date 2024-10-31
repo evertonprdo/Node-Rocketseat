@@ -1,11 +1,16 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { User, UserProps } from './user'
+import { Entity } from '@/core/entities/entity'
 
-interface DeliveryWorkerProps extends UserProps {
+export interface DeliveryWorkerProps {
+  userId: UniqueEntityId
   operationZone: string
 }
 
-export class DeliveryWorker extends User<DeliveryWorkerProps> {
+export class DeliveryWorker extends Entity<DeliveryWorkerProps> {
+  get userId() {
+    return this.props.userId
+  }
+
   get operationZone() {
     return this.props.operationZone
   }

@@ -1,16 +1,22 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+
 import { CPF } from '@/domain/_shared/entities/value-objects/cpf'
 
 export interface UserProps {
   name: string
+  phone: string
   cpf: CPF
   password: string
 }
 
-export class User<Props extends UserProps = UserProps> extends Entity<Props> {
+export class User extends Entity<UserProps> {
   get name() {
     return this.props.name
+  }
+
+  get phone() {
+    return this.props.phone
   }
 
   get cpf() {
@@ -23,6 +29,10 @@ export class User<Props extends UserProps = UserProps> extends Entity<Props> {
 
   set name(name: string) {
     this.props.name = name
+  }
+
+  set phone(phone: string) {
+    this.props.phone = phone
   }
 
   set cpf(cpf: CPF) {

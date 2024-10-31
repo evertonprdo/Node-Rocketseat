@@ -11,7 +11,10 @@ interface CreateDeliveryUseCaseRequest {
   customerId: string
 }
 
-type CreateDeliveryUseCaseResponse = Either<ResourceNotFoundError, null>
+type CreateDeliveryUseCaseResponse = Either<
+  ResourceNotFoundError,
+  { delivery: Delivery }
+>
 
 export class CreateDeliveryUseCase {
   constructor(
@@ -32,8 +35,8 @@ export class CreateDeliveryUseCase {
       customerId: customer.id,
     })
 
-    this.deliveriesRepository.create(delivery)
+    await this.deliveriesRepository.create(delivery)
 
-    return right(null)
+    return right({ delivery })
   }
 }

@@ -1,7 +1,9 @@
 import { FakeHasher } from 'test/cryptography/fake-hasher'
 
 import { InMemoryUsersRepository } from '../_tests/repositories/in-memory-users.repository'
-import { makeUser } from '../_tests/factories/makeUser'
+
+import { makeUser } from '../_tests/factories/make-user'
+import { makeInMemoryUsersRepository } from '../_tests/repositories/factories/make-in-memory-users-repository'
 
 import { UserAlreadyExistError } from './errors/user-already-exists.error'
 
@@ -14,7 +16,7 @@ let sut: RegisterUseCase
 
 describe('Use Cases: Register user', () => {
   beforeEach(() => {
-    usersRepository = new InMemoryUsersRepository()
+    usersRepository = makeInMemoryUsersRepository()
     fakeHasher = new FakeHasher()
 
     sut = new RegisterUseCase(usersRepository, fakeHasher)
@@ -25,6 +27,7 @@ describe('Use Cases: Register user', () => {
       name: 'John Doe',
       cpf: '011.971.470-12',
       password: '123456',
+      phone: '(84) 99677-0368',
     })
 
     expect(result.isRight()).toBe(true)
@@ -46,6 +49,7 @@ describe('Use Cases: Register user', () => {
       name: 'John Doe',
       cpf: user.cpf.toDecorated(),
       password: '123456',
+      phone: '(84) 99677-0368',
     })
 
     expect(result.isLeft()).toBe(true)

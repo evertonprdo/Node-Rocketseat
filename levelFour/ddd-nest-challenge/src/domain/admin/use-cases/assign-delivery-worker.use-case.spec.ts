@@ -1,7 +1,9 @@
 import { InMemoryUsersRepository } from '../_tests/repositories/in-memory-users.repository'
 import { InMemoryDeliveryWorkersRepository } from '../_tests/repositories/in-memory-delivery-workers.repository'
 
-import { makeUser } from '../_tests/factories/makeUser'
+import { makeUser } from '../_tests/factories/make-user'
+import { makeInMemoryUsersRepository } from '../_tests/repositories/factories/make-in-memory-users-repository'
+import { makeInMemoryDeliveryWorkersRepository } from '../_tests/repositories/factories/make-in-memory-delivery-workers-repository'
 
 import { AssignDeliveryWorkerUseCase } from './assign-delivery-worker.use-case'
 
@@ -10,10 +12,10 @@ let deliveryWorkersRepository: InMemoryDeliveryWorkersRepository
 
 let sut: AssignDeliveryWorkerUseCase
 
-describe('Use Cases: Register user', () => {
+describe('Use Cases: Assign Delivery Worker', () => {
   beforeEach(() => {
-    usersRepository = new InMemoryUsersRepository()
-    deliveryWorkersRepository = new InMemoryDeliveryWorkersRepository()
+    usersRepository = makeInMemoryUsersRepository()
+    deliveryWorkersRepository = makeInMemoryDeliveryWorkersRepository()
 
     sut = new AssignDeliveryWorkerUseCase(
       usersRepository,

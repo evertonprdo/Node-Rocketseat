@@ -13,6 +13,7 @@ interface RegisterUseCaseRequest {
   name: string
   cpf: string
   password: string
+  phone: string
 }
 
 type RegisterUseCaseResponse = Either<
@@ -30,6 +31,7 @@ export class RegisterUseCase {
     name,
     cpf,
     password,
+    phone,
   }: RegisterUseCaseRequest): Promise<RegisterUseCaseResponse> {
     if (!CPF.isValidCPF(cpf)) {
       return left(new InvalidCPFError(cpf))
@@ -48,6 +50,7 @@ export class RegisterUseCase {
       name,
       cpf: userCPF,
       password: passwordHash,
+      phone,
     })
 
     this.usersRepository.create(user)

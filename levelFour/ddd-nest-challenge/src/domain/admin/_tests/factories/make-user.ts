@@ -15,6 +15,7 @@ export function makeUser(
       name: faker.person.fullName(),
       cpf: CPF.createFromText(makeCPF()),
       password: faker.internet.password(),
+      phone: faker.phone.number(),
       ...overwrite,
     },
     id,

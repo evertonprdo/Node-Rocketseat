@@ -1,5 +1,14 @@
 import { CEP } from './cep'
 
+export interface AddressProps {
+  cep: CEP
+  state: string
+  city: string
+  street: string
+  number: string
+  neighborhood: string
+}
+
 export class Address {
   public cep: CEP
   public state: string
@@ -8,14 +17,14 @@ export class Address {
   public number: string
   public neighborhood: string
 
-  constructor(
-    cep: CEP,
-    state: string,
-    city: string,
-    street: string,
-    number: string,
-    neighborhood: string,
-  ) {
+  constructor({
+    cep,
+    state,
+    city,
+    street,
+    number,
+    neighborhood,
+  }: AddressProps) {
     this.cep = cep
     this.state = this.normalizeString(state)
     this.city = this.normalizeString(city)

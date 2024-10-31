@@ -4,7 +4,7 @@ import { Optional } from '@/core/types/optional'
 
 import { DeliveryAttachment } from '../../_shared/entities/delivery-attachment'
 import { DeliveryStatusUpdatedEvent } from '../events/delivery-status-updated.event'
-import { DeliveryProps } from '@/domain/_shared/entities/contracts/delivery'
+import { DeliveryProps } from '@/domain/_shared/entities/types/delivery'
 
 const StatusMap = {
   PENDING: 'Pending',

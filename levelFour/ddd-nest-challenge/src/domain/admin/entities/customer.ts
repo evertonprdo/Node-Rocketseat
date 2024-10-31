@@ -2,7 +2,12 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import { Address } from '@/domain/_shared/entities/value-objects/address'
-import { CustomerProps } from '@/domain/delivery/entities/customer'
+
+export interface CustomerProps {
+  name: string
+  email: string
+  address: Address
+}
 
 export class Customer extends Entity<CustomerProps> {
   get name() {

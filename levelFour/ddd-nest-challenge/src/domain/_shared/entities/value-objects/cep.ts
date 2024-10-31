@@ -5,6 +5,10 @@ export class CEP {
     return this._value
   }
 
+  set value(value: string) {
+    this._value = value
+  }
+
   private constructor(value: string) {
     this._value = value
   }

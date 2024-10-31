@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Admin, AdminProps } from '@/domain/delivery/entities/admin'
 import { makeCPF } from './make-cpf'
-import { CPF } from '@/core/entities/value-objects/cpf'
+import { CPF } from '@/domain/_shared/entities/value-objects/cpf'
 
 export function makeAdmin(
   overwrite: Partial<AdminProps> = {},

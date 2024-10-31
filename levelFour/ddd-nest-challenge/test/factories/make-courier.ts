@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import { makeCPF } from './make-cpf'
 
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { CPF } from '@/core/entities/value-objects/cpf'
+import { CPF } from '@/domain/_shared/entities/value-objects/cpf'
 import { Courier, CourierProps } from '@/domain/delivery/entities/courier'
 
 export function makeCourier(

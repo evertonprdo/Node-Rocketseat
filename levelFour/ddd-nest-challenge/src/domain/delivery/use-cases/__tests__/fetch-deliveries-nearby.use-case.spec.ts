@@ -7,8 +7,8 @@ import { makeCourier } from 'test/factories/make-courier'
 import { makeDelivery } from 'test/factories/make-delivery'
 import { makeCustomer } from 'test/factories/make-customer'
 
-import { CEP } from '../../entities/value-objects/cep'
 import { FetchDeliveriesNearbyUseCase } from '../fetch-deliveries-nearby.use-case'
+import { CEP } from '@/domain/_shared/entities/value-objects/cep'
 
 let couriersRepository: InMemoryCouriersRepository
 let customersRepository: InMemoryCustomersRepository

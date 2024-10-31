@@ -1,4 +1,4 @@
-import { PaginationParams } from '@/core/repositories/pagination-params'
+import { PaginationParams } from '@/domain/_shared/repositories/pagination-params'
 
 import { Customer } from '@/domain/delivery/entities/customer'
 import { CustomersRepository } from '@/domain/delivery/repositories/customers.repository'

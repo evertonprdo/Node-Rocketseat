@@ -1,6 +1,6 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { CPF } from '@/core/entities/value-objects/cpf'
+import { CPF } from '@/domain/_shared/entities/value-objects/cpf'
 
 interface UserProps {
   cpf: CPF

@@ -1,10 +1,7 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-export interface DeliveryAttachmentProps {
-  deliveryId: UniqueEntityId
-  attachmentId: UniqueEntityId
-}
+import { DeliveryAttachmentProps } from '@/domain/_shared/entities/contracts/delivery-attachment'
 
 export class DeliveryAttachment extends Entity<DeliveryAttachmentProps> {
   get deliveryId() {

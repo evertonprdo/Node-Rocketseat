@@ -1,11 +1,13 @@
 import { Either, left, right } from '@/core/either'
 
 import { User } from '../entities/user'
-import { CPF } from '@/core/entities/value-objects/cpf'
-import { InvalidCPFError } from '@/core/errors/invalid-cpf.error'
-import { UserAlreadyExistError } from './errors/user-already-exists.error'
-import { UsersRepository } from '../repositories/users.repository'
+import { CPF } from '@/domain/_shared/entities/value-objects/cpf'
+
 import { HashGenerator } from '../cryptography/hash-generator'
+import { UsersRepository } from '../repositories/users.repository'
+
+import { InvalidCPFError } from '@/domain/_shared/errors/invalid-cpf.error'
+import { UserAlreadyExistError } from './errors/user-already-exists.error'
 
 interface RegisterUseCaseRequest {
   name: string

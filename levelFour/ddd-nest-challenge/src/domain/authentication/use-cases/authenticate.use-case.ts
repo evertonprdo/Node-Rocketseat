@@ -1,6 +1,6 @@
 import { Either, left, right } from '@/core/either'
 
-import { CPF } from '@/core/entities/value-objects/cpf'
+import { CPF } from '@/domain/_shared/entities/value-objects/cpf'
 
 import { AccountsRepository } from '../repositories/accounts.repository'
 

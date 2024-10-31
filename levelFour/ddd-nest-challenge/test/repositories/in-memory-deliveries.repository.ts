@@ -1,4 +1,4 @@
-import { PaginationParams } from '@/core/repositories/pagination-params'
+import { PaginationParams } from '@/domain/_shared/repositories/pagination-params'
 
 import { Delivery } from '@/domain/delivery/entities/delivery'
 import { DeliveryWithCustomer } from '@/domain/delivery/entities/value-objects/delivery-with-customer'

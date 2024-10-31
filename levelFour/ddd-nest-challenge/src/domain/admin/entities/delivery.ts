@@ -2,9 +2,10 @@ import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
-import { DeliveryAttachment } from '../../_shared/entities/delivery-attachment'
-import { DeliveryStatusUpdatedEvent } from '../events/delivery-status-updated.event'
-import { DeliveryProps } from '@/domain/_shared/entities/contracts/delivery'
+import {
+  DeliveryProps,
+  StatusKeys,
+} from '@/domain/_shared/entities/contracts/delivery'
 
 const StatusMap = {
   PENDING: 'Pending',
@@ -46,36 +47,13 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
     return this.props.deliveryAttachment
   }
 
+  set status(key: StatusKeys) {
+    this.props.status = key
+    this.touch()
+  }
+
   getStatusName() {
     return StatusMap[this.status]
-  }
-
-  markAsPickedUp(deliveryWorkerId: UniqueEntityId) {
-    this.props.status = 'PICKED_UP'
-    this.props.pickedUpDate = new Date()
-    this.props.deliveryWorkerId = deliveryWorkerId
-
-    this.addDomainEvent(new DeliveryStatusUpdatedEvent(this))
-
-    this.touch()
-  }
-
-  markAsDelivered(attachment: DeliveryAttachment) {
-    this.props.status = 'DELIVERED'
-    this.props.deliveredAt = new Date()
-    this.props.deliveryAttachment = attachment
-
-    this.addDomainEvent(new DeliveryStatusUpdatedEvent(this))
-
-    this.touch()
-  }
-
-  markAsReturned() {
-    this.props.status = 'RETURNED'
-
-    this.addDomainEvent(new DeliveryStatusUpdatedEvent(this))
-
-    this.touch()
   }
 
   private touch() {
@@ -98,7 +76,7 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
     const isNewDelivery = !id
 
     if (isNewDelivery) {
-      delivery.addDomainEvent(new DeliveryStatusUpdatedEvent(delivery))
+      // delivery.addDomainEvent(new DeliveryStatusUpdatedEvent(delivery))
     }
 
     return delivery

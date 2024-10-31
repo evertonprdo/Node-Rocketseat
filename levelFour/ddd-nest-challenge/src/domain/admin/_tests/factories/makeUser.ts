@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import { makeCPF } from 'test/factories/make-cpf'
 
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { CPF } from '@/core/entities/value-objects/cpf'
+import { CPF } from '@/domain/_shared/entities/value-objects/cpf'
 
 import { User, UserProps } from '../../entities/user'
 

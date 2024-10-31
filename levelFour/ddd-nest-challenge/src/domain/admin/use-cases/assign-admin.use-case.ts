@@ -1,5 +1,5 @@
 import { Either, left, right } from '@/core/either'
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found.error'
+import { ResourceNotFoundError } from '@/domain/_shared/errors/resource-not-found.error'
 
 import { UsersRepository } from '../repositories/users.repository'
 import { AdminsRepository } from '../repositories/admins.repository'

@@ -1,10 +1,11 @@
 import { Either, left, right } from '@/core/either'
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found.error'
 
 import { DeliveryWorker } from '../entities/delivery-worker'
 
 import { UsersRepository } from '../repositories/users.repository'
 import { DeliveryWorkersRepository } from '../repositories/delivery-workers.repository'
+
+import { ResourceNotFoundError } from '@/domain/_shared/errors/resource-not-found.error'
 
 interface AssignDeliveryWorkerUseCaseRequest {
   userId: string

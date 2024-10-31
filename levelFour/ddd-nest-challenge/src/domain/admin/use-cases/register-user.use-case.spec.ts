@@ -1,11 +1,11 @@
 import { FakeHasher } from 'test/cryptography/fake-hasher'
 
-import { UserAlreadyExistError } from '../errors/user-already-exists.error'
+import { InMemoryUsersRepository } from '../_tests/repositories/in-memory-users.repository'
+import { makeUser } from '../_tests/factories/makeUser'
 
-import { makeUser } from '../../__tests__/factories/makeUser'
-import { InMemoryUsersRepository } from '../../__tests__/repositories/in-memory-users.repository'
+import { UserAlreadyExistError } from './errors/user-already-exists.error'
 
-import { RegisterUseCase } from '../register.use-case'
+import { RegisterUseCase } from './register.use-case'
 
 let fakeHasher: FakeHasher
 let usersRepository: InMemoryUsersRepository

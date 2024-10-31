@@ -1,21 +1,17 @@
 import { Either, left, right } from '@/core/either'
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found.error'
+
+import { Delivery } from '../entities/delivery'
 
 import { CustomersRepository } from '../repositories/customers.repository'
 import { DeliveriesRepository } from '../repositories/deliveries.repository'
 
-import { Delivery } from '../entities/delivery'
+import { ResourceNotFoundError } from '@/domain/_shared/errors/resource-not-found.error'
 
 interface CreateDeliveryUseCaseRequest {
   customerId: string
 }
 
-type CreateDeliveryUseCaseResponse = Either<
-  ResourceNotFoundError,
-  {
-    delivery: Delivery
-  }
->
+type CreateDeliveryUseCaseResponse = Either<ResourceNotFoundError, null>
 
 export class CreateDeliveryUseCase {
   constructor(
@@ -36,8 +32,8 @@ export class CreateDeliveryUseCase {
       customerId: customer.id,
     })
 
-    await this.deliveriesRepository.create(delivery)
+    this.deliveriesRepository.create(delivery)
 
-    return right({ delivery })
+    return right(null)
   }
 }

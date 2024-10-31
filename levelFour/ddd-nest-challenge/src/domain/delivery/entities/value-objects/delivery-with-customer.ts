@@ -1,14 +1,14 @@
 import { ValueObject } from '@/core/entities/value-object'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-import { AddressProps } from './address'
-import { DeliveryAttachment } from '../delivery-attachment'
+import { DeliveryAttachment } from '../../../_shared/entities/delivery-attachment'
+import { Address } from '@/domain/_shared/entities/value-objects/address'
 
 export interface DeliveryWithCustomerProps {
   customerId: UniqueEntityId
   customerName: string
   status: string
-  customerAddress: AddressProps
+  customerAddress: Address
   courierId?: UniqueEntityId | null
   createdAt: Date
   pickupDate?: Date | null

@@ -1,4 +1,4 @@
-import { HashGenerator } from '@/domain/user-management/cryptography/hash-generator'
+import { HashGenerator } from '@/domain/admin/cryptography/hash-generator'
 import { HashCompare } from '@/domain/authentication/cryptography/hash-compare'
 
 export class FakeHasher implements HashCompare, HashGenerator {

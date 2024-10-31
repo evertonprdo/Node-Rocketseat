@@ -1,8 +1,9 @@
-import { InMemoryUsersRepository } from '../../__tests__/repositories/in-memory-users.repository'
+import { InMemoryUsersRepository } from '../_tests/repositories/in-memory-users.repository'
+import { InMemoryAdminsRepository } from '../_tests/repositories/in-memory-admins.repository'
 
-import { makeUser } from '../../__tests__/factories/makeUser'
-import { InMemoryAdminsRepository } from '../../__tests__/repositories/in-memory-admins.repository'
-import { AssignAdminUseCase } from '../assign-admin.use-case'
+import { makeUser } from '../_tests/factories/makeUser'
+
+import { AssignAdminUseCase } from './assign-admin.use-case'
 
 let usersRepository: InMemoryUsersRepository
 let adminsRepository: InMemoryAdminsRepository

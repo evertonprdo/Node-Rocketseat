@@ -4,7 +4,7 @@ import { FakeHasher } from 'test/cryptography/fake-hasher'
 import { FakeEncrypter } from 'test/cryptography/fake-encrypter'
 import { makeAdmin } from 'test/factories/make-admin'
 
-import { CPF } from '@/core/entities/value-objects/cpf'
+import { CPF } from '@/domain/_shared/entities/value-objects/cpf'
 import { WrongCredentialsError } from '../errors/wrong-credentials-error'
 
 import { AuthenticateUseCase } from '../authenticate.use-case'

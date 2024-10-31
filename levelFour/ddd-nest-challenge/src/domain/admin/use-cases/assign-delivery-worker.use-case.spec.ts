@@ -1,8 +1,9 @@
-import { InMemoryUsersRepository } from '../../__tests__/repositories/in-memory-users.repository'
+import { InMemoryUsersRepository } from '../_tests/repositories/in-memory-users.repository'
+import { InMemoryDeliveryWorkersRepository } from '../_tests/repositories/in-memory-delivery-workers.repository'
 
-import { AssignDeliveryWorkerUseCase } from '../assign-delivery-worker.use-case'
-import { InMemoryDeliveryWorkersRepository } from '../../__tests__/repositories/in-memory-delivery-workers.repository'
-import { makeUser } from '../../__tests__/factories/makeUser'
+import { makeUser } from '../_tests/factories/makeUser'
+
+import { AssignDeliveryWorkerUseCase } from './assign-delivery-worker.use-case'
 
 let usersRepository: InMemoryUsersRepository
 let deliveryWorkersRepository: InMemoryDeliveryWorkersRepository

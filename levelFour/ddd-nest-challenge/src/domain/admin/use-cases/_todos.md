@@ -6,6 +6,6 @@ admin -> edit, delete, get
 
 deliveryWorker -> edit, delete, get, list
 
-customer -> edit, delete, get,
+customer ->
 
 delivery -> edit, delete, get, list

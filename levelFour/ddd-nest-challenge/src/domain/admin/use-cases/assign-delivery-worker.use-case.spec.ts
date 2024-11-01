@@ -35,6 +35,7 @@ describe('Use Cases: Assign Delivery Worker', () => {
     expect(result.isRight()).toEqual(true)
 
     expect(deliveryWorkersRepository.items).toHaveLength(1)
-    expect(deliveryWorkersRepository.items[0].id).toEqual(user.id)
+    expect(deliveryWorkersRepository.items[0].userId).toEqual(user.id)
+    expect(deliveryWorkersRepository.items[0].operationZone).toEqual('New York')
   })
 })

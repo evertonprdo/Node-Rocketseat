@@ -38,7 +38,7 @@ describe('Use Cases: Assign admin', () => {
     expect(adminsRepository.items).toHaveLength(1)
     expect(adminsRepository.items[0].email).toEqual('test@mail.com')
 
-    expect(adminsRepository.items[0].id.equals(user.id)).toEqual(true)
+    expect(adminsRepository.items[0].userId.equals(user.id)).toEqual(true)
   })
 
   it('should not be able register with same email twice', async () => {

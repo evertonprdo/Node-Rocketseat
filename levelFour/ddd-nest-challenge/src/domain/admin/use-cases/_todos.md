@@ -1,6 +1,6 @@
 ### TODOS: Use Cases 
 
-user -> edit, delete, get, list
+user -> 
 
 admin -> edit, delete, get
 

@@ -1,4 +1,5 @@
 import { PaginationParams } from '@/domain/_shared/repositories/pagination-params'
+
 import { Customer } from '../../entities/customer'
 import { CustomersRepository } from '../../repositories/customers.repository'
 

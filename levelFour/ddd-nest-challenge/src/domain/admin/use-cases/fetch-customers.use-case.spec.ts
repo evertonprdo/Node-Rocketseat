@@ -16,7 +16,7 @@ describe('Use Cases: Fetch Customers', () => {
     sut = new FetchCustomersUseCase(customersRepository)
   })
 
-  it('should fetch a customer', async () => {
+  it('should fetch customers', async () => {
     customersRepository.items.push(makeCustomer())
     customersRepository.items.push(makeCustomer())
     customersRepository.items.push(makeCustomer())

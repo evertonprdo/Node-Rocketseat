@@ -1,11 +1,8 @@
 ### TODOS: Use Cases 
 
-user -> 
-
-admin -> edit, delete, get
-
-deliveryWorker -> edit, delete, get, list
-
+user ->
 customer ->
+deliveryWorker ->
+admin ->
 
-delivery -> edit, delete, get, list
+delivery -> edit, delete, list

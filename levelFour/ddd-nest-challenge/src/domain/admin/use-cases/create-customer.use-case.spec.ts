@@ -1,4 +1,4 @@
-import { makeCEP } from 'test/factories/make-cep'
+import { makeCEP } from '@/domain/_shared/_tests/factories/make-cep'
 import { makeInMemoryCustomersRepository } from '../_tests/repositories/factories/make-in-memory-customers-repository'
 import { makeCustomer } from '../_tests/factories/make-customer'
 

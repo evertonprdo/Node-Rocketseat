@@ -6,7 +6,7 @@ import { Address } from '@/domain/_shared/entities/value-objects/address'
 import { Customer } from '../entities/customer'
 import { CustomersRepository } from '../repositories/customers.repository'
 
-import { InvalidCEPError } from '@/domain/delivery/use-cases/errors/invalid-cep.error'
+import { InvalidCEPError } from './errors/invalid-cep.error'
 import { EmailAlreadyInUseError } from './errors/email-already-in-use.error'
 
 interface CreateCustomerUseCaseRequest {

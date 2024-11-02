@@ -1,3 +1,6 @@
+import { DomainEvents } from '@/core/events/domain-events'
+import { PaginationParams } from '@/domain/_shared/repositories/pagination-params'
+
 import { InMemoryCustomersRepository } from './in-memory-customers.repository'
 import { InMemoryDeliveryWorkersRepository } from './in-memory-delivery-workers.repository'
 
@@ -16,6 +19,16 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
     public customersRepository: InMemoryCustomersRepository,
     public deliveryWorkersRepository: InMemoryDeliveryWorkersRepository,
   ) {}
+
+  async findById(id: string) {
+    const delivery = this.items.find((item) => item.id.toString() === id)
+
+    if (!delivery) {
+      return null
+    }
+
+    return delivery
+  }
 
   async findDetailsById(id: string) {
     const delivery = this.items.find((item) => item.id.toString() === id)
@@ -71,7 +84,22 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
     return DeliveryDetails.create(deliveryDetailsProps)
   }
 
+  async findMany({ page }: PaginationParams) {
+    const take = 20
+    const deliveries = this.items.slice((page - 1) * take, page * take)
+
+    return deliveries
+  }
+
   async create(delivery: Delivery) {
     this.items.push(delivery)
+
+    DomainEvents.dispatchEventsForAggregate(delivery.id)
+  }
+
+  async delete(delivery: Delivery) {
+    const itemIndex = this.items.findIndex((item) => item.id === delivery.id)
+
+    this.items.splice(itemIndex, 1)
   }
 }

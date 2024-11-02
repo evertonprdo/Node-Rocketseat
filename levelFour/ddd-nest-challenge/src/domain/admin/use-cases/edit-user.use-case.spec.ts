@@ -1,4 +1,4 @@
-import { FakeHasher } from 'test/cryptography/fake-hasher'
+import { FakeHasher } from '@/domain/_shared/_tests/cryptography/fake-hasher'
 
 import { makeUser } from '../_tests/factories/make-user'
 import { makeInMemoryUsersRepository } from '../_tests/repositories/factories/make-in-memory-users-repository'

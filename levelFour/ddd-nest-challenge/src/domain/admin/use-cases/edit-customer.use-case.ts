@@ -3,11 +3,11 @@ import { Either, left, right } from '@/core/either'
 import { CEP } from '@/domain/_shared/entities/value-objects/cep'
 import { Address } from '@/domain/_shared/entities/value-objects/address'
 
-import { ResourceNotFoundError } from '@/domain/_shared/errors/resource-not-found.error'
-import { InvalidCEPError } from '@/domain/delivery/use-cases/errors/invalid-cep.error'
-
 import { Customer } from '../entities/customer'
 import { CustomersRepository } from '../repositories/customers.repository'
+
+import { InvalidCEPError } from './errors/invalid-cep.error'
+import { ResourceNotFoundError } from '@/domain/_shared/errors/resource-not-found.error'
 
 interface EditCustomerUseCaseRequest {
   customerId: string

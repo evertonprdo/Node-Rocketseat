@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import { makeCPF } from 'test/factories/make-cpf'
+import { makeCPF } from '@/domain/_shared/_tests/factories/make-cpf'
 
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { CPF } from '@/domain/_shared/entities/value-objects/cpf'

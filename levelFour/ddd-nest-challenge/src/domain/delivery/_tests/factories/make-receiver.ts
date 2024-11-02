@@ -2,22 +2,21 @@ import { faker } from '@faker-js/faker'
 
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-import { Customer, CustomerProps } from '../../entities/customer'
+import { Receiver, ReceiverProps } from '../../entities/receiver'
 import { makeAddress } from '@/domain/_shared/_tests/factories/make-address'
 
-export function makeCustomer(
-  overwrite: Partial<CustomerProps> = {},
+export function makeReceiver(
+  overwrite: Partial<ReceiverProps>,
   id?: UniqueEntityId,
 ) {
-  const customer = Customer.create(
+  const receiver = Receiver.create(
     {
       name: faker.person.fullName(),
-      email: faker.internet.email(),
       address: makeAddress(),
       ...overwrite,
     },
     id,
   )
 
-  return customer
+  return receiver
 }

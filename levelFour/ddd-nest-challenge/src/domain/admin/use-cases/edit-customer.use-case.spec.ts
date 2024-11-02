@@ -1,4 +1,4 @@
-import { makeAddress } from '../_tests/factories/make-address'
+import { makeAddress } from '@/domain/_shared/_tests/factories/make-address'
 import { makeCustomer } from '../_tests/factories/make-customer'
 import { makeInMemoryCustomersRepository } from '../_tests/repositories/factories/make-in-memory-customers-repository'
 

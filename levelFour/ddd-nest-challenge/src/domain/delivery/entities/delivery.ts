@@ -1,10 +1,10 @@
 import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { Optional } from '@/core/types/optional'
 
-import { DeliveryAttachment } from '../../_shared/entities/delivery-attachment'
+import { StatusKeys } from '@/domain/_shared/entities/types/delivery'
+import { DeliveryAttachment } from '@/domain/_shared/entities/delivery-attachment'
+
 import { DeliveryStatusUpdatedEvent } from '../events/delivery-status-updated.event'
-import { DeliveryProps } from '@/domain/_shared/entities/types/delivery'
 
 const StatusMap = {
   PENDING: 'Pending',
@@ -13,9 +13,20 @@ const StatusMap = {
   RETURNED: 'Returned',
 }
 
+export interface DeliveryProps {
+  receiverId: UniqueEntityId
+  status: StatusKeys
+  deliveryWorkerId?: UniqueEntityId
+  createdAt: Date
+  pickedUpDate?: Date
+  deliveredAt?: Date
+  deliveryAttachment?: DeliveryAttachment
+  updatedAt?: Date
+}
+
 export class Delivery extends AggregateRoot<DeliveryProps> {
-  get customerId() {
-    return this.props.customerId
+  get receiverId() {
+    return this.props.receiverId
   }
 
   get deliveryWorkerId() {
@@ -82,24 +93,8 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
     this.props.updatedAt = new Date()
   }
 
-  static create(
-    props: Optional<DeliveryProps, 'deliveryWorkerId' | 'createdAt' | 'status'>,
-    id?: UniqueEntityId,
-  ) {
-    const delivery = new Delivery(
-      {
-        ...props,
-        status: props.status ?? 'PENDING',
-        createdAt: props.createdAt ?? new Date(),
-      },
-      id,
-    )
-
-    const isNewDelivery = !id
-
-    if (isNewDelivery) {
-      delivery.addDomainEvent(new DeliveryStatusUpdatedEvent(delivery))
-    }
+  static create(props: DeliveryProps, id: UniqueEntityId) {
+    const delivery = new Delivery(props, id)
 
     return delivery
   }

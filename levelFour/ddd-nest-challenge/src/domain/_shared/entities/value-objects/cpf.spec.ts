@@ -1,4 +1,4 @@
-import { makeCPF } from 'test/factories/make-cpf'
+import { makeCPF } from '@/domain/_shared/_tests/factories/make-cpf'
 import { CPF } from './cpf'
 
 describe('Value Object: CPF', () => {

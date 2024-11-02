@@ -2,10 +2,21 @@ import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
-import {
-  DeliveryProps,
-  StatusKeys,
-} from '@/domain/_shared/entities/types/delivery'
+import { StatusKeys } from '@/domain/_shared/entities/types/delivery'
+import { DeliveryAttachment } from '@/domain/_shared/entities/delivery-attachment'
+
+import { DeliveryCreatedEvent } from '../events/delivery-created.event'
+
+export interface DeliveryProps {
+  customerId: UniqueEntityId
+  status: StatusKeys
+  deliveryWorkerId?: UniqueEntityId
+  createdAt: Date
+  pickedUpDate?: Date
+  deliveredAt?: Date
+  deliveryAttachment?: DeliveryAttachment
+  updatedAt?: Date
+}
 
 export class Delivery extends AggregateRoot<DeliveryProps> {
   get customerId() {
@@ -65,7 +76,7 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
     const isNewDelivery = !id
 
     if (isNewDelivery) {
-      // delivery.addDomainEvent(new DeliveryStatusUpdatedEvent(delivery))
+      delivery.addDomainEvent(new DeliveryCreatedEvent(delivery))
     }
 
     return delivery

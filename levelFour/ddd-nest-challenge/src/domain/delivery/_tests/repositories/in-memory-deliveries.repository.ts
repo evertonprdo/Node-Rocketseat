@@ -1,3 +1,5 @@
+import { DomainEvents } from '@/core/events/domain-events'
+
 import { InMemoryReceiversRepository } from './in-memory-receivers.repository'
 import { InMemoryDeliveryWorkersRepository } from './in-memory-delivery-workers.repository'
 
@@ -7,6 +9,7 @@ import {
   DeliveriesRepository,
   FindManyPendingByCity,
 } from '../../repositories/deliveries.repository'
+import { InMemoryDeliveryAttachmentsRepository } from '@/domain/_shared/_tests/repositores/in-memory-delivery-attachments.repository'
 
 export class InMemoryDeliveriesRepository implements DeliveriesRepository {
   public items: Delivery[] = []
@@ -14,7 +17,18 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
   constructor(
     public deliveryWorkersRepository: InMemoryDeliveryWorkersRepository,
     public receiversRepository: InMemoryReceiversRepository,
+    public deliveryAttachmentsRepository: InMemoryDeliveryAttachmentsRepository,
   ) {}
+
+  async findById(id: string) {
+    const delivery = this.items.find((item) => item.id.toString() === id)
+
+    if (!delivery) {
+      return null
+    }
+
+    return delivery
+  }
 
   async findManyPendingByCity({ page, city }: FindManyPendingByCity) {
     const deliveriesByCity = this.items.filter((item) => {
@@ -27,5 +41,22 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
 
     const take = 20
     return deliveriesByCity.slice((page - 1) * take, page * take)
+  }
+
+  async save(delivery: Delivery) {
+    const itemIndex = this.items.findIndex((item) => item.id === delivery.id)
+
+    if (
+      !this.items[itemIndex].deliveryAttachment &&
+      delivery.deliveryAttachment
+    ) {
+      await this.deliveryAttachmentsRepository.create(
+        delivery.deliveryAttachment,
+      )
+    }
+
+    this.items[itemIndex] = delivery
+
+    DomainEvents.dispatchEventsForAggregate(delivery.id)
   }
 }

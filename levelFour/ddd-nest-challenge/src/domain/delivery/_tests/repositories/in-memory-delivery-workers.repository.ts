@@ -7,12 +7,12 @@ export class InMemoryDeliveryWorkersRepository
   public items: DeliveryWorker[] = []
 
   async findById(id: string) {
-    const receiver = this.items.find((item) => item.id.toString() === id)
+    const deliveryWorker = this.items.find((item) => item.id.toString() === id)
 
-    if (!receiver) {
+    if (!deliveryWorker) {
       return null
     }
 
-    return receiver
+    return deliveryWorker
   }
 }

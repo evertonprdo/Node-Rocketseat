@@ -3,11 +3,11 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import { CPF } from '@/domain/_shared/entities/value-objects/cpf'
 
-interface UserProps {
+export interface UserProps {
   cpf: CPF
   password: string
-  adminId?: string
-  deliveryWorkerId?: string
+  adminId?: UniqueEntityId
+  deliveryWorkerId?: UniqueEntityId
 }
 
 export class User extends Entity<UserProps> {
@@ -17,6 +17,14 @@ export class User extends Entity<UserProps> {
 
   get password() {
     return this.props.password
+  }
+
+  get adminId() {
+    return this.props.adminId
+  }
+
+  get deliveryWorkerId() {
+    return this.props.deliveryWorkerId
   }
 
   static create(props: UserProps, id?: UniqueEntityId) {

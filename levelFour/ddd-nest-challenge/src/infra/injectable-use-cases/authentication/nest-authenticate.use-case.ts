@@ -2,17 +2,18 @@ import { Injectable } from '@nestjs/common'
 
 import { BcryptHasher } from '@/infra/cryptography/bcrypt-hasher'
 import { JwtEncrypter } from '@/infra/cryptography/jwt-encrypter'
-import { PrismaAdminsRepository } from '@/infra/database/prisma/repositories/prisma-admins.repository'
 
 import { AuthenticateUseCase } from '@/domain/authentication/use-cases/authenticate.use-case'
+
+import { PrismaUsersRepository } from '@/infra/database/prisma/authentication/repositories/prisma-users.repository'
 
 @Injectable()
 export class NestAuthenticateUseCase extends AuthenticateUseCase {
   constructor(
-    adminsRepository: PrismaAdminsRepository,
+    usersRepository: PrismaUsersRepository,
     hashCompare: BcryptHasher,
     encrypter: JwtEncrypter,
   ) {
-    super(adminsRepository, hashCompare, encrypter)
+    super(usersRepository, hashCompare, encrypter)
   }
 }

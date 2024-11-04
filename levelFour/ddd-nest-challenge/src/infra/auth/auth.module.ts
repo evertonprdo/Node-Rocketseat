@@ -9,6 +9,8 @@ import { EnvService } from '../env/env.service'
 import { JwtStrategy } from './jwt.strategy'
 import { JwtAuthGuard } from './jwt-auth.guard'
 
+import { RolesGuard } from './roles/roles.guard'
+
 @Module({
   imports: [
     PassportModule,
@@ -34,6 +36,10 @@ import { JwtAuthGuard } from './jwt-auth.guard'
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })

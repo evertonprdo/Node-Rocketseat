@@ -2,7 +2,7 @@ import { Either, left, right } from '@/core/either'
 
 import { CPF } from '@/domain/_shared/entities/value-objects/cpf'
 
-import { AccountsRepository } from '../repositories/accounts.repository'
+import { UsersRepository } from '../repositories/users.repository'
 
 import { HashCompare } from '../cryptography/hash-compare'
 import { Encrypter } from '../cryptography/encrypter'
@@ -23,7 +23,7 @@ type AuthenticateUseCaseResponse = Either<
 
 export class AuthenticateUseCase {
   constructor(
-    private accountsRepository: AccountsRepository,
+    private usersRepository: UsersRepository,
     private hashCompare: HashCompare,
     private encrypter: Encrypter,
   ) {}
@@ -37,23 +37,34 @@ export class AuthenticateUseCase {
     }
 
     const entityCPF = CPF.createFromText(cpf)
-    const account = await this.accountsRepository.findByCPF(entityCPF.value)
+    const user = await this.usersRepository.findByCPF(entityCPF.value)
 
-    if (!account) {
+    if (!user) {
       return left(new WrongCredentialsError())
     }
 
     const isPasswordValid = await this.hashCompare.compare(
       password,
-      account.password,
+      user.password,
     )
 
     if (!isPasswordValid) {
       return left(new WrongCredentialsError())
     }
 
+    const roles = ['USER']
+
+    if (user.adminId) {
+      roles.push('ADMIN')
+    }
+
+    if (user.deliveryWorkerId) {
+      roles.push('DELIVERY_WORKER')
+    }
+
     const accessToken = await this.encrypter.encrypt({
-      sub: account.id.toString(),
+      sub: user.id.toString(),
+      roles,
     })
 
     return right({

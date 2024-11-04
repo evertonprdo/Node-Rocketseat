@@ -4,9 +4,11 @@ import { InMemoryReceiversRepository } from './in-memory-receivers.repository'
 import { InMemoryDeliveryWorkersRepository } from './in-memory-delivery-workers.repository'
 
 import { Delivery } from '../../entities/delivery'
+import { DeliveryDetails } from '../../entities/value-objects/delivery-details'
 
 import {
   DeliveriesRepository,
+  findManyDeliveredByDeliveryWorkerId,
   FindManyPendingByCity,
 } from '../../repositories/deliveries.repository'
 import { InMemoryDeliveryAttachmentsRepository } from '@/domain/_shared/_tests/repositores/in-memory-delivery-attachments.repository'
@@ -28,6 +30,52 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
     }
 
     return delivery
+  }
+
+  async findDetailsById(id: string) {
+    const delivery = this.items.find((item) => item.id.toString() === id)
+
+    if (!delivery) {
+      return null
+    }
+
+    const customer = await this.receiversRepository.findById(
+      delivery.receiverId.toString(),
+    )
+
+    if (!customer) {
+      throw new Error()
+    }
+
+    return DeliveryDetails.create({
+      deliveryId: delivery.id,
+      status: delivery.status,
+      createdAt: delivery.createdAt,
+      pickedUpDate: delivery.pickedUpDate,
+      deliveredAt: delivery.deliveredAt,
+      deliveryAttachment: delivery.deliveryAttachment,
+      updatedAt: delivery.updatedAt,
+
+      receiver: {
+        id: customer.id,
+        name: customer.name,
+        address: customer.address,
+      },
+    })
+  }
+
+  async findManyDeliveredByDeliveryWorkerId({
+    deliveryWorkerId,
+    page,
+  }: findManyDeliveredByDeliveryWorkerId) {
+    const deliveries = this.items.filter(
+      (item) =>
+        item.status === 'DELIVERED' &&
+        item.deliveryWorkerId?.toString() === deliveryWorkerId,
+    )
+
+    const take = 20
+    return deliveries.slice((page - 1) * take, page * take)
   }
 
   async findManyPendingByCity({ page, city }: FindManyPendingByCity) {

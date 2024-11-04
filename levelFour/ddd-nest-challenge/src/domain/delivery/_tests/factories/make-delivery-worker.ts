@@ -8,7 +8,7 @@ import {
 } from '../../entities/delivery-worker'
 
 export function makeDeliveryWorker(
-  overwrite?: Partial<DeliveryWorkerProps>,
+  overwrite: Partial<DeliveryWorkerProps> = {},
   id?: UniqueEntityId,
 ) {
   const deliveryWorker = DeliveryWorker.create(

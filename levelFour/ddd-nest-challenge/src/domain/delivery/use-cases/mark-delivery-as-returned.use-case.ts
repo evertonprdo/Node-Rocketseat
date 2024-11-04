@@ -29,10 +29,11 @@ export class MarkDeliveryAsReturned {
       return left(new ResourceNotFoundError())
     }
 
-    if (
-      delivery.deliveryWorkerId &&
-      delivery.deliveryWorkerId.toString() !== deliveryWorkerId
-    ) {
+    if (!delivery.deliveryWorkerId) {
+      throw new Error()
+    }
+
+    if (delivery.deliveryWorkerId.toString() !== deliveryWorkerId) {
       return left(new DeliveryBeingMadeByWrongDeliveryWorkerError())
     }
 

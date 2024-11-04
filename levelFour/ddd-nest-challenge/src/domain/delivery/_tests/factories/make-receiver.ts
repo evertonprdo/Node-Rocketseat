@@ -6,7 +6,7 @@ import { Receiver, ReceiverProps } from '../../entities/receiver'
 import { makeAddress } from '@/domain/_shared/_tests/factories/make-address'
 
 export function makeReceiver(
-  overwrite: Partial<ReceiverProps>,
+  overwrite: Partial<ReceiverProps> = {},
   id?: UniqueEntityId,
 ) {
   const receiver = Receiver.create(

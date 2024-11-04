@@ -39,10 +39,11 @@ export class MarkDeliveryAsDelivered {
       return left(new DeliveryWrongStatusError(delivery.status))
     }
 
-    if (
-      delivery.deliveryWorkerId &&
-      delivery.deliveryWorkerId.toString() !== deliveryWorkerId
-    ) {
+    if (!delivery.deliveryWorkerId) {
+      throw new Error()
+    }
+
+    if (delivery.deliveryWorkerId.toString() !== deliveryWorkerId) {
       return left(new DeliveryBeingMadeByWrongDeliveryWorkerError())
     }
 

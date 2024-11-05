@@ -66,7 +66,7 @@ export class PrismaUsersRepository implements UsersRepository {
   }
 
   async delete(user: User) {
-    await this.prisma.admin.delete({
+    await this.prisma.user.delete({
       where: {
         id: user.id.toString(),
       },

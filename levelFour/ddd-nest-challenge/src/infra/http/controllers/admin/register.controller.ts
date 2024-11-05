@@ -1,7 +1,6 @@
 import {
   Body,
   Post,
-  HttpCode,
   Controller,
   ConflictException,
   BadRequestException,
@@ -30,14 +29,13 @@ const bodyValidationPipe = new ZodValidationPipe(registerBodySchema)
 @Controller('/users/register')
 @Public()
 export class RegisterController {
-  constructor(private registerUseCase: NestRegisterUseCase) {}
+  constructor(private register: NestRegisterUseCase) {}
 
   @Post()
-  @HttpCode(201)
   async handle(@Body(bodyValidationPipe) body: RegisterBodySchema) {
     const { name, cpf, password, phone } = body
 
-    const result = await this.registerUseCase.execute({
+    const result = await this.register.execute({
       name,
       cpf,
       password,

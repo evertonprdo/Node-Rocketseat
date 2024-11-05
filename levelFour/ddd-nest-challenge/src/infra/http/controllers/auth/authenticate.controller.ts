@@ -1,7 +1,6 @@
 import {
   Post,
   Body,
-  HttpCode,
   UsePipes,
   Controller,
   BadRequestException,
@@ -29,7 +28,6 @@ export class AuthenticateController {
   constructor(private authenticateUseCase: NestAuthenticateUseCase) {}
 
   @Post()
-  @HttpCode(201)
   @UsePipes(new ZodValidationPipe(authenticateBodySchema))
   async handle(@Body() body: AuthenticateBodySchema) {
     const { cpf, password } = body

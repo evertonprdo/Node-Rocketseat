@@ -31,13 +31,13 @@ const bodyValidationPipe = new ZodValidationPipe(assignAdminBodySchema)
 @Controller('/admins/assign')
 @Roles(Role.ADMIN)
 export class AssignAdminController {
-  constructor(private assignAdminUseCase: NestAssignAdminUseCase) {}
+  constructor(private assignAdmin: NestAssignAdminUseCase) {}
 
   @Post()
   async handle(@Body(bodyValidationPipe) body: AssignAdminBodySchema) {
     const { email, userId } = body
 
-    const result = await this.assignAdminUseCase.execute({
+    const result = await this.assignAdmin.execute({
       userId,
       email,
     })

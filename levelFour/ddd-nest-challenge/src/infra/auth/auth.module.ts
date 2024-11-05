@@ -16,7 +16,7 @@ import { RolesGuard } from './roles/roles.guard'
     PassportModule,
     JwtModule.registerAsync({
       imports: [EnvModule],
-      inject: [EnvModule],
+      inject: [EnvService],
       global: true,
       useFactory(config: EnvService) {
         const privateKey = config.get('JWT_PRIVATE_KEY')

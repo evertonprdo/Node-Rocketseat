@@ -1,3 +1,5 @@
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+
 import { makeUser } from '../_tests/factories/make-user'
 import { InMemoryUsersRepository } from '../_tests/repositories/in-memory-users.repository'
 
@@ -5,7 +7,6 @@ import { FakeHasher } from '@/domain/_shared/_tests/cryptography/fake-hasher'
 import { FakeEncrypter } from '../_tests/cryptography/fake-encrypter'
 
 import { AuthenticateUseCase } from './authenticate.use-case'
-import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 let fakeEncrypter: FakeEncrypter
 let fakeHasher: FakeHasher
@@ -39,6 +40,7 @@ describe('Use Case: Authenticate', () => {
 
     expect(JSON.parse(result.value.accessToken)).toEqual({
       sub: user.id.toString(),
+      roles: ['USER'],
     })
   })
 
@@ -62,7 +64,7 @@ describe('Use Case: Authenticate', () => {
 
     expect(JSON.parse(result.value.accessToken)).toEqual({
       sub: user.id.toString(),
-      adminId: user.adminId?.toString(),
+      roles: ['USER', 'ADMIN'],
     })
   })
 
@@ -86,7 +88,7 @@ describe('Use Case: Authenticate', () => {
 
     expect(JSON.parse(result.value.accessToken)).toEqual({
       sub: user.id.toString(),
-      deliveryWorkerId: user.deliveryWorkerId?.toString(),
+      roles: ['USER', 'DELIVERY_WORKER'],
     })
   })
 })

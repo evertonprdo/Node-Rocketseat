@@ -8,6 +8,7 @@ import { makeInMemoryUsersRepository } from '../_tests/repositories/factories/ma
 import { makeInMemoryAdminsRepository } from '../_tests/repositories/factories/make-in-memory-admins-repository'
 
 import { EmailAlreadyInUseError } from './errors/email-already-in-use.error'
+import { UserAlreadyAssignedError } from './errors/user-already-assigned.error'
 
 import { AssignAdminUseCase } from './assign-admin.use-case'
 
@@ -54,5 +55,22 @@ describe('Use Cases: Assign admin', () => {
 
     expect(result.isLeft()).toEqual(true)
     expect(result.value).toBeInstanceOf(EmailAlreadyInUseError)
+  })
+
+  it('should not be able to assign an user as admin twice', async () => {
+    const user = makeUser()
+    usersRepository.items.push(user)
+
+    adminsRepository.items.push(
+      makeAdmin({ email: 'first@mail.com', userId: user.id }),
+    )
+
+    const result = await sut.execute({
+      userId: user.id.toString(),
+      email: 'second@mail.com',
+    })
+
+    expect(result.isLeft()).toEqual(true)
+    expect(result.value).toBeInstanceOf(UserAlreadyAssignedError)
   })
 })

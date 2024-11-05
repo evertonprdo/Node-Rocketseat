@@ -16,11 +16,19 @@ type PrismaUserAdminDeliveryWorkerProps = {
 
 export class PrismaUserMapper {
   static toDomain(raw: PrismaUserAdminDeliveryWorkerProps): User {
-    return User.create({
-      cpf: CPF.createFromText(raw.cpf),
-      password: raw.password,
-      adminId: new UniqueEntityId(raw.admin?.id),
-      deliveryWorkerId: new UniqueEntityId(raw.deliveryWorker?.id),
-    })
+    const adminId = raw.admin ? new UniqueEntityId(raw.admin.id) : undefined
+    const deliveryWorkerId = raw.deliveryWorker
+      ? new UniqueEntityId(raw.deliveryWorker.id)
+      : undefined
+
+    return User.create(
+      {
+        cpf: CPF.createFromText(raw.cpf),
+        password: raw.password,
+        adminId,
+        deliveryWorkerId,
+      },
+      new UniqueEntityId(raw.id),
+    )
   }
 }

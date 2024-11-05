@@ -1,11 +1,37 @@
 @baseUrl = http://localhost:3333
 
-# @name register_admin
-POST {{baseUrl}}/admin/register
+@authToken = {{authenticate.response.body.access_token}}
+
+# @name register_user
+POST {{baseUrl}}/users/register
 Content-Type: application/json
 
 {
   "name": "Everton Prdo",
-  "cpf": "975.079.290-43",
+  "cpf": "213.352.350-27",
+  "phone": "+55 99 9 9999 9999",
   "password": "123456"
+}
+
+###
+
+# @name authenticate
+POST  {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "cpf": "47236077062",
+  "password": "123456"
+}
+
+###
+
+# @name assign_admin
+POST {{baseUrl}}/admins/assign
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "userId": "91dfe43f-2e61-4701-abf9-13b46cc0f5e3",
+  "email": "another@test.com"
 }

@@ -74,6 +74,18 @@ export class InMemoryDeliveryWorkersRepository
     return deliveryWorkers.slice((page - 1) * take, page * take)
   }
 
+  async findByUserId(userId: string) {
+    const deliveryWorker = this.items.find(
+      (item) => item.userId.toString() === userId,
+    )
+
+    if (!deliveryWorker) {
+      return null
+    }
+
+    return deliveryWorker
+  }
+
   async assign(deliveryWorker: DeliveryWorker) {
     this.items.push(deliveryWorker)
   }

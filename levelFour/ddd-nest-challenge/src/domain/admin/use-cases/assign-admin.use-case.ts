@@ -7,6 +7,7 @@ import { AdminsRepository } from '../repositories/admins.repository'
 import { EmailAlreadyInUseError } from './errors/email-already-in-use.error'
 
 import { Admin } from '../entities/admin'
+import { UserAlreadyAssignedError } from './errors/user-already-assigned.error'
 
 interface AssignAdminUseCaseRequest {
   userId: string
@@ -14,7 +15,7 @@ interface AssignAdminUseCaseRequest {
 }
 
 type AssignAdminUseCaseResponse = Either<
-  ResourceNotFoundError | EmailAlreadyInUseError,
+  ResourceNotFoundError | EmailAlreadyInUseError | UserAlreadyAssignedError,
   {
     admin: Admin
   }
@@ -40,6 +41,12 @@ export class AssignAdminUseCase {
 
     if (adminWithSameEmail) {
       return left(new EmailAlreadyInUseError(email))
+    }
+
+    const isUserAlreadyAdmin = await this.adminsRepository.findByUserId(userId)
+
+    if (isUserAlreadyAdmin) {
+      return left(new UserAlreadyAssignedError('ADMIN'))
     }
 
     const admin = Admin.create({

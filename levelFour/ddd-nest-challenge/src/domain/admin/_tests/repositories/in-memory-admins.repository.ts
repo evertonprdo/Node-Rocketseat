@@ -52,6 +52,16 @@ export class InMemoryAdminsRepository implements AdminsRepository {
     return admin
   }
 
+  async findByUserId(userId: string) {
+    const admin = this.items.find((item) => item.userId.toString() === userId)
+
+    if (!admin) {
+      return null
+    }
+
+    return admin
+  }
+
   async assign(admin: Admin) {
     this.items.push(admin)
   }

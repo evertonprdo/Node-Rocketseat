@@ -52,6 +52,8 @@ export class PrismaDeliveryDetailsMapper {
       },
       createdAt: raw.createdAt,
       deliveredAt: raw.deliveredAt,
+      pickedUpAt: raw.pickedUpAt,
+      updatedAt: raw.updatedAt,
       deliveryWorker,
     })
   }

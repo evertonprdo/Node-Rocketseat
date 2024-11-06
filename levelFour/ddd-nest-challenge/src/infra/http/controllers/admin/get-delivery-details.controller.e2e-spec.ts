@@ -53,13 +53,17 @@ describe('Get Delivery Details (e2e)', () => {
 
     const customer = await customerFactory.makePrismaCustomer()
 
+    const createdAt = new Date()
+    const pickedUpAt = new Date()
+    const updatedAt = new Date()
+
     const delivery = await deliveryFactory.makePrismaDelivery({
       status: 'PICKED_UP',
       customerId: customer.id,
       deliveryWorkerId: deliveryWorker.id,
-      createdAt: new Date(),
-      pickedUpAt: new Date(),
-      updatedAt: new Date(),
+      createdAt,
+      pickedUpAt,
+      updatedAt,
     })
 
     const accessToken = jwt.sign({
@@ -73,12 +77,11 @@ describe('Get Delivery Details (e2e)', () => {
 
     expect(response.statusCode).toBe(200)
 
-    console.log(response.body.delivery)
     expect(response.body.delivery).toMatchObject({
       status: 'PICKED_UP',
-      pickedUpAt: expect.any(String),
-      createdAt: expect.any(String),
-      updatedAt: expect.any(String),
+      pickedUpAt: new Date(pickedUpAt).toISOString(),
+      createdAt: new Date(createdAt).toISOString(),
+      updatedAt: new Date(updatedAt).toISOString(),
 
       customer: expect.objectContaining({
         id: customer.id.toString(),

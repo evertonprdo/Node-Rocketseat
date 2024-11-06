@@ -24,9 +24,9 @@ export class DeliveryDetailsPresenter {
     return {
       deliveryId: deliveryDetails.deliveryId.toString(),
       status: deliveryDetails.status,
-      createdAt: deliveryDetails.createdAt,
-      pickedUpAt: deliveryDetails.pickedUpAt,
-      updatedAt: deliveryDetails.updatedAt,
+      createdAt: deliveryDetails.createdAt ?? null,
+      pickedUpAt: deliveryDetails.pickedUpAt ?? null,
+      updatedAt: deliveryDetails.updatedAt ?? null,
 
       customer: {
         id: deliveryDetails.customer.id.toString(),

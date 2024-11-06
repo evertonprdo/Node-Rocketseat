@@ -25,6 +25,7 @@ describe('Use Cases: Edit Customer', () => {
     const result = await sut.execute({
       customerId: customer.id.toString(),
       cep: customer.address.cep.toDecorated(),
+      email: 'new@email.com',
       name: 'Mary',
       city: 'new-city',
       state: customer.address.state,

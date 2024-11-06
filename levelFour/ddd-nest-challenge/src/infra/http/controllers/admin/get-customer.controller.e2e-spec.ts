@@ -1,35 +1,37 @@
-import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { UserFactory } from '@/infra/_test/factories/admin/user.factory'
-import { AppModule } from '@/infra/app.module'
-import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-database.module'
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
+import { Test } from '@nestjs/testing'
 import request from 'supertest'
 
-import { Test } from '@nestjs/testing'
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-describe('Get User (e2e)', () => {
+import { AppModule } from '@/infra/app.module'
+import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-database.module'
+
+import { CustomerFactory } from '@/infra/_test/factories/admin/customer.factory'
+
+describe('Get Customer (e2e)', () => {
   let app: INestApplication
   let jwt: JwtService
 
-  let userFactory: UserFactory
+  let customerFactory: CustomerFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, AdminDatabaseModule],
-      providers: [UserFactory],
+      providers: [CustomerFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
     jwt = moduleRef.get(JwtService)
 
-    userFactory = moduleRef.get(UserFactory)
+    customerFactory = moduleRef.get(CustomerFactory)
 
     await app.init()
   })
 
-  test('[GET] /users/:userId', async () => {
-    const user = await userFactory.makePrismaUser()
+  test('[GET] /customers/:id', async () => {
+    const customer = await customerFactory.makePrismaCustomer()
 
     const accessToken = jwt.sign({
       sub: new UniqueEntityId().toString(),
@@ -37,28 +39,20 @@ describe('Get User (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .get(`/users/${user.id.toString()}`)
+      .get(`/customers/${customer.id.toString()}`)
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(200)
-    expect(response.body).toEqual({
-      user: {
-        id: user.id.toString(),
-        cpf: user.cpf.toDecorated(),
-        name: user.name,
-        phone: user.phone,
-      },
-    })
   })
 
-  test('[GET] /users/:id, Roles: [ADMIN]', async () => {
+  test('[GET] /customers/:id, Roles: [ADMIN]', async () => {
     const accessToken = jwt.sign({
       sub: new UniqueEntityId().toString(),
       roles: ['USER', 'DELIVERY_WORKER'],
     })
 
     const response = await request(app.getHttpServer())
-      .get('/users/any-uuid')
+      .get('/customers/any-uuid')
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(403)

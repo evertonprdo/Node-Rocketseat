@@ -3,11 +3,13 @@ import { Test } from '@nestjs/testing'
 import { JwtService } from '@nestjs/jwt'
 import request from 'supertest'
 
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+
 import { AppModule } from '@/infra/app.module'
 import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-database.module'
 
-import { UserFactory } from '@/infra/_test/factories/admin/make-user'
-import { AdminFactory } from '@/infra/_test/factories/admin/make-admin'
+import { UserFactory } from '@/infra/_test/factories/admin/user.factory'
+import { AdminFactory } from '@/infra/_test/factories/admin/admin.factory'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
 describe('Edit Admin (e2e)', () => {
@@ -69,5 +71,18 @@ describe('Edit Admin (e2e)', () => {
         email: 'new@email.com',
       }),
     )
+  })
+
+  test('[PUT] /admins/:id, Roles: [ADMIN]', async () => {
+    const accessToken = jwt.sign({
+      sub: new UniqueEntityId().toString(),
+      roles: ['USER', 'DELIVERY_WORKER'],
+    })
+
+    const response = await request(app.getHttpServer())
+      .put('/admins/any-uuid')
+      .set('Authorization', `Bearer ${accessToken}`)
+
+    expect(response.statusCode).toBe(403)
   })
 })

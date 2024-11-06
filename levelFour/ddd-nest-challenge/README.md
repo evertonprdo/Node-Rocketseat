@@ -4,9 +4,9 @@
 
 - [x] The application must have two types of users: deliverer and/or admin.
 - [x] It must be possible to log in with CPF and password.
-- [ ] It must be possible to perform CRUD operations on deliverers.
+- [x] It must be possible to perform CRUD operations on deliverers.
 - [ ] It must be possible to perform CRUD operations on orders.
-- [ ] It must be possible to perform CRUD operations on recipients.
+- [x] It must be possible to perform CRUD operations on recipients.
 - [ ] It must be possible to mark an order as awaiting pickup (Available for withdrawal).
 - [ ] It must be possible to withdraw an order.
 - [ ] It must be possible to mark an order as delivered.
@@ -19,8 +19,8 @@
 ### Business Rules
 
 - [ ] Only admin users can perform CRUD operations on orders.
-- [ ] Only admin users can perform CRUD operations on deliverers.
-- [ ] Only admin users can perform CRUD operations on recipients.
+- [x] Only admin users can perform CRUD operations on deliverers.
+- [x] Only admin users can perform CRUD operations on recipients.
 - [ ] To mark an order as delivered, it is mandatory to send a photo.
 - [ ] Only the deliverer who withdrew the order can mark it as delivered.
 - [x] Only the admin can change a user's password.

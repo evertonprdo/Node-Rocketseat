@@ -8,33 +8,39 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { AppModule } from '@/infra/app.module'
 import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-database.module'
 
-import { UserFactory } from '@/infra/_test/factories/admin/user.factory'
+import { makeCEP } from '@/domain/_shared/_tests/factories/make-cep'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
-describe('Delete User (e2e)', () => {
+describe('Create Customer (e2e)', () => {
   let app: INestApplication
   let jwt: JwtService
 
   let prisma: PrismaService
-  let userFactory: UserFactory
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, AdminDatabaseModule],
-      providers: [UserFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
     jwt = moduleRef.get(JwtService)
 
     prisma = moduleRef.get(PrismaService)
-    userFactory = moduleRef.get(UserFactory)
 
     await app.init()
   })
 
-  test('[DELETE] /users/:id', async () => {
-    const user = await userFactory.makePrismaUser()
+  test('[POST] /customers', async () => {
+    const customerProps = {
+      name: 'Nicodemos',
+      email: 'test@email.com',
+      cep: makeCEP(),
+      city: 'city',
+      state: 'state',
+      street: 'street',
+      number: '123',
+      neighborhood: 'neighborhood',
+    }
 
     const accessToken = jwt.sign({
       sub: new UniqueEntityId().toString(),
@@ -42,28 +48,30 @@ describe('Delete User (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .delete(`/users/${user.id.toString()}`)
+      .post('/customers')
       .set('Authorization', `Bearer ${accessToken}`)
+      .send(customerProps)
 
-    expect(response.statusCode).toBe(204)
+    expect(response.statusCode).toBe(201)
 
-    const userOnDatabase = await prisma.user.findUnique({
+    const customerOnDatabase = await prisma.customer.findUnique({
       where: {
-        id: user.id.toString(),
+        email: 'test@email.com',
       },
     })
 
-    expect(userOnDatabase).toBeNull()
+    expect(customerOnDatabase).toBeTruthy()
+    expect(customerOnDatabase).toEqual(expect.objectContaining(customerProps))
   })
 
-  test('[DELETE] /users/:id, Roles: [ADMIN]', async () => {
+  test('[POST] /customers, Roles: [ADMIN]', async () => {
     const accessToken = jwt.sign({
       sub: new UniqueEntityId().toString(),
       roles: ['USER', 'DELIVERY_WORKER'],
     })
 
     const response = await request(app.getHttpServer())
-      .delete('/users/any-uuid')
+      .post('/customers')
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(403)

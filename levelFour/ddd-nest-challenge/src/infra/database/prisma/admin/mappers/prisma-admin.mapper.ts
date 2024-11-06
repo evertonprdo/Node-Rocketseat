@@ -1,4 +1,5 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+
 import { Admin } from '@/domain/admin/entities/admin'
 import { Prisma, Admin as PrismaAdmin } from '@prisma/client'
 

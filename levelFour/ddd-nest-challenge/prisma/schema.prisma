@@ -24,7 +24,7 @@ model Admin {
   id    String @id @default(uuid())
   email String @unique
 
-  userId String @unique
+  userId String @unique @map("user_id")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -33,9 +33,9 @@ model Admin {
 
 model DeliveryWorker {
   id            String @id @default(uuid())
-  operationCity String
+  operationZone String @map("operation_zone")
 
-  userId String @unique
+  userId String @unique @map("user_id")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

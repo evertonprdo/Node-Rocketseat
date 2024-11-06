@@ -8,7 +8,7 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { AppModule } from '@/infra/app.module'
 import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-database.module'
 
-import { UserFactory } from '@/infra/_test/factories/admin/make-user'
+import { UserFactory } from '@/infra/_test/factories/admin/user.factory'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
 describe('Edit User (e2e)', () => {
@@ -65,5 +65,18 @@ describe('Edit User (e2e)', () => {
         phone: '+5577988885555',
       }),
     )
+  })
+
+  test('[PUT] /users/:id, Roles: [ADMIN]', async () => {
+    const accessToken = jwt.sign({
+      sub: new UniqueEntityId().toString(),
+      roles: ['USER', 'DELIVERY_WORKER'],
+    })
+
+    const response = await request(app.getHttpServer())
+      .put('/users/any-uuid')
+      .set('Authorization', `Bearer ${accessToken}`)
+
+    expect(response.statusCode).toBe(403)
   })
 })

@@ -9,7 +9,7 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { AppModule } from '@/infra/app.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
-import { UserFactory } from '@/infra/_test/factories/admin/make-user'
+import { UserFactory } from '@/infra/_test/factories/admin/user.factory'
 import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-database.module'
 
 describe('Assign Admin (e2e)', () => {
@@ -56,5 +56,18 @@ describe('Assign Admin (e2e)', () => {
     })
 
     expect(adminOnDatabase).toBeTruthy()
+  })
+
+  test('[POST] /admins/assign, Roles: [ADMIN]', async () => {
+    const accessToken = jwt.sign({
+      sub: new UniqueEntityId().toString(),
+      roles: ['USER', 'DELIVERY_WORKER'],
+    })
+
+    const response = await request(app.getHttpServer())
+      .post('/admins/assign')
+      .set('Authorization', `Bearer ${accessToken}`)
+
+    expect(response.statusCode).toBe(403)
   })
 })

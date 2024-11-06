@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
+import { JwtService } from '@nestjs/jwt'
 import request from 'supertest'
 
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
@@ -9,19 +9,21 @@ import { AppModule } from '@/infra/app.module'
 import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-database.module'
 
 import { UserFactory } from '@/infra/_test/factories/admin/user.factory'
+import { DeliveryWorkerFactory } from '@/infra/_test/factories/admin/delivery-worker.factory'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
-describe('Delete User (e2e)', () => {
+describe('Edit DeliveryWorker (e2e)', () => {
   let app: INestApplication
   let jwt: JwtService
 
   let prisma: PrismaService
   let userFactory: UserFactory
+  let deliveryWorkerFactory: DeliveryWorkerFactory
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, AdminDatabaseModule],
-      providers: [UserFactory],
+      providers: [UserFactory, DeliveryWorkerFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -29,41 +31,58 @@ describe('Delete User (e2e)', () => {
 
     prisma = moduleRef.get(PrismaService)
     userFactory = moduleRef.get(UserFactory)
+    deliveryWorkerFactory = moduleRef.get(DeliveryWorkerFactory)
 
     await app.init()
   })
 
-  test('[DELETE] /users/:id', async () => {
+  test('[PUT] /delivery-workers/:id', async () => {
     const user = await userFactory.makePrismaUser()
+    const deliveryWorker = await deliveryWorkerFactory.makePrismaDeliveryWorker(
+      {
+        userId: user.id,
+        operationZone: 'Old Town',
+      },
+    )
 
     const accessToken = jwt.sign({
-      sub: new UniqueEntityId().toString(),
+      sub: deliveryWorker.id.toString(),
       roles: ['USER', 'ADMIN'],
     })
 
     const response = await request(app.getHttpServer())
-      .delete(`/users/${user.id.toString()}`)
+      .put(`/delivery-workers/${deliveryWorker.id.toString()}`)
       .set('Authorization', `Bearer ${accessToken}`)
+      .send({
+        operationZone: 'New Town',
+      })
 
     expect(response.statusCode).toBe(204)
 
-    const userOnDatabase = await prisma.user.findUnique({
+    const deliveryWorkerOnDatabase = await prisma.deliveryWorker.findUnique({
       where: {
-        id: user.id.toString(),
+        id: deliveryWorker.id.toString(),
       },
     })
 
-    expect(userOnDatabase).toBeNull()
+    expect(deliveryWorkerOnDatabase).toBeTruthy()
+    expect(deliveryWorkerOnDatabase).toEqual(
+      expect.objectContaining({
+        id: deliveryWorker.id.toString(),
+        userId: user.id.toString(),
+        operationZone: 'New Town',
+      }),
+    )
   })
 
-  test('[DELETE] /users/:id, Roles: [ADMIN]', async () => {
+  test('[PUT] /delivery-workers/:id, Roles: [ADMIN]', async () => {
     const accessToken = jwt.sign({
       sub: new UniqueEntityId().toString(),
       roles: ['USER', 'DELIVERY_WORKER'],
     })
 
     const response = await request(app.getHttpServer())
-      .delete('/users/any-uuid')
+      .put('/delivery-workers/any-uuid')
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(403)

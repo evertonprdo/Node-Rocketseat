@@ -12,6 +12,7 @@ import { ResourceNotFoundError } from '@/domain/_shared/errors/resource-not-foun
 interface EditCustomerUseCaseRequest {
   customerId: string
   name: string
+  email: string
   cep: string
   city: string
   state: string
@@ -33,6 +34,7 @@ export class EditCustomerUseCase {
   async execute({
     customerId,
     name,
+    email,
     city,
     cep,
     neighborhood,
@@ -61,6 +63,7 @@ export class EditCustomerUseCase {
 
     customer.name = name
     customer.address = newAddress
+    customer.email = email
 
     this.customersRepository.save(customer)
 

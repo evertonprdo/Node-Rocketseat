@@ -5,7 +5,7 @@ import request from 'supertest'
 
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-import { UserFactory } from '@/infra/_test/factories/admin/make-user'
+import { UserFactory } from '@/infra/_test/factories/admin/user.factory'
 
 import { AppModule } from '@/infra/app.module'
 import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-database.module'
@@ -55,5 +55,18 @@ describe('Fetch Users (e2e)', () => {
         expect.objectContaining({ id: users[2].id.toString() }),
       ]),
     )
+  })
+
+  test('[GET] /users, Roles: [ADMIN]', async () => {
+    const accessToken = jwt.sign({
+      sub: new UniqueEntityId().toString(),
+      roles: ['USER', 'DELIVERY_WORKER'],
+    })
+
+    const response = await request(app.getHttpServer())
+      .get('/users')
+      .set('Authorization', `Bearer ${accessToken}`)
+
+    expect(response.statusCode).toBe(403)
   })
 })

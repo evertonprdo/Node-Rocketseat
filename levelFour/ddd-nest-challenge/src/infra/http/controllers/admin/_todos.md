@@ -17,20 +17,19 @@
 
 ## Customer
 
-- [ ] Create
-- [ ] Get
-- [ ] List
-- [ ] Edit
-- [ ] Delete
+- [x] Create
+- [x] Get
+- [x] List
+- [x] Edit
+- [x] Delete
 
 ## Delivery Worker
 
-- [ ] Assign
-- [ ] Unassign
-- [ ] Get
-- [ ] List
-- [ ] Edit
-- [ ] Delete
+- [x] Assign
+- [x] Unassign
+- [x] Get
+- [x] List
+- [x] Edit
 
 ## Delivery
 

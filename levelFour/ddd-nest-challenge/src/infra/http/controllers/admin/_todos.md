@@ -33,7 +33,7 @@
 
 ## Delivery
 
-- [ ] Create
-- [ ] Get
-- [ ] List
-- [ ] Delete
+- [x] Create
+- [x] Get
+- [x] List
+- [x] Delete

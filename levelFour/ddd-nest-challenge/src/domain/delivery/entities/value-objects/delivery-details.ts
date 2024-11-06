@@ -9,10 +9,10 @@ export interface DeliveryDetailsProps {
   deliveryId: UniqueEntityId
   status: StatusKeys
   createdAt: Date
-  pickedUpDate?: Date
-  deliveredAt?: Date
-  deliveryAttachment?: DeliveryAttachment
-  updatedAt?: Date
+  pickedUpDate?: Date | null
+  deliveredAt?: Date | null
+  deliveryAttachment?: DeliveryAttachment | null
+  updatedAt?: Date | null
 
   receiver: {
     id: UniqueEntityId

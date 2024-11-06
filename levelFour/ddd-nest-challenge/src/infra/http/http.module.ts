@@ -64,6 +64,18 @@ import { NestEditDeliveryWorkerUseCase } from '../injectable-use-cases/admin/nes
 import { FetchDeliveryWorkersController } from './controllers/admin/fetch-delivery-workers.controller'
 import { NestFetchDeliveryWorkersUseCase } from '../injectable-use-cases/admin/nest-fetch-delivery-workers.use-case'
 
+import { CreateDeliveryController } from './controllers/admin/create-delivery.controller'
+import { NestCreateDeliveryUseCase } from '../injectable-use-cases/admin/nest-create-delivery.use-case'
+
+import { GetDeliveryDetailsController } from './controllers/admin/get-delivery-details.controller'
+import { NestGetDeliveryDetailsUseCase } from '../injectable-use-cases/admin/nest-get-delivery-details.use-case'
+
+import { DeleteDeliveryController } from './controllers/admin/delete-delivery.controller'
+import { NestDeleteDeliveryUseCase } from '../injectable-use-cases/admin/nest-delete-delivery.use-case'
+
+import { FetchDeliveriesController } from './controllers/admin/fetch-deliveries.controller'
+import { NestFetchDeliveriesUseCase } from '../injectable-use-cases/admin/nest-fetch-deliveries.use-case'
+
 @Module({
   imports: [AdminDatabaseModule, AuthDatabaseModule, CryptographyModule],
   controllers: [
@@ -87,6 +99,10 @@ import { NestFetchDeliveryWorkersUseCase } from '../injectable-use-cases/admin/n
     GetDeliveryWorkerController,
     EditDeliveryWorkerController,
     FetchDeliveryWorkersController,
+    CreateDeliveryController,
+    GetDeliveryDetailsController,
+    DeleteDeliveryController,
+    FetchDeliveriesController,
   ],
   providers: [
     NestRegisterUseCase,
@@ -109,6 +125,10 @@ import { NestFetchDeliveryWorkersUseCase } from '../injectable-use-cases/admin/n
     NestGetDeliveryWorkerUseCase,
     NestEditDeliveryWorkerUseCase,
     NestFetchDeliveryWorkersUseCase,
+    NestCreateDeliveryUseCase,
+    NestGetDeliveryDetailsUseCase,
+    NestDeleteDeliveryUseCase,
+    NestFetchDeliveriesUseCase,
   ],
 })
 export class HttpModule {}

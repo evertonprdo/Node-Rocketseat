@@ -16,12 +16,12 @@ const StatusMap = {
 export interface DeliveryProps {
   receiverId: UniqueEntityId
   status: StatusKeys
-  deliveryWorkerId?: UniqueEntityId
+  deliveryWorkerId?: UniqueEntityId | null
   createdAt: Date
-  pickedUpDate?: Date
-  deliveredAt?: Date
-  deliveryAttachment?: DeliveryAttachment
-  updatedAt?: Date
+  pickedUpDate?: Date | null
+  deliveredAt?: Date | null
+  deliveryAttachment?: DeliveryAttachment | null
+  updatedAt?: Date | null
 }
 
 export class Delivery extends AggregateRoot<DeliveryProps> {

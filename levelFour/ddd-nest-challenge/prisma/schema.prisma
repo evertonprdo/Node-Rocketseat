@@ -78,11 +78,12 @@ model Delivery {
 
   customerId       String  @map("customer_id")
   deliveryWorkerId String? @map("delivery_worker_id")
-  attachmentId     String  @map("attachment_id")
 
   customer       Customer        @relation(fields: [customerId], references: [id])
-  deliveryWorker DeliveryWorker? @relation(fields: [deliveryWorkerId], references: [userId])
-  attachment     Attachment?     @relation(fields: [attachmentId], references: [id])
+  deliveryWorker DeliveryWorker? @relation(fields: [deliveryWorkerId], references: [id])
+  attachment     Attachment?
+
+  @@map("deliveries")
 }
 
 model Attachment {
@@ -90,7 +91,8 @@ model Attachment {
   title String
   url   String
 
-  deliveries Delivery[]
+  deliveryId String   @unique @map("delivery_id")
+  delivery   Delivery @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
 
   @@map("attachments")
 }

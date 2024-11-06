@@ -1,6 +1,8 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+
 import { CPF } from '@/domain/_shared/entities/value-objects/cpf'
 import { User } from '@/domain/admin/entities/user'
+
 import { Prisma, User as PrismaUser } from '@prisma/client'
 
 export class PrismaUserMapper {

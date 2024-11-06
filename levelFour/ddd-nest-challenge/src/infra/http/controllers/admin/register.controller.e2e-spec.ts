@@ -33,7 +33,7 @@ describe('Register (e2e)', () => {
 
     expect(response.statusCode).toBe(201)
 
-    const userOnDatabase = await prisma.user.findUnique({
+    const userOnDatabase = await prisma.user.findFirst({
       where: {
         cpf: '44650866529',
       },

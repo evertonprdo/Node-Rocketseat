@@ -16,10 +16,11 @@ type PrismaUserAdminDeliveryWorkerProps = {
 
 export class PrismaUserMapper {
   static toDomain(raw: PrismaUserAdminDeliveryWorkerProps): User {
-    const adminId = raw.admin ? new UniqueEntityId(raw.admin.id) : undefined
+    const adminId = raw.admin ? new UniqueEntityId(raw.admin.id) : null
+
     const deliveryWorkerId = raw.deliveryWorker
       ? new UniqueEntityId(raw.deliveryWorker.id)
-      : undefined
+      : null
 
     return User.create(
       {

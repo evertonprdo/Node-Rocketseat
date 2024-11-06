@@ -1,19 +1,19 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { ValueObject } from '@/core/entities/value-object'
 
+import { Attachment } from '@/domain/_shared/entities/attachment'
 import { CPF } from '@/domain/_shared/entities/value-objects/cpf'
 import { StatusKeys } from '@/domain/_shared/entities/types/delivery'
 import { Address } from '@/domain/_shared/entities/value-objects/address'
-import { DeliveryAttachment } from '@/domain/_shared/entities/delivery-attachment'
 
 export interface DeliveryDetailsProps {
   deliveryId: UniqueEntityId
   status: StatusKeys
   createdAt: Date
-  pickedUpDate?: Date
-  deliveredAt?: Date
-  deliveryAttachment?: DeliveryAttachment
-  updatedAt?: Date
+  pickedUpAt?: Date | null
+  deliveredAt?: Date | null
+  attachment?: Attachment | null
+  updatedAt?: Date | null
 
   customer: {
     id: UniqueEntityId
@@ -28,7 +28,7 @@ export interface DeliveryDetailsProps {
     phone: string
     cpf: CPF
     operationZone: string
-  }
+  } | null
 }
 
 export class DeliveryDetails extends ValueObject<DeliveryDetailsProps> {
@@ -44,16 +44,16 @@ export class DeliveryDetails extends ValueObject<DeliveryDetailsProps> {
     return this.props.createdAt
   }
 
-  get pickedUpDate() {
-    return this.props.pickedUpDate
+  get pickedUpAt() {
+    return this.props.pickedUpAt
   }
 
   get deliveredAt() {
     return this.props.deliveredAt
   }
 
-  get deliveryAttachment() {
-    return this.props.deliveryAttachment
+  get attachment() {
+    return this.props.attachment
   }
 
   get updatedAt() {

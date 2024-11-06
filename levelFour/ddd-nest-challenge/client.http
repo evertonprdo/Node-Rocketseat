@@ -7,7 +7,7 @@ POST {{baseUrl}}/users/register
 Content-Type: application/json
 
 {
-  "name": "Everton Prdo",
+  "name": "Admin",
   "cpf": "213.352.350-27",
   "phone": "+55 99 9 9999 9999",
   "password": "123456"
@@ -20,18 +20,56 @@ POST  {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "cpf": "47236077062",
+  "cpf": "213.352.350-27",
   "password": "123456"
 }
 
 ###
 
-# @name assign_admin
-POST {{baseUrl}}/admins/assign
+# @name assign_delivery_worker
+POST {{baseUrl}}/delivery-workers/assign
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "userId": "91dfe43f-2e61-4701-abf9-13b46cc0f5e3",
-  "email": "another@test.com"
+  "userId": "26190edf-1c88-4d65-a6d2-332d0e5528ea",
+  "operationZone": "Test Town"
 }
+
+###
+
+# @name create_customer
+POST {{baseUrl}}/customers
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Nicodemos",
+  "email": "test@email.com",
+  "cep": "68513-638",
+  "city": "city",
+  "state": "state",
+  "street": "street",
+  "number": "123",
+  "neighborhood": "neighborhood"
+}
+
+###
+
+# @name create_delivery
+POST {{baseUrl}}/deliveries
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "customerId": "90bd42d0-7238-492e-ac05-5b6841180162"
+}
+
+###
+
+# @name get_delivery
+GET {{baseUrl}}/deliveries/af1bf13a-341b-4b81-a1f6-9907f7db3422
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###

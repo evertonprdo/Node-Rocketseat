@@ -10,12 +10,12 @@ import { DeliveryCreatedEvent } from '../events/delivery-created.event'
 export interface DeliveryProps {
   customerId: UniqueEntityId
   status: StatusKeys
-  deliveryWorkerId?: UniqueEntityId
+  deliveryWorkerId?: UniqueEntityId | null
   createdAt: Date
-  pickedUpDate?: Date
-  deliveredAt?: Date
-  deliveryAttachment?: DeliveryAttachment
-  updatedAt?: Date
+  pickedUpAt?: Date | null
+  deliveredAt?: Date | null
+  attachment?: DeliveryAttachment | null
+  updatedAt?: Date | null
 }
 
 export class Delivery extends AggregateRoot<DeliveryProps> {
@@ -31,8 +31,8 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
     return this.props.createdAt
   }
 
-  get pickedUpDate() {
-    return this.props.pickedUpDate
+  get pickedUpAt() {
+    return this.props.pickedUpAt
   }
 
   get deliveredAt() {
@@ -47,8 +47,8 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
     return this.props.status
   }
 
-  get deliveryAttachment() {
-    return this.props.deliveryAttachment
+  get attachment() {
+    return this.props.attachment
   }
 
   set status(key: StatusKeys) {

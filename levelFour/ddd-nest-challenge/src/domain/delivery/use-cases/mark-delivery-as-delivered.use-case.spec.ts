@@ -23,7 +23,7 @@ describe('Use Case: Mark Delivery as Delivered', () => {
   it('should be able to mark a delivery as delivered', async () => {
     const delivery = makeDelivery({
       status: 'PICKED_UP',
-      pickedUpDate: new Date(),
+      pickedUpAt: new Date(),
       deliveryWorkerId: new UniqueEntityId('correct-delivery-worker'),
     })
     deliveriesRepository.items.push(delivery)
@@ -49,7 +49,7 @@ describe('Use Case: Mark Delivery as Delivered', () => {
   it('should not be marked as delivered by another delivery worker', async () => {
     const delivery = makeDelivery({
       status: 'PICKED_UP',
-      pickedUpDate: new Date(),
+      pickedUpAt: new Date(),
       deliveryWorkerId: new UniqueEntityId('correct-delivery-worker'),
     })
     deliveriesRepository.items.push(delivery)

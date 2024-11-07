@@ -51,7 +51,7 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
       deliveryId: delivery.id,
       status: delivery.status,
       createdAt: delivery.createdAt,
-      pickedUpAt: delivery.pickedUpDate,
+      pickedUpAt: delivery.pickedUpAt,
       deliveredAt: delivery.deliveredAt,
       attachment: delivery.attachment,
       updatedAt: delivery.updatedAt,

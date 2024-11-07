@@ -1,29 +1,29 @@
 import { INestApplication } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
-
-import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import { AppModule } from '@/infra/app.module'
 import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-database.module'
 
 import { makeCEP } from '@/domain/_shared/_tests/factories/make-cep'
+import { AccessTokenFactory } from '@/infra/_test/factories/access-token.factory'
+
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
 describe('Create Customer (e2e)', () => {
   let app: INestApplication
-  let jwt: JwtService
+  let accessTokenFactory: AccessTokenFactory
 
   let prisma: PrismaService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, AdminDatabaseModule],
+      providers: [AccessTokenFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
-    jwt = moduleRef.get(JwtService)
+    accessTokenFactory = moduleRef.get(AccessTokenFactory)
 
     prisma = moduleRef.get(PrismaService)
 
@@ -42,10 +42,7 @@ describe('Create Customer (e2e)', () => {
       neighborhood: 'neighborhood',
     }
 
-    const accessToken = jwt.sign({
-      sub: new UniqueEntityId().toString(),
-      roles: ['USER', 'ADMIN'],
-    })
+    const accessToken = accessTokenFactory.makeAdmin()
 
     const response = await request(app.getHttpServer())
       .post('/customers')
@@ -65,10 +62,7 @@ describe('Create Customer (e2e)', () => {
   })
 
   test('[POST] /customers, Roles: [ADMIN]', async () => {
-    const accessToken = jwt.sign({
-      sub: new UniqueEntityId().toString(),
-      roles: ['USER', 'DELIVERY_WORKER'],
-    })
+    const accessToken = accessTokenFactory.makeDeliveryWorker()
 
     const response = await request(app.getHttpServer())
       .post('/customers')

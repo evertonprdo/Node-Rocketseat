@@ -8,7 +8,7 @@ export class DeliveryPresenter {
       status: delivery.status,
       createdAt: delivery.createdAt,
       updatedAt: delivery.updatedAt,
-      pickedUpDate: delivery.pickedUpDate,
+      pickedUpDate: delivery.pickedUpAt,
       deliveredAt: delivery.deliveredAt,
     }
   }

@@ -45,7 +45,11 @@ export class FetchPendingDeliveriesNearbyController {
     @CurrentUser() deliveryWorker: UserPayload,
   ) {
     const { page } = body
-    const { sub: deliveryWorkerId } = deliveryWorker
+    const { deliveryWorkerId } = deliveryWorker
+
+    if (!deliveryWorkerId) {
+      throw new BadRequestException()
+    }
 
     const result = await this.fetchPendingDeliveriesNearby.execute({
       deliveryWorkerId,

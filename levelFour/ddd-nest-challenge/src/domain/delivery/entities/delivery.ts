@@ -18,7 +18,7 @@ export interface DeliveryProps {
   status: StatusKeys
   deliveryWorkerId?: UniqueEntityId | null
   createdAt: Date
-  pickedUpDate?: Date | null
+  pickedUpAt?: Date | null
   deliveredAt?: Date | null
   attachment?: DeliveryAttachment | null
   updatedAt?: Date | null
@@ -37,8 +37,8 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
     return this.props.createdAt
   }
 
-  get pickedUpDate() {
-    return this.props.pickedUpDate
+  get pickedUpAt() {
+    return this.props.pickedUpAt
   }
 
   get deliveredAt() {
@@ -63,7 +63,7 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
 
   markAsPickedUp(deliveryWorkerId: UniqueEntityId) {
     this.props.status = 'PICKED_UP'
-    this.props.pickedUpDate = new Date()
+    this.props.pickedUpAt = new Date()
     this.props.deliveryWorkerId = deliveryWorkerId
 
     this.addDomainEvent(new DeliveryStatusUpdatedEvent(this))

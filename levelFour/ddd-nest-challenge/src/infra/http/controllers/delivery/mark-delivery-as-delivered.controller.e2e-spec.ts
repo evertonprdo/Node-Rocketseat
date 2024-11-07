@@ -2,20 +2,21 @@ import { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 
-import { makeAddress } from '@/domain/_shared/_tests/factories/make-address'
-
 import { AccessTokenFactory } from '@/infra/_test/factories/access-token.factory'
 import { DeliveryFactory } from '@/infra/_test/factories/delivery/delivery.factory'
 import { ReceiverFactory } from '@/infra/_test/factories/delivery/receiver.factory'
-import { DeliveryWorkerFactory } from '@/infra/_test/factories/delivery/delivery-worker.factory'
 
 import { AppModule } from '@/infra/app.module'
 import { DeliveryDatabaseModule } from '@/infra/database/prisma/delivery/delivery-database.module'
 
-describe('Fetch Pending Deliveries Nearby', () => {
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { DeliveryWorkerFactory } from '@/infra/_test/factories/delivery/delivery-worker.factory'
+
+describe('Mark Delivery As Delivered', () => {
   let app: INestApplication
   let accessTokenFactory: AccessTokenFactory
 
+  let prisma: PrismaService
   let receiverFactory: ReceiverFactory
   let deliveryFactory: DeliveryFactory
   let deliveryWorkerFactory: DeliveryWorkerFactory
@@ -24,6 +25,7 @@ describe('Fetch Pending Deliveries Nearby', () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DeliveryDatabaseModule],
       providers: [
+        PrismaService,
         ReceiverFactory,
         DeliveryFactory,
         DeliveryWorkerFactory,
@@ -34,6 +36,7 @@ describe('Fetch Pending Deliveries Nearby', () => {
     app = moduleRef.createNestApplication()
     accessTokenFactory = moduleRef.get(AccessTokenFactory)
 
+    prisma = moduleRef.get(PrismaService)
     receiverFactory = moduleRef.get(ReceiverFactory)
     deliveryFactory = moduleRef.get(DeliveryFactory)
     deliveryWorkerFactory = moduleRef.get(DeliveryWorkerFactory)
@@ -41,53 +44,50 @@ describe('Fetch Pending Deliveries Nearby', () => {
     await app.init()
   })
 
-  test('[GET] /app/deliveries/nearby', async () => {
-    const city = 'test-town'
-
-    const receivers = await Promise.all(
-      Array.from({ length: 3 }, () => {
-        const address = makeAddress({ city })
-        return receiverFactory.makePrismaReceiver({ address })
-      }),
-    )
-
+  test('[PUT] /app/deliveries/:id/deliver', async () => {
+    const receiver = await receiverFactory.makePrismaReceiver()
     const deliveryWorker = await deliveryWorkerFactory.makePrismaDeliveryWorker(
-      { operationCity: city },
+      {
+        operationCity: receiver.address.city,
+      },
     )
 
-    const deliveries = await Promise.all(
-      receivers.map((receiver) =>
-        deliveryFactory.makePrismaDelivery({
-          receiverId: receiver.id,
-        }),
-      ),
-    )
+    const delivery = await deliveryFactory.makePrismaDelivery({
+      status: 'PICKED_UP',
+      receiverId: receiver.id,
+      pickedUpAt: new Date(),
+      deliveryWorkerId: deliveryWorker.id,
+    })
 
     const accessToken = accessTokenFactory.makeDeliveryWorker({
       deliveryWorkerId: deliveryWorker.id.toString(),
     })
 
     const response = await request(app.getHttpServer())
-      .get('/app/deliveries/nearby')
+      .put(`/app/deliveries/${delivery.id.toString()}/deliver`)
       .set('Authorization', `Bearer ${accessToken}`)
 
-    expect(response.statusCode).toBe(200)
-    expect(response.body.deliveries).toHaveLength(3)
+    expect(response.statusCode).toBe(204)
 
-    expect(response.body.deliveries).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ id: deliveries[0].id.toString() }),
-        expect.objectContaining({ id: deliveries[1].id.toString() }),
-        expect.objectContaining({ id: deliveries[2].id.toString() }),
-      ]),
-    )
+    const deliveryOnDatabase = await prisma.delivery.findUnique({
+      where: {
+        id: delivery.id.toString(),
+      },
+    })
+
+    expect(deliveryOnDatabase).toBeTruthy()
+    expect(deliveryOnDatabase).toMatchObject({
+      status: 'DELIVERED',
+      deliveryWorkerId: deliveryWorker.id.toString(),
+      deliveredAt: expect.any(Date),
+    })
   })
 
-  test('[GET] /app/deliveries/nearby, roles: [DELIVERY_WORKER]', async () => {
+  test('[PUT] /app/deliveries/:id/deliver, roles: [DELIVERY_WORKER]', async () => {
     const accessToken = accessTokenFactory.makeAdmin()
 
     const response = await request(app.getHttpServer())
-      .get('/app/deliveries/nearby')
+      .put('/app/deliveries/any-uuid/deliver')
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(403)

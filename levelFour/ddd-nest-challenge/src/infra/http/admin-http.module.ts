@@ -33,9 +33,6 @@ import { NestUnassignAdminUseCase } from '../injectable-use-cases/admin/nest-una
 import { AssignAdminController } from './controllers/admin/assign-admin.controller'
 import { NestAssignAdminUseCase } from '../injectable-use-cases/admin/nest-assign-admin.use-case'
 
-import { AuthenticateController } from './controllers/auth/authenticate.controller'
-import { NestAuthenticateUseCase } from '../injectable-use-cases/authentication/nest-authenticate.use-case'
-
 import { CreateCustomerController } from './controllers/admin/create-customer.controller'
 import { NestCreateCustomerUseCase } from '../injectable-use-cases/admin/nest-create-customer.use-case'
 
@@ -78,9 +75,6 @@ import { NestDeleteDeliveryUseCase } from '../injectable-use-cases/admin/nest-de
 import { FetchDeliveriesController } from './controllers/admin/fetch-deliveries.controller'
 import { NestFetchDeliveriesUseCase } from '../injectable-use-cases/admin/nest-fetch-deliveries.use-case'
 
-import { FetchPendingDeliveriesNearbyController } from './controllers/delivery/fetch-pending-deliveries-nearby.controller'
-import { NestFetchPendingDeliveriesNearbyUseCase } from '../injectable-use-cases/delivery/nest-fetch-pending-deliveries-nearby.use-case'
-
 @Module({
   imports: [
     AdminDatabaseModule,
@@ -90,7 +84,6 @@ import { NestFetchPendingDeliveriesNearbyUseCase } from '../injectable-use-cases
   ],
   controllers: [
     RegisterController,
-    AuthenticateController,
     AssignAdminController,
     GetUserController,
     FetchUsersController,
@@ -113,11 +106,9 @@ import { NestFetchPendingDeliveriesNearbyUseCase } from '../injectable-use-cases
     GetDeliveryDetailsController,
     DeleteDeliveryController,
     FetchDeliveriesController,
-    FetchPendingDeliveriesNearbyController,
   ],
   providers: [
     NestRegisterUseCase,
-    NestAuthenticateUseCase,
     NestAssignAdminUseCase,
     NestGetUserUseCase,
     NestFetchUsersUseCase,
@@ -140,7 +131,6 @@ import { NestFetchPendingDeliveriesNearbyUseCase } from '../injectable-use-cases
     NestGetDeliveryDetailsUseCase,
     NestDeleteDeliveryUseCase,
     NestFetchDeliveriesUseCase,
-    NestFetchPendingDeliveriesNearbyUseCase,
   ],
 })
-export class HttpModule {}
+export class AdminHttpModule {}

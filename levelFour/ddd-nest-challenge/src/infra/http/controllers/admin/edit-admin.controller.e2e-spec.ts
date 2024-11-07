@@ -1,20 +1,19 @@
 import { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
-import { JwtService } from '@nestjs/jwt'
 import request from 'supertest'
-
-import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import { AppModule } from '@/infra/app.module'
 import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-database.module'
 
 import { UserFactory } from '@/infra/_test/factories/admin/user.factory'
 import { AdminFactory } from '@/infra/_test/factories/admin/admin.factory'
+import { AccessTokenFactory } from '@/infra/_test/factories/access-token.factory'
+
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
 describe('Edit Admin (e2e)', () => {
   let app: INestApplication
-  let jwt: JwtService
+  let accessTokenFactory: AccessTokenFactory
 
   let prisma: PrismaService
   let userFactory: UserFactory
@@ -23,11 +22,11 @@ describe('Edit Admin (e2e)', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, AdminDatabaseModule],
-      providers: [UserFactory, AdminFactory],
+      providers: [UserFactory, AdminFactory, AccessTokenFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
-    jwt = moduleRef.get(JwtService)
+    accessTokenFactory = moduleRef.get(AccessTokenFactory)
 
     prisma = moduleRef.get(PrismaService)
     userFactory = moduleRef.get(UserFactory)
@@ -43,10 +42,7 @@ describe('Edit Admin (e2e)', () => {
       email: 'old@email.com',
     })
 
-    const accessToken = jwt.sign({
-      sub: admin.id.toString(),
-      roles: ['USER', 'ADMIN'],
-    })
+    const accessToken = accessTokenFactory.makeAdmin()
 
     const response = await request(app.getHttpServer())
       .put(`/admins/${admin.id.toString()}`)
@@ -74,10 +70,7 @@ describe('Edit Admin (e2e)', () => {
   })
 
   test('[PUT] /admins/:id, Roles: [ADMIN]', async () => {
-    const accessToken = jwt.sign({
-      sub: new UniqueEntityId().toString(),
-      roles: ['USER', 'DELIVERY_WORKER'],
-    })
+    const accessToken = accessTokenFactory.makeDeliveryWorker()
 
     const response = await request(app.getHttpServer())
       .put('/admins/any-uuid')

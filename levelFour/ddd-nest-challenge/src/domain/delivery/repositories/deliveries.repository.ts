@@ -11,6 +11,10 @@ export interface findManyDeliveredByDeliveryWorkerId extends PaginationParams {
   deliveryWorkerId: string
 }
 
+export interface findManyPickedUpByDeliveryWorkerId extends PaginationParams {
+  deliveryWorkerId: string
+}
+
 export interface DeliveriesRepository {
   findById(id: string): Promise<Delivery | null>
   findDetailsById(id: string): Promise<DeliveryDetails | null>
@@ -18,7 +22,9 @@ export interface DeliveriesRepository {
   findManyDeliveredByDeliveryWorkerId(
     params: findManyDeliveredByDeliveryWorkerId,
   ): Promise<Delivery[]>
-  findManyPendingByCity(city: FindManyPendingByCity): Promise<Delivery[]>
+
+  findManyPendingByCity(params: FindManyPendingByCity): Promise<Delivery[]>
+  //  findManyPickedUpByDeliveryWorkerId(params: findManyPickedUpByDeliveryWorkerId): Promise<Delivery[]> @TODO
 
   save(delivery: Delivery): Promise<void>
 }

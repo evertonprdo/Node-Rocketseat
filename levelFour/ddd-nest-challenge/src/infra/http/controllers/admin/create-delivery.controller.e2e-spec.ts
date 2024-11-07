@@ -1,19 +1,18 @@
 import { INestApplication } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
-
-import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import { AppModule } from '@/infra/app.module'
 import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-database.module'
 
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { CustomerFactory } from '@/infra/_test/factories/admin/customer.factory'
+import { AccessTokenFactory } from '@/infra/_test/factories/access-token.factory'
+
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
 describe('Create Delivery (e2e)', () => {
   let app: INestApplication
-  let jwt: JwtService
+  let accessTokenFactory: AccessTokenFactory
 
   let prisma: PrismaService
   let customerFactory: CustomerFactory
@@ -21,11 +20,11 @@ describe('Create Delivery (e2e)', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, AdminDatabaseModule],
-      providers: [CustomerFactory],
+      providers: [CustomerFactory, AccessTokenFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
-    jwt = moduleRef.get(JwtService)
+    accessTokenFactory = moduleRef.get(AccessTokenFactory)
 
     prisma = moduleRef.get(PrismaService)
     customerFactory = moduleRef.get(CustomerFactory)
@@ -36,10 +35,7 @@ describe('Create Delivery (e2e)', () => {
   test('[POST] /deliveries', async () => {
     const customer = await customerFactory.makePrismaCustomer()
 
-    const accessToken = jwt.sign({
-      sub: new UniqueEntityId().toString(),
-      roles: ['USER', 'ADMIN'],
-    })
+    const accessToken = accessTokenFactory.makeAdmin()
 
     const response = await request(app.getHttpServer())
       .post('/deliveries')
@@ -63,10 +59,7 @@ describe('Create Delivery (e2e)', () => {
   })
 
   test('[POST] /deliveries, Roles: [ADMIN]', async () => {
-    const accessToken = jwt.sign({
-      sub: new UniqueEntityId().toString(),
-      roles: ['USER', 'DELIVERY_WORKER'],
-    })
+    const accessToken = accessTokenFactory.makeDeliveryWorker()
 
     const response = await request(app.getHttpServer())
       .post('/deliveries')

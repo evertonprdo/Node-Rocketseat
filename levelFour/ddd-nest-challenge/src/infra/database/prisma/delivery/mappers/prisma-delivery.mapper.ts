@@ -14,7 +14,7 @@ export class PrismaDeliveryMapper {
         receiverId: new UniqueEntityId(raw.customerId),
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
-        pickedUpDate: raw.pickedUpAt,
+        pickedUpAt: raw.pickedUpAt,
         deliveryWorkerId,
         deliveredAt: raw.deliveredAt,
       },
@@ -29,7 +29,7 @@ export class PrismaDeliveryMapper {
       customerId: delivery.receiverId.toString(),
       createdAt: delivery.createdAt,
       updatedAt: delivery.updatedAt,
-      pickedUpAt: delivery.pickedUpDate,
+      pickedUpAt: delivery.pickedUpAt,
       deliveryWorkerId: delivery.deliveryWorkerId?.toString(),
       deliveredAt: delivery.deliveredAt,
     }

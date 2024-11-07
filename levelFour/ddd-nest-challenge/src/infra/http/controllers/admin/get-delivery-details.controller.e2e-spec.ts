@@ -1,13 +1,11 @@
 import { INestApplication } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
-
-import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import { UserFactory } from '@/infra/_test/factories/admin/user.factory'
 import { DeliveryFactory } from '@/infra/_test/factories/admin/delivery.factory'
 import { CustomerFactory } from '@/infra/_test/factories/admin/customer.factory'
+import { AccessTokenFactory } from '@/infra/_test/factories/access-token.factory'
 import { DeliveryWorkerFactory } from '@/infra/_test/factories/admin/delivery-worker.factory'
 
 import { AppModule } from '@/infra/app.module'
@@ -15,7 +13,7 @@ import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-databas
 
 describe('Get Delivery Details (e2e)', () => {
   let app: INestApplication
-  let jwt: JwtService
+  let accessTokenFactory: AccessTokenFactory
 
   let userFactory: UserFactory
   let customerFactory: CustomerFactory
@@ -30,11 +28,12 @@ describe('Get Delivery Details (e2e)', () => {
         CustomerFactory,
         DeliveryFactory,
         DeliveryWorkerFactory,
+        AccessTokenFactory,
       ],
     }).compile()
 
     app = moduleRef.createNestApplication()
-    jwt = moduleRef.get(JwtService)
+    accessTokenFactory = moduleRef.get(AccessTokenFactory)
 
     userFactory = moduleRef.get(UserFactory)
     customerFactory = moduleRef.get(CustomerFactory)
@@ -66,10 +65,7 @@ describe('Get Delivery Details (e2e)', () => {
       updatedAt,
     })
 
-    const accessToken = jwt.sign({
-      sub: new UniqueEntityId().toString(),
-      roles: ['USER', 'ADMIN'],
-    })
+    const accessToken = accessTokenFactory.makeAdmin()
 
     const response = await request(app.getHttpServer())
       .get(`/deliveries/${delivery.id.toString()}`)
@@ -94,10 +90,7 @@ describe('Get Delivery Details (e2e)', () => {
   })
 
   test('[GET] /deliveries/:id, Roles: [ADMIN]', async () => {
-    const accessToken = jwt.sign({
-      sub: new UniqueEntityId().toString(),
-      roles: ['USER', 'DELIVERY_WORKER'],
-    })
+    const accessToken = accessTokenFactory.makeDeliveryWorker()
 
     const response = await request(app.getHttpServer())
       .get('/deliveries/any-uuid')

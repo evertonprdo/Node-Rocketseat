@@ -52,19 +52,12 @@ export class AuthenticateUseCase {
       return left(new WrongCredentialsError())
     }
 
-    const roles = ['USER']
-
-    if (user.adminId) {
-      roles.push('ADMIN')
-    }
-
-    if (user.deliveryWorkerId) {
-      roles.push('DELIVERY_WORKER')
-    }
-
     const accessToken = await this.encrypter.encrypt({
       sub: user.id.toString(),
-      roles,
+      adminId: user.adminId ? user.adminId.toString() : null,
+      deliveryWorkerId: user.deliveryWorkerId
+        ? user.deliveryWorkerId.toString()
+        : null,
     })
 
     return right({

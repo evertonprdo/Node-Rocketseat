@@ -32,8 +32,8 @@ describe('Fetch Pending Deliveries Nearby', () => {
     }).compile()
 
     app = moduleRef.createNestApplication()
-    accessTokenFactory = moduleRef.get(AccessTokenFactory)
 
+    accessTokenFactory = moduleRef.get(AccessTokenFactory)
     receiverFactory = moduleRef.get(ReceiverFactory)
     deliveryFactory = moduleRef.get(DeliveryFactory)
     deliveryWorkerFactory = moduleRef.get(DeliveryWorkerFactory)
@@ -41,7 +41,7 @@ describe('Fetch Pending Deliveries Nearby', () => {
     await app.init()
   })
 
-  test('[GET] /app/deliveries/nearby', async () => {
+  test('[GET] /app/deliveries/delivered-history', async () => {
     const city = 'test-town'
 
     const receivers = await Promise.all(
@@ -58,7 +58,11 @@ describe('Fetch Pending Deliveries Nearby', () => {
     const deliveries = await Promise.all(
       receivers.map((receiver) =>
         deliveryFactory.makePrismaDelivery({
+          status: 'DELIVERED',
           receiverId: receiver.id,
+          pickedUpAt: new Date(),
+          deliveredAt: new Date(),
+          deliveryWorkerId: deliveryWorker.id,
         }),
       ),
     )
@@ -68,7 +72,7 @@ describe('Fetch Pending Deliveries Nearby', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .get('/app/deliveries/nearby')
+      .get('/app/deliveries/delivered-history')
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(200)
@@ -83,11 +87,11 @@ describe('Fetch Pending Deliveries Nearby', () => {
     )
   })
 
-  test('[GET] /app/deliveries/nearby, roles: [DELIVERY_WORKER]', async () => {
+  test('[GET] /app/deliveries/delivered-history, roles: [DELIVERY_WORKER]', async () => {
     const accessToken = accessTokenFactory.makeAdmin()
 
     const response = await request(app.getHttpServer())
-      .get('/app/deliveries/nearby')
+      .get('/app/deliveries/delivered-history')
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(403)

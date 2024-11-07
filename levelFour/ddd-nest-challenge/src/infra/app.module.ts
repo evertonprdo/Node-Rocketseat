@@ -5,8 +5,10 @@ import { envSchema } from './env'
 import { EnvModule } from './env/env.module'
 import { EnvService } from './env/env.service'
 
-import { HttpModule } from './http/http.module'
 import { AuthModule } from './auth/auth.module'
+import { AuthHttpModule } from './http/auth-http.module'
+import { AdminHttpModule } from './http/admin-http.module'
+import { DeliveryHttpModule } from './http/delivery-http.module'
 
 @Module({
   imports: [
@@ -16,7 +18,9 @@ import { AuthModule } from './auth/auth.module'
     }),
     EnvModule,
     AuthModule,
-    HttpModule,
+    AuthHttpModule,
+    AdminHttpModule,
+    DeliveryHttpModule,
   ],
   providers: [EnvService],
 })

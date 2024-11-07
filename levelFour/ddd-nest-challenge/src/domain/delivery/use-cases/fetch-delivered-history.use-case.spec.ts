@@ -26,7 +26,7 @@ describe('Use Cases: Fetch Delivered History', async () => {
         deliveredAt: new Date(),
         deliveryWorkerId: deliveryWorker.id,
         status: 'DELIVERED',
-        pickedUpDate: new Date(),
+        pickedUpAt: new Date(),
         updatedAt: new Date(),
       }),
     )
@@ -50,7 +50,7 @@ describe('Use Cases: Fetch Delivered History', async () => {
         deliveredAt: new Date(),
         deliveryWorkerId: deliveryWorker.id,
         status: 'DELIVERED',
-        pickedUpDate: new Date(),
+        pickedUpAt: new Date(),
         updatedAt: new Date(),
       }),
     )

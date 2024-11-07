@@ -35,7 +35,7 @@ describe('Edit Customer (e2e)', () => {
 
   test('[PUT] customers/:id', async () => {
     const customer = await customerFactory.makePrismaCustomer({
-      name: 'Old Name',
+      name: 'old-name',
       email: 'old@email.com',
     })
 

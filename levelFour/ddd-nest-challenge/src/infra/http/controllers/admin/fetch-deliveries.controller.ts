@@ -10,7 +10,7 @@ import { DeliveryPresenter } from '../../presenters/admin/delivery.presenter'
 import { NestFetchDeliveriesUseCase } from '@/infra/injectable-use-cases/admin/nest-fetch-deliveries.use-case'
 
 const fetchDeliveriesBodySchema = z.object({
-  page: z.coerce.number().optional().default(1),
+  page: z.coerce.number().default(1),
 })
 
 type FetchDeliveriesBodySchema = z.infer<typeof fetchDeliveriesBodySchema>

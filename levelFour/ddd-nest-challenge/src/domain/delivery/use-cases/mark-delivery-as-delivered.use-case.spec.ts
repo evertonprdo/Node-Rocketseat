@@ -38,7 +38,7 @@ describe('Use Case: Mark Delivery as Delivered', () => {
     expect(result.value).toEqual({
       delivery: expect.objectContaining({
         status: 'DELIVERED',
-        deliveryAttachment: expect.objectContaining({
+        attachment: expect.objectContaining({
           deliveryId: delivery.id,
           attachmentId: new UniqueEntityId('1'),
         }),

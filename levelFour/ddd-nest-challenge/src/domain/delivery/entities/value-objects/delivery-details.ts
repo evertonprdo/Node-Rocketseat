@@ -9,9 +9,9 @@ export interface DeliveryDetailsProps {
   deliveryId: UniqueEntityId
   status: StatusKeys
   createdAt: Date
-  pickedUpDate?: Date | null
+  pickedUpAt?: Date | null
   deliveredAt?: Date | null
-  deliveryAttachment?: DeliveryAttachment | null
+  attachment?: DeliveryAttachment | null
   updatedAt?: Date | null
 
   receiver: {
@@ -34,16 +34,16 @@ export class DeliveryDetails extends ValueObject<DeliveryDetailsProps> {
     return this.props.createdAt
   }
 
-  get pickedUpDate() {
-    return this.props.pickedUpDate
+  get pickedUpAt() {
+    return this.props.pickedUpAt
   }
 
   get deliveredAt() {
     return this.props.deliveredAt
   }
 
-  get deliveryAttachment() {
-    return this.props.deliveryAttachment
+  get attachment() {
+    return this.props.attachment
   }
 
   get updatedAt() {

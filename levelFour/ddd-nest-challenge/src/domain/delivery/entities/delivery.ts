@@ -20,7 +20,7 @@ export interface DeliveryProps {
   createdAt: Date
   pickedUpDate?: Date | null
   deliveredAt?: Date | null
-  deliveryAttachment?: DeliveryAttachment | null
+  attachment?: DeliveryAttachment | null
   updatedAt?: Date | null
 }
 
@@ -53,8 +53,8 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
     return this.props.status
   }
 
-  get deliveryAttachment() {
-    return this.props.deliveryAttachment
+  get attachment() {
+    return this.props.attachment
   }
 
   getStatusName() {
@@ -74,7 +74,7 @@ export class Delivery extends AggregateRoot<DeliveryProps> {
   markAsDelivered(attachment: DeliveryAttachment) {
     this.props.status = 'DELIVERED'
     this.props.deliveredAt = new Date()
-    this.props.deliveryAttachment = attachment
+    this.props.attachment = attachment
 
     this.addDomainEvent(new DeliveryStatusUpdatedEvent(this))
 

@@ -51,9 +51,9 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
       deliveryId: delivery.id,
       status: delivery.status,
       createdAt: delivery.createdAt,
-      pickedUpDate: delivery.pickedUpDate,
+      pickedUpAt: delivery.pickedUpDate,
       deliveredAt: delivery.deliveredAt,
-      deliveryAttachment: delivery.deliveryAttachment,
+      attachment: delivery.attachment,
       updatedAt: delivery.updatedAt,
 
       receiver: {
@@ -95,11 +95,11 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
     const itemIndex = this.items.findIndex((item) => item.id === delivery.id)
 
     if (
-      !this.items[itemIndex].deliveryAttachment &&
-      delivery.deliveryAttachment
+      !this.items[itemIndex].attachment &&
+      delivery.attachment
     ) {
       await this.deliveryAttachmentsRepository.create(
-        delivery.deliveryAttachment,
+        delivery.attachment,
       )
     }
 

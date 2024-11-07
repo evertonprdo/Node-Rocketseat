@@ -10,7 +10,7 @@ import { CustomerPresenter } from '../../presenters/admin/customer.presenter'
 import { NestFetchCustomersUseCase } from '@/infra/injectable-use-cases/admin/nest-fetch-customers.use-case'
 
 const fetchCustomersBodySchema = z.object({
-  page: z.coerce.number().optional().default(1),
+  page: z.coerce.number().default(1),
 })
 
 type FetchCustomersBodySchema = z.infer<typeof fetchCustomersBodySchema>

@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common'
 
-import { CryptographyModule } from '../cryptography/cryptography.module'
 import { AdminDatabaseModule } from '../database/prisma/admin/admin-database.module'
+import { DeliveryDatabaseModule } from '../database/prisma/delivery/delivery-database.module'
+
+import { CryptographyModule } from '../cryptography/cryptography.module'
 import { AuthDatabaseModule } from '../database/prisma/authentication/auth-database.module'
 
 import { GetUserController } from './controllers/admin/get-user.controller'
@@ -76,8 +78,16 @@ import { NestDeleteDeliveryUseCase } from '../injectable-use-cases/admin/nest-de
 import { FetchDeliveriesController } from './controllers/admin/fetch-deliveries.controller'
 import { NestFetchDeliveriesUseCase } from '../injectable-use-cases/admin/nest-fetch-deliveries.use-case'
 
+import { FetchPendingDeliveriesNearbyController } from './controllers/delivery/fetch-pending-deliveries-nearby.controller'
+import { NestFetchPendingDeliveriesNearbyUseCase } from '../injectable-use-cases/delivery/nest-fetch-pending-deliveries-nearby.use-case'
+
 @Module({
-  imports: [AdminDatabaseModule, AuthDatabaseModule, CryptographyModule],
+  imports: [
+    AdminDatabaseModule,
+    DeliveryDatabaseModule,
+    AuthDatabaseModule,
+    CryptographyModule,
+  ],
   controllers: [
     RegisterController,
     AuthenticateController,
@@ -103,6 +113,7 @@ import { NestFetchDeliveriesUseCase } from '../injectable-use-cases/admin/nest-f
     GetDeliveryDetailsController,
     DeleteDeliveryController,
     FetchDeliveriesController,
+    FetchPendingDeliveriesNearbyController,
   ],
   providers: [
     NestRegisterUseCase,
@@ -129,6 +140,7 @@ import { NestFetchDeliveriesUseCase } from '../injectable-use-cases/admin/nest-f
     NestGetDeliveryDetailsUseCase,
     NestDeleteDeliveryUseCase,
     NestFetchDeliveriesUseCase,
+    NestFetchPendingDeliveriesNearbyUseCase,
   ],
 })
 export class HttpModule {}

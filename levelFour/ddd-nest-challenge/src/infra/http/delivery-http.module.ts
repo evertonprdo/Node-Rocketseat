@@ -20,6 +20,9 @@ import { NestMarkDeliveryAsDeliveredUseCase } from '../injectable-use-cases/deli
 import { FetchDeliveredHistoryController } from './controllers/delivery/fetch-delivered-history.controller'
 import { NestFetchDeliveredHistoryUseCase } from '../injectable-use-cases/delivery/nest-fetch-delivered-history'
 
+import { FetchDeliveriesToDeliveryController } from './controllers/delivery/fetch-deliveries-to-delivery.controller'
+import { NestFetchDeliveriesToDeliveryUseCase } from '../injectable-use-cases/delivery/nest-fetch-deliveries-to-delivery'
+
 @Module({
   imports: [DeliveryDatabaseModule],
   controllers: [
@@ -29,6 +32,7 @@ import { NestFetchDeliveredHistoryUseCase } from '../injectable-use-cases/delive
     MarkDeliveryAsReturnedController,
     MarkDeliveryAsDeliveredController,
     FetchDeliveredHistoryController,
+    FetchDeliveriesToDeliveryController,
   ],
   providers: [
     NestGetDeliveryDetailsUseCase,
@@ -37,6 +41,7 @@ import { NestFetchDeliveredHistoryUseCase } from '../injectable-use-cases/delive
     NestMarkDeliveryAsReturnedUseCase,
     NestMarkDeliveryAsDeliveredUseCase,
     NestFetchDeliveredHistoryUseCase,
+    NestFetchDeliveriesToDeliveryUseCase,
   ],
 })
 export class DeliveryHttpModule {}

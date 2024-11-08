@@ -40,7 +40,8 @@ describe('Use Case: Authenticate', () => {
 
     expect(JSON.parse(result.value.accessToken)).toEqual({
       sub: user.id.toString(),
-      roles: ['USER'],
+      adminId: null,
+      deliveryWorkerId: null,
     })
   })
 
@@ -64,7 +65,8 @@ describe('Use Case: Authenticate', () => {
 
     expect(JSON.parse(result.value.accessToken)).toEqual({
       sub: user.id.toString(),
-      roles: ['USER', 'ADMIN'],
+      adminId: user.adminId?.toString(),
+      deliveryWorkerId: null,
     })
   })
 
@@ -88,7 +90,8 @@ describe('Use Case: Authenticate', () => {
 
     expect(JSON.parse(result.value.accessToken)).toEqual({
       sub: user.id.toString(),
-      roles: ['USER', 'DELIVERY_WORKER'],
+      adminId: null,
+      deliveryWorkerId: user.deliveryWorkerId?.toString(),
     })
   })
 })

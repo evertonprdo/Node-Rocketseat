@@ -1,7 +1,6 @@
 # todos
 
-- [ ] fetch deliveries to deliver
-
+- [x] fetch deliveries to deliver
 - [x] fetch delivered history
 - [x] fetch pending deliveries
 - [x] get delivery details

@@ -57,9 +57,23 @@ export class PrismaDeliveriesRepository implements DeliveriesRepository {
     const deliveries = await this.prisma.delivery.findMany({
       where: {
         deliveryWorkerId,
+        status: 'DELIVERED',
       },
       take,
       skip: (page - 1) * take,
+    })
+
+    return deliveries.map(PrismaDeliveryMapper.toDomain)
+  }
+
+  async findManyPickedUpByDeliveryWorkerId(
+    deliveryWorkerId: string,
+  ): Promise<Delivery[]> {
+    const deliveries = await this.prisma.delivery.findMany({
+      where: {
+        deliveryWorkerId,
+        status: 'PICKED_UP',
+      },
     })
 
     return deliveries.map(PrismaDeliveryMapper.toDomain)

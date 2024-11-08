@@ -78,6 +78,18 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
     return deliveries.slice((page - 1) * take, page * take)
   }
 
+  async findManyPickedUpByDeliveryWorkerId(
+    deliveryWorkerId: string,
+  ): Promise<Delivery[]> {
+    const deliveries = this.items.filter(
+      (item) =>
+        item.status === 'PICKED_UP' &&
+        item.deliveryWorkerId?.toString() === deliveryWorkerId,
+    )
+
+    return deliveries
+  }
+
   async findManyPendingByCity({ page, city }: FindManyPendingByCity) {
     const deliveriesByCity = this.items.filter((item) => {
       const customer = this.receiversRepository.items.find(
@@ -94,13 +106,8 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
   async save(delivery: Delivery) {
     const itemIndex = this.items.findIndex((item) => item.id === delivery.id)
 
-    if (
-      !this.items[itemIndex].attachment &&
-      delivery.attachment
-    ) {
-      await this.deliveryAttachmentsRepository.create(
-        delivery.attachment,
-      )
+    if (!this.items[itemIndex].attachment && delivery.attachment) {
+      await this.deliveryAttachmentsRepository.create(delivery.attachment)
     }
 
     this.items[itemIndex] = delivery

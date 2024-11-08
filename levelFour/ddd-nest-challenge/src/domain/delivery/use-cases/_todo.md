@@ -1,1 +1,0 @@
-- [ ] fetch deliveries to deliver

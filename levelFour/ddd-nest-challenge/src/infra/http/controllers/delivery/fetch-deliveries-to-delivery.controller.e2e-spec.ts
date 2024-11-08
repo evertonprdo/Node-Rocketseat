@@ -12,7 +12,7 @@ import { DeliveryWorkerFactory } from '@/infra/_test/factories/delivery/delivery
 import { AppModule } from '@/infra/app.module'
 import { DeliveryDatabaseModule } from '@/infra/database/prisma/delivery/delivery-database.module'
 
-describe('Fetch Delivered History', () => {
+describe('Fetch Deliveries To Delivery', () => {
   let app: INestApplication
   let accessTokenFactory: AccessTokenFactory
 
@@ -41,7 +41,7 @@ describe('Fetch Delivered History', () => {
     await app.init()
   })
 
-  test('[GET] /app/deliveries/delivered-history', async () => {
+  test('[GET] /app/deliveries/to-delivery', async () => {
     const city = 'test-town'
 
     const receivers = await Promise.all(
@@ -58,7 +58,7 @@ describe('Fetch Delivered History', () => {
     const deliveries = await Promise.all(
       receivers.map((receiver) =>
         deliveryFactory.makePrismaDelivery({
-          status: 'DELIVERED',
+          status: 'PICKED_UP',
           receiverId: receiver.id,
           pickedUpAt: new Date(),
           deliveredAt: new Date(),
@@ -70,7 +70,7 @@ describe('Fetch Delivered History', () => {
     await Promise.all(
       receivers.map((receiver) =>
         deliveryFactory.makePrismaDelivery({
-          status: 'PICKED_UP',
+          status: 'DELIVERED',
           receiverId: receiver.id,
           pickedUpAt: new Date(),
           deliveryWorkerId: deliveryWorker.id,
@@ -83,7 +83,7 @@ describe('Fetch Delivered History', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .get('/app/deliveries/delivered-history')
+      .get('/app/deliveries/to-delivery')
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(200)
@@ -98,11 +98,11 @@ describe('Fetch Delivered History', () => {
     )
   })
 
-  test('[GET] /app/deliveries/delivered-history, roles: [DELIVERY_WORKER]', async () => {
+  test('[GET] /app/deliveries/to-delivery, roles: [DELIVERY_WORKER]', async () => {
     const accessToken = accessTokenFactory.makeAdmin()
 
     const response = await request(app.getHttpServer())
-      .get('/app/deliveries/delivered-history')
+      .get('/app/deliveries/to-delivery')
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(403)

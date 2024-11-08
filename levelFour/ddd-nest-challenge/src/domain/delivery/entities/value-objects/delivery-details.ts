@@ -1,9 +1,9 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { ValueObject } from '@/core/entities/value-object'
 
+import { Attachment } from '@/domain/_shared/entities/attachment'
 import { StatusKeys } from '@/domain/_shared/entities/types/delivery'
 import { Address } from '@/domain/_shared/entities/value-objects/address'
-import { DeliveryAttachment } from '@/domain/_shared/entities/delivery-attachment'
 
 export interface DeliveryDetailsProps {
   deliveryId: UniqueEntityId
@@ -11,7 +11,7 @@ export interface DeliveryDetailsProps {
   createdAt: Date
   pickedUpAt?: Date | null
   deliveredAt?: Date | null
-  attachment?: DeliveryAttachment | null
+  attachment?: Attachment | null
   updatedAt?: Date | null
 
   receiver: {

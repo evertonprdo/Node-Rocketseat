@@ -1,7 +1,7 @@
 import { Either, left, right } from '@/core/either'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-import { DeliveryAttachment } from '@/domain/_shared/entities/delivery-attachment'
+import { DeliveryAttachment } from '@/domain/_shared/entities/value-objects/delivery-attachment'
 
 import { Delivery } from '../entities/delivery'
 import { DeliveriesRepository } from '../repositories/deliveries.repository'

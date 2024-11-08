@@ -1,6 +1,5 @@
-import { DeliveryAttachment } from '../entities/delivery-attachment'
+import { DeliveryAttachment } from '../entities/value-objects/delivery-attachment'
 
 export interface DeliveryAttachmentsRepository {
   findById(id: string): Promise<DeliveryAttachment | null>
-  create(attachment: DeliveryAttachment): Promise<void>
 }

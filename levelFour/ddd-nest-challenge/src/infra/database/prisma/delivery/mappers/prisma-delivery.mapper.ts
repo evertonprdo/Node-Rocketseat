@@ -1,9 +1,19 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+
 import { Delivery } from '@/domain/delivery/entities/delivery'
+import { DeliveryAttachment } from '@/domain/_shared/entities/value-objects/delivery-attachment'
+
 import { Prisma, Delivery as PrismaDelivery } from '@prisma/client'
 
 export class PrismaDeliveryMapper {
   static toDomain(raw: PrismaDelivery): Delivery {
+    const attachment = raw.attachmentId
+      ? DeliveryAttachment.create({
+          deliveryId: new UniqueEntityId(raw.id),
+          attachmentId: new UniqueEntityId(raw.attachmentId),
+        })
+      : null
+
     const deliveryWorkerId = raw.deliveryWorkerId
       ? new UniqueEntityId(raw.deliveryWorkerId)
       : null
@@ -17,6 +27,7 @@ export class PrismaDeliveryMapper {
         pickedUpAt: raw.pickedUpAt,
         deliveryWorkerId,
         deliveredAt: raw.deliveredAt,
+        attachment,
       },
       new UniqueEntityId(raw.id),
     )
@@ -32,6 +43,7 @@ export class PrismaDeliveryMapper {
       pickedUpAt: delivery.pickedUpAt,
       deliveryWorkerId: delivery.deliveryWorkerId?.toString(),
       deliveredAt: delivery.deliveredAt,
+      attachmentId: delivery.attachment?.attachmentId.toString(),
     }
   }
 }

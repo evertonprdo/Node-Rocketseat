@@ -2,7 +2,7 @@ import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import { StatusKeys } from '@/domain/_shared/entities/types/delivery'
-import { DeliveryAttachment } from '@/domain/_shared/entities/delivery-attachment'
+import { DeliveryAttachment } from '@/domain/_shared/entities/value-objects/delivery-attachment'
 
 import { DeliveryStatusUpdatedEvent } from '../events/delivery-status-updated.event'
 

@@ -3,7 +3,7 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
 import { StatusKeys } from '@/domain/_shared/entities/types/delivery'
-import { DeliveryAttachment } from '@/domain/_shared/entities/delivery-attachment'
+import { DeliveryAttachment } from '@/domain/_shared/entities/value-objects/delivery-attachment'
 
 import { DeliveryCreatedEvent } from '../events/delivery-created.event'
 

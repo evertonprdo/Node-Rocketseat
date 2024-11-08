@@ -9,6 +9,7 @@ import {
   Attachment as PrismaAttachment,
 } from '@prisma/client'
 
+import { Attachment } from '@/domain/_shared/entities/attachment'
 import { DeliveryDetails } from '@/domain/delivery/entities/value-objects/delivery-details'
 
 type PrismaDeliveryDetails = {
@@ -27,6 +28,16 @@ export class PrismaDeliveryDetailsMapper {
       neighborhood: raw.customer.neighborhood,
     })
 
+    const attachment = raw.attachment
+      ? Attachment.create(
+          {
+            title: raw.attachment.title,
+            url: raw.attachment.url,
+          },
+          new UniqueEntityId(raw.attachment.id),
+        )
+      : null
+
     return DeliveryDetails.create({
       deliveryId: new UniqueEntityId(raw.id),
       status: raw.status,
@@ -34,6 +45,7 @@ export class PrismaDeliveryDetailsMapper {
       updatedAt: raw.updatedAt,
       pickedUpAt: raw.pickedUpAt,
       deliveredAt: raw.deliveredAt,
+      attachment,
 
       receiver: {
         id: new UniqueEntityId(raw.customer.id),

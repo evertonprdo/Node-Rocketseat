@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 
 import { DeliveryDatabaseModule } from '../database/prisma/delivery/delivery-database.module'
+import { StorageModule } from '../storage/storage.module'
 
 import { FetchPendingDeliveriesNearbyController } from './controllers/delivery/fetch-pending-deliveries-nearby.controller'
 import { NestFetchPendingDeliveriesNearbyUseCase } from '../injectable-use-cases/delivery/nest-fetch-pending-deliveries-nearby.use-case'
@@ -23,8 +24,11 @@ import { NestFetchDeliveredHistoryUseCase } from '../injectable-use-cases/delive
 import { FetchDeliveriesToDeliveryController } from './controllers/delivery/fetch-deliveries-to-delivery.controller'
 import { NestFetchDeliveriesToDeliveryUseCase } from '../injectable-use-cases/delivery/nest-fetch-deliveries-to-delivery'
 
+import { UploadAttachmentController } from './controllers/delivery/upload-attachment.controller'
+import { NestUploadAndCreateAttachmentUseCase } from '../injectable-use-cases/delivery/nest-upload-and-create-attachment.use-case'
+
 @Module({
-  imports: [DeliveryDatabaseModule],
+  imports: [DeliveryDatabaseModule, StorageModule],
   controllers: [
     GetDeliveryDetailsController,
     FetchPendingDeliveriesNearbyController,
@@ -33,6 +37,7 @@ import { NestFetchDeliveriesToDeliveryUseCase } from '../injectable-use-cases/de
     MarkDeliveryAsDeliveredController,
     FetchDeliveredHistoryController,
     FetchDeliveriesToDeliveryController,
+    UploadAttachmentController,
   ],
   providers: [
     NestGetDeliveryDetailsUseCase,
@@ -42,6 +47,7 @@ import { NestFetchDeliveriesToDeliveryUseCase } from '../injectable-use-cases/de
     NestMarkDeliveryAsDeliveredUseCase,
     NestFetchDeliveredHistoryUseCase,
     NestFetchDeliveriesToDeliveryUseCase,
+    NestUploadAndCreateAttachmentUseCase,
   ],
 })
 export class DeliveryHttpModule {}

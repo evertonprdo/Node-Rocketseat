@@ -7,6 +7,7 @@ import { envSchema } from '@/infra/env'
 import { PrismaClient } from '@prisma/client'
 
 config({ path: '.env', override: true })
+config({ path: '.env.test', override: true })
 
 const env = envSchema.parse(process.env)
 

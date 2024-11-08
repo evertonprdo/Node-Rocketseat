@@ -2,8 +2,11 @@ import { DomainEvents } from '@/core/events/domain-events'
 
 import { InMemoryReceiversRepository } from './in-memory-receivers.repository'
 import { InMemoryDeliveryWorkersRepository } from './in-memory-delivery-workers.repository'
+import { InMemoryAttachmentsRepository } from '@/domain/_shared/_tests/repositores/in-memory-attachments.repository'
+import { InMemoryDeliveryAttachmentsRepository } from '@/domain/_shared/_tests/repositores/in-memory-delivery-attachments.repository'
 
 import { Delivery } from '../../entities/delivery'
+import { Attachment } from '@/domain/_shared/entities/attachment'
 import { DeliveryDetails } from '../../entities/value-objects/delivery-details'
 
 import {
@@ -11,7 +14,6 @@ import {
   findManyDeliveredByDeliveryWorkerId,
   FindManyPendingByCity,
 } from '../../repositories/deliveries.repository'
-import { InMemoryDeliveryAttachmentsRepository } from '@/domain/_shared/_tests/repositores/in-memory-delivery-attachments.repository'
 
 export class InMemoryDeliveriesRepository implements DeliveriesRepository {
   public items: Delivery[] = []
@@ -20,6 +22,7 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
     public deliveryWorkersRepository: InMemoryDeliveryWorkersRepository,
     public receiversRepository: InMemoryReceiversRepository,
     public deliveryAttachmentsRepository: InMemoryDeliveryAttachmentsRepository,
+    public attachmentsRepository: InMemoryAttachmentsRepository,
   ) {}
 
   async findById(id: string) {
@@ -47,14 +50,38 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
       throw new Error()
     }
 
+    let deliveryAttachment: Attachment | undefined
+
+    if (delivery.attachment !== null && delivery.attachment !== undefined) {
+      const attachment = delivery.attachment
+
+      deliveryAttachment = this.attachmentsRepository.items.find((item) =>
+        item.id.equals(attachment.attachmentId),
+      )
+
+      if (!deliveryAttachment) {
+        throw new Error()
+      }
+    }
+
+    const attachment = deliveryAttachment
+      ? Attachment.create(
+          {
+            title: deliveryAttachment.title,
+            url: deliveryAttachment.url,
+          },
+          deliveryAttachment.id,
+        )
+      : null
+
     return DeliveryDetails.create({
       deliveryId: delivery.id,
       status: delivery.status,
       createdAt: delivery.createdAt,
       pickedUpAt: delivery.pickedUpAt,
       deliveredAt: delivery.deliveredAt,
-      attachment: delivery.attachment,
       updatedAt: delivery.updatedAt,
+      attachment,
 
       receiver: {
         id: customer.id,
@@ -105,10 +132,6 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
 
   async save(delivery: Delivery) {
     const itemIndex = this.items.findIndex((item) => item.id === delivery.id)
-
-    if (!this.items[itemIndex].attachment && delivery.attachment) {
-      await this.deliveryAttachmentsRepository.create(delivery.attachment)
-    }
 
     this.items[itemIndex] = delivery
 

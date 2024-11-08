@@ -6,7 +6,11 @@ import {
   ConflictException,
   NotFoundException,
   BadRequestException,
+  Body,
 } from '@nestjs/common'
+
+import { z } from 'zod'
+import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
 
 import { Role } from '@/infra/auth/roles/role.enum'
 import { Roles } from '@/infra/auth/roles/roles.decorator'
@@ -20,6 +24,18 @@ import { DeliveryAlreadyPickedUpError } from '@/domain/delivery/use-cases/errors
 
 import { NestMarkDeliveryAsDeliveredUseCase } from '@/infra/injectable-use-cases/delivery/nest-mark-delivery-as-delivered.use-case'
 
+const markDeliveryAsDeliveredBodySchema = z.object({
+  attachmentId: z.string().uuid(),
+})
+
+type MarkDeliveryAsDeliveredBodySchema = z.infer<
+  typeof markDeliveryAsDeliveredBodySchema
+>
+
+const bodyValidationPipe = new ZodValidationPipe(
+  markDeliveryAsDeliveredBodySchema,
+)
+
 @Controller('/app/deliveries/:id/deliver')
 @Roles(Role.DELIVERY_WORKER)
 export class MarkDeliveryAsDeliveredController {
@@ -32,7 +48,9 @@ export class MarkDeliveryAsDeliveredController {
   async handle(
     @Param('id') deliveryId: string,
     @CurrentUser() deliveryWorker: UserPayload,
+    @Body(bodyValidationPipe) body: MarkDeliveryAsDeliveredBodySchema,
   ) {
+    const { attachmentId } = body
     const { deliveryWorkerId } = deliveryWorker
 
     if (!deliveryWorkerId) {
@@ -42,7 +60,7 @@ export class MarkDeliveryAsDeliveredController {
     const result = await this.markDeliveryAsDelivered.execute({
       deliveryId,
       deliveryWorkerId,
-      attachmentId: '#todo',
+      attachmentId,
     })
 
     if (result.isLeft()) {

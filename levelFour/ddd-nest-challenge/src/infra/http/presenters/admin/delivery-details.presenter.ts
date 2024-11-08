@@ -2,6 +2,14 @@ import { DeliveryDetails } from '@/domain/admin/entities/values-objects/delivery
 
 export class DeliveryDetailsPresenter {
   static toHTTP(deliveryDetails: DeliveryDetails) {
+    const attachment = deliveryDetails.attachment
+      ? {
+          id: deliveryDetails.attachment.id.toString(),
+          title: deliveryDetails.attachment.title,
+          url: deliveryDetails.attachment.url,
+        }
+      : null
+
     const address = {
       cep: deliveryDetails.customer.address.cep.toDecorated(),
       state: deliveryDetails.customer.address.state,
@@ -27,6 +35,7 @@ export class DeliveryDetailsPresenter {
       createdAt: deliveryDetails.createdAt ?? null,
       pickedUpAt: deliveryDetails.pickedUpAt ?? null,
       updatedAt: deliveryDetails.updatedAt ?? null,
+      attachment,
 
       customer: {
         id: deliveryDetails.customer.id.toString(),

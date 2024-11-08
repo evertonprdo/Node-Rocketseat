@@ -1,11 +1,11 @@
 import { Either, left, right } from '@/core/either'
 
-import { Attachment } from '../entities/attachment'
-import { AttachmentsRepository } from '../repositories/attachments.repository'
+import { Attachment } from '../../_shared/entities/attachment'
+import { AttachmentsRepository } from '../../_shared/repositories/attachments.repository'
 
 import { InvalidAttachmentTypeError } from './errors/InvalidAttachmentType.error'
 
-import { Uploader } from '../storage/uploader'
+import { Uploader } from '../../_shared/storage/uploader'
 
 interface UploadAndCreateAttachmentUseCaseRequest {
   fileName: string

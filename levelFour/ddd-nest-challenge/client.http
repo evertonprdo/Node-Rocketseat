@@ -32,7 +32,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "userId": "26190edf-1c88-4d65-a6d2-332d0e5528ea",
+  "userId": "c97c9607-567b-4a72-bbf5-3d84179cc3c0",
   "operationZone": "Test Town"
 }
 

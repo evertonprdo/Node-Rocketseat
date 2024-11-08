@@ -21,7 +21,7 @@
 - [x] Only admin users can perform CRUD operations on orders.
 - [x] Only admin users can perform CRUD operations on deliverers.
 - [x] Only admin users can perform CRUD operations on recipients.
-- [ ] To mark an order as delivered, it is mandatory to send a photo.
+- [x] To mark an order as delivered, it is mandatory to send a photo.
 - [x] Only the deliverer who withdrew the order can mark it as delivered.
 - [x] Only the admin can change a user's password.
 - [x] A deliverer cannot list another deliverer's orders.

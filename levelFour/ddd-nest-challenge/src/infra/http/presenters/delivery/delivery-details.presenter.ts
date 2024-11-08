@@ -2,6 +2,14 @@ import { DeliveryDetails } from '@/domain/delivery/entities/value-objects/delive
 
 export class DeliveryDetailsPresenter {
   static toHTTP(deliveryDetails: DeliveryDetails) {
+    const attachment = deliveryDetails.attachment
+      ? {
+          id: deliveryDetails.attachment.id.toString(),
+          title: deliveryDetails.attachment.title,
+          url: deliveryDetails.attachment.url,
+        }
+      : null
+
     return {
       deliveryId: deliveryDetails.deliveryId.toString(),
       status: deliveryDetails.status,
@@ -9,6 +17,7 @@ export class DeliveryDetailsPresenter {
       updatedAt: deliveryDetails.updatedAt,
       pickedUpAt: deliveryDetails.pickedUpAt,
       deliveredAt: deliveryDetails.deliveredAt,
+      attachment,
 
       receiver: {
         id: deliveryDetails.receiver.id.toString(),

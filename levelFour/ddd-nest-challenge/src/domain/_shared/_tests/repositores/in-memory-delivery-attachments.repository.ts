@@ -1,4 +1,4 @@
-import { DeliveryAttachment } from '../../entities/delivery-attachment'
+import { DeliveryAttachment } from '../../entities/value-objects/delivery-attachment'
 import { DeliveryAttachmentsRepository } from '../../repositories/delivery-attachments.repository'
 
 export class InMemoryDeliveryAttachmentsRepository
@@ -8,7 +8,7 @@ export class InMemoryDeliveryAttachmentsRepository
 
   async findById(id: string) {
     const deliveryAttachment = this.items.find(
-      (item) => item.id.toString() === id,
+      (item) => item.attachmentId.toString() === id,
     )
 
     if (!deliveryAttachment) {
@@ -16,9 +16,5 @@ export class InMemoryDeliveryAttachmentsRepository
     }
 
     return deliveryAttachment
-  }
-
-  async create(attachment: DeliveryAttachment) {
-    this.items.push(attachment)
   }
 }

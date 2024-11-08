@@ -2,6 +2,10 @@ import { Delivery } from '@/domain/admin/entities/delivery'
 
 export class DeliveryPresenter {
   static toHTTP(delivery: Delivery) {
+    const attachmentId = delivery.attachment
+      ? delivery.attachment.attachmentId.toString()
+      : null
+
     return {
       id: delivery.id.toString(),
       status: delivery.status,
@@ -13,6 +17,7 @@ export class DeliveryPresenter {
       pickedUpAt: delivery.pickedUpAt,
       deliveredAt: delivery.deliveredAt,
       updatedAt: delivery.updatedAt,
+      attachmentId,
     }
   }
 }

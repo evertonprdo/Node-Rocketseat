@@ -5,6 +5,7 @@ import request from 'supertest'
 import { AccessTokenFactory } from '@/infra/_test/factories/access-token.factory'
 import { DeliveryFactory } from '@/infra/_test/factories/delivery/delivery.factory'
 import { ReceiverFactory } from '@/infra/_test/factories/delivery/receiver.factory'
+import { AttachmentFactory } from '@/infra/_test/factories/delivery/attachment.factory'
 
 import { AppModule } from '@/infra/app.module'
 import { DeliveryDatabaseModule } from '@/infra/database/prisma/delivery/delivery-database.module'
@@ -17,6 +18,7 @@ describe('Mark Delivery As Delivered', () => {
   let accessTokenFactory: AccessTokenFactory
 
   let prisma: PrismaService
+  let attachmentFactory: AttachmentFactory
   let receiverFactory: ReceiverFactory
   let deliveryFactory: DeliveryFactory
   let deliveryWorkerFactory: DeliveryWorkerFactory
@@ -30,6 +32,7 @@ describe('Mark Delivery As Delivered', () => {
         DeliveryFactory,
         DeliveryWorkerFactory,
         AccessTokenFactory,
+        AttachmentFactory,
       ],
     }).compile()
 
@@ -37,6 +40,7 @@ describe('Mark Delivery As Delivered', () => {
     accessTokenFactory = moduleRef.get(AccessTokenFactory)
 
     prisma = moduleRef.get(PrismaService)
+    attachmentFactory = moduleRef.get(AttachmentFactory)
     receiverFactory = moduleRef.get(ReceiverFactory)
     deliveryFactory = moduleRef.get(DeliveryFactory)
     deliveryWorkerFactory = moduleRef.get(DeliveryWorkerFactory)
@@ -59,6 +63,8 @@ describe('Mark Delivery As Delivered', () => {
       deliveryWorkerId: deliveryWorker.id,
     })
 
+    const attachment = await attachmentFactory.makePrismaAttachment()
+
     const accessToken = accessTokenFactory.makeDeliveryWorker({
       deliveryWorkerId: deliveryWorker.id.toString(),
     })
@@ -66,6 +72,9 @@ describe('Mark Delivery As Delivered', () => {
     const response = await request(app.getHttpServer())
       .put(`/app/deliveries/${delivery.id.toString()}/deliver`)
       .set('Authorization', `Bearer ${accessToken}`)
+      .send({
+        attachmentId: attachment.id.toString(),
+      })
 
     expect(response.statusCode).toBe(204)
 
@@ -80,6 +89,7 @@ describe('Mark Delivery As Delivered', () => {
       status: 'DELIVERED',
       deliveryWorkerId: deliveryWorker.id.toString(),
       deliveredAt: expect.any(Date),
+      attachmentId: attachment.id.toString(),
     })
   })
 

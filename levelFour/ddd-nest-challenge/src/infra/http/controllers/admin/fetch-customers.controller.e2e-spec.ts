@@ -5,6 +5,7 @@ import request from 'supertest'
 import { AppModule } from '@/infra/app.module'
 import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-database.module'
 
+import { UserFactory } from '@/infra/_test/factories/admin/user.factory'
 import { CustomerFactory } from '@/infra/_test/factories/admin/customer.factory'
 import { AccessTokenFactory } from '@/infra/_test/factories/access-token.factory'
 
@@ -13,24 +14,32 @@ describe('Fetch Customers (e2e)', () => {
   let accessTokenFactory: AccessTokenFactory
 
   let customerFactory: CustomerFactory
+  let userFactory: UserFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, AdminDatabaseModule],
-      providers: [CustomerFactory, AccessTokenFactory],
+      providers: [CustomerFactory, AccessTokenFactory, UserFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
     accessTokenFactory = moduleRef.get(AccessTokenFactory)
 
     customerFactory = moduleRef.get(CustomerFactory)
+    userFactory = moduleRef.get(UserFactory)
 
     await app.init()
   })
 
   test('[GET] /customers', async () => {
+    const users = await Promise.all(
+      Array.from({ length: 3 }, () => userFactory.makePrismaUser()),
+    )
+
     const customers = await Promise.all(
-      Array.from({ length: 3 }, () => customerFactory.makePrismaCustomer()),
+      users.map((item) =>
+        customerFactory.makePrismaCustomer({ userId: item.id }),
+      ),
     )
 
     const accessToken = accessTokenFactory.makeAdmin()

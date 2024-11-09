@@ -11,7 +11,7 @@ export function makeCustomer(
 ) {
   const customer = Customer.create(
     {
-      name: faker.person.fullName(),
+      userId: new UniqueEntityId(),
       email: faker.internet.email(),
       address: makeAddress(),
       ...overwrite,

@@ -33,8 +33,8 @@ import { NestUnassignAdminUseCase } from '../injectable-use-cases/admin/nest-una
 import { AssignAdminController } from './controllers/admin/assign-admin.controller'
 import { NestAssignAdminUseCase } from '../injectable-use-cases/admin/nest-assign-admin.use-case'
 
-import { CreateCustomerController } from './controllers/admin/create-customer.controller'
-import { NestCreateCustomerUseCase } from '../injectable-use-cases/admin/nest-create-customer.use-case'
+import { AssignCustomerController } from './controllers/admin/assign-customer.controller'
+import { NestAssignCustomerUseCase } from '../injectable-use-cases/admin/nest-create-customer.use-case'
 
 import { GetCustomerController } from './controllers/admin/get-customer.controller'
 import { NestGetCustomerUseCase } from '../injectable-use-cases/admin/nest-get-customer.use-case'
@@ -45,8 +45,8 @@ import { NestFetchCustomersUseCase } from '../injectable-use-cases/admin/nest-fe
 import { EditCustomerController } from './controllers/admin/edit-customer.controller'
 import { NestEditCustomerUseCase } from '../injectable-use-cases/admin/nest-edit-customer.use-case'
 
-import { DeleteCustomerController } from './controllers/admin/delete-customer.controller'
-import { NestDeleteCustomerUseCase } from '../injectable-use-cases/admin/nest-delete-customer.use-case'
+import { UnassignCustomerController } from './controllers/admin/unassign-customer.controller'
+import { NestUnassignCustomerUseCase } from '../injectable-use-cases/admin/nest-delete-customer.use-case'
 
 import { AssignDeliveryWorkerController } from './controllers/admin/assign-delivery-worker.controller'
 import { NestAssignDeliveryWorkerUseCase } from '../injectable-use-cases/admin/nest-assign-delivery-worker.use-case'
@@ -92,11 +92,11 @@ import { NestFetchDeliveriesUseCase } from '../injectable-use-cases/admin/nest-f
     UnassignAdminController,
     GetAdminController,
     EditAdminController,
-    CreateCustomerController,
+    AssignCustomerController,
     GetCustomerController,
     FetchCustomersController,
     EditCustomerController,
-    DeleteCustomerController,
+    UnassignCustomerController,
     AssignDeliveryWorkerController,
     UnassignDeliveryWorkerController,
     GetDeliveryWorkerController,
@@ -117,11 +117,11 @@ import { NestFetchDeliveriesUseCase } from '../injectable-use-cases/admin/nest-f
     NestUnassignAdminUseCase,
     NestGetAdminUseCase,
     NestEditAdminUseCase,
-    NestCreateCustomerUseCase,
+    NestAssignCustomerUseCase,
     NestGetCustomerUseCase,
     NestFetchCustomersUseCase,
     NestEditCustomerUseCase,
-    NestDeleteCustomerUseCase,
+    NestUnassignCustomerUseCase,
     NestAssignDeliveryWorkerUseCase,
     NestUnassignDeliveryWorkerUseCase,
     NestGetDeliveryWorkerUseCase,

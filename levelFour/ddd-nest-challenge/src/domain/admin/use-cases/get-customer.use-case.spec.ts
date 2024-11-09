@@ -1,4 +1,5 @@
 import { makeCustomer } from '../_tests/factories/make-customer'
+import { makeUser } from '../_tests/factories/make-user'
 import { makeInMemoryCustomersRepository } from '../_tests/repositories/factories/make-in-memory-customers-repository'
 
 import { InMemoryCustomersRepository } from '../_tests/repositories/in-memory-customers.repository'
@@ -17,7 +18,10 @@ describe('Use Cases: Get Customer', () => {
   })
 
   it('should get a customer', async () => {
-    const customer = makeCustomer()
+    const user = makeUser()
+    customersRepository.usersRepository.items.push(user)
+
+    const customer = makeCustomer({ userId: user.id })
     customersRepository.items.push(customer)
 
     const result = await sut.execute({
@@ -25,6 +29,12 @@ describe('Use Cases: Get Customer', () => {
     })
 
     expect(result.isRight()).toEqual(true)
-    expect(result.value).toEqual({ customer: customersRepository.items[0] })
+
+    expect(result.value).toEqual({
+      customer: expect.objectContaining({
+        userId: customer.userId,
+        customerId: customer.id,
+      }),
+    })
   })
 })

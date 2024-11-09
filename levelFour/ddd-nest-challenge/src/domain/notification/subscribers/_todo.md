@@ -1,2 +1,0 @@
-- [ ] delivery-status-updated
-- [ ] delivery-created

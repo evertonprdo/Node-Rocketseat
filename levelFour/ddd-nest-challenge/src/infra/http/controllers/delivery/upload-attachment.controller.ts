@@ -18,7 +18,7 @@ import { InvalidAttachmentTypeError } from '@/domain/delivery/use-cases/errors/I
 import { NestUploadAndCreateAttachmentUseCase } from '@/infra/injectable-use-cases/delivery/nest-upload-and-create-attachment.use-case'
 
 @Controller('/attachments')
-@Roles(Role.DELIVERY_WORKER)
+@Roles(Role.DELIVERY_WORKER, Role.ADMIN)
 export class UploadAttachmentController {
   constructor(
     private uploadAndCreateAttachment: NestUploadAndCreateAttachmentUseCase,

@@ -37,8 +37,8 @@ describe('Upload attachment (e2e)', () => {
     })
   })
 
-  test('[POST] /app/deliveries/:id/return, roles: [DELIVERY_WORKER]', async () => {
-    const accessToken = accessTokenFactory.makeAdmin()
+  test('[POST] /app/deliveries/:id/return, roles: [DELIVERY_WORKER, ADMIN]', async () => {
+    const accessToken = accessTokenFactory.makeUser()
 
     const response = await request(app.getHttpServer())
       .post('/attachments')

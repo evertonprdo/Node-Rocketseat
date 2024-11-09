@@ -1,9 +1,9 @@
 import { Either, left, right } from '@/core/either'
 
-import { Customer } from '../entities/customer'
 import { CustomersRepository } from '../repositories/customers.repository'
 
 import { ResourceNotFoundError } from '@/domain/_shared/errors/resource-not-found.error'
+import { CustomerDetails } from '../entities/values-objects/customer-details'
 
 interface GetCustomerUseCaseRequest {
   customerId: string
@@ -11,7 +11,7 @@ interface GetCustomerUseCaseRequest {
 
 type GetCustomerUseCaseResponse = Either<
   ResourceNotFoundError,
-  { customer: Customer }
+  { customer: CustomerDetails }
 >
 
 export class GetCustomerUseCase {
@@ -20,7 +20,7 @@ export class GetCustomerUseCase {
   async execute({
     customerId,
   }: GetCustomerUseCaseRequest): Promise<GetCustomerUseCaseResponse> {
-    const customer = await this.customersRepository.findById(customerId)
+    const customer = await this.customersRepository.findDetailsById(customerId)
 
     if (!customer) {
       return left(new ResourceNotFoundError())

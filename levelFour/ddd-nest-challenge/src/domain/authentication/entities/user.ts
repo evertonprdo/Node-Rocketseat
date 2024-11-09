@@ -6,6 +6,7 @@ import { CPF } from '@/domain/_shared/entities/value-objects/cpf'
 export interface UserProps {
   cpf: CPF
   password: string
+
   adminId?: UniqueEntityId | null
   deliveryWorkerId?: UniqueEntityId | null
 }

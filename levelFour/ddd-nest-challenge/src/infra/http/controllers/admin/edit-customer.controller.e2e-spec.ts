@@ -5,6 +5,7 @@ import request from 'supertest'
 import { AppModule } from '@/infra/app.module'
 import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-database.module'
 
+import { UserFactory } from '@/infra/_test/factories/admin/user.factory'
 import { CustomerFactory } from '@/infra/_test/factories/admin/customer.factory'
 import { AccessTokenFactory } from '@/infra/_test/factories/access-token.factory'
 
@@ -16,11 +17,12 @@ describe('Edit Customer (e2e)', () => {
 
   let prisma: PrismaService
   let customerFactory: CustomerFactory
+  let userFactory: UserFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, AdminDatabaseModule],
-      providers: [CustomerFactory, AccessTokenFactory],
+      providers: [CustomerFactory, AccessTokenFactory, UserFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -28,13 +30,15 @@ describe('Edit Customer (e2e)', () => {
 
     prisma = moduleRef.get(PrismaService)
     customerFactory = moduleRef.get(CustomerFactory)
+    userFactory = moduleRef.get(UserFactory)
 
     await app.init()
   })
 
   test('[PUT] customers/:id', async () => {
+    const user = await userFactory.makePrismaUser()
     const customer = await customerFactory.makePrismaCustomer({
-      name: 'old-name',
+      userId: user.id,
       email: 'old@email.com',
     })
 
@@ -44,7 +48,7 @@ describe('Edit Customer (e2e)', () => {
       .put(`/customers/${customer.id.toString()}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        name: 'new-name',
+        userId: user.id.toString(),
         email: 'new@email.com',
         cep: customer.address.cep.value,
         city: customer.address.city,
@@ -64,7 +68,6 @@ describe('Edit Customer (e2e)', () => {
 
     expect(customerOnDatabase).toBeTruthy()
     expect(customerOnDatabase).toMatchObject({
-      name: 'new-name',
       email: 'new@email.com',
     })
   })

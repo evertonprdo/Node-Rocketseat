@@ -20,7 +20,6 @@ import { ResourceNotFoundError } from '@/domain/_shared/errors/resource-not-foun
 import { NestEditCustomerUseCase } from '@/infra/injectable-use-cases/admin/nest-edit-customer.use-case'
 
 const editCustomerBodySchema = z.object({
-  name: z.string(),
   email: z.string().email(),
   cep: z.string(),
   city: z.string(),
@@ -45,14 +44,13 @@ export class EditCustomerController {
     @Body(bodyValidationPipe) body: EditCustomerBodySchema,
     @Param('id') customerId: string,
   ) {
-    const { cep, city, name, email, neighborhood, number, state, street } = body
+    const { cep, city, email, neighborhood, number, state, street } = body
 
     const result = await this.editCustomer.execute({
       cep,
       city,
       customerId,
       email,
-      name,
       neighborhood,
       number,
       state,

@@ -5,7 +5,10 @@ import { PaginationParams } from '@/domain/_shared/repositories/pagination-param
 import { CustomersRepository } from '@/domain/admin/repositories/customers.repository'
 
 import { PrismaService } from '../../prisma.service'
+import { CustomerDetails } from '@/domain/admin/entities/values-objects/customer-details'
+
 import { PrismaCustomerMapper } from '../mappers/prisma-customer.mapper'
+import { PrismaCustomerDetailsMapper } from '../mappers/prisma-customer-details.mapper'
 
 @Injectable()
 export class PrismaCustomersRepository implements CustomersRepository {
@@ -29,6 +32,37 @@ export class PrismaCustomersRepository implements CustomersRepository {
     const customer = await this.prisma.customer.findUnique({
       where: {
         id,
+      },
+    })
+
+    if (!customer) {
+      return null
+    }
+
+    return PrismaCustomerMapper.toDomain(customer)
+  }
+
+  async findDetailsById(id: string): Promise<CustomerDetails | null> {
+    const customer = await this.prisma.customer.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        user: true,
+      },
+    })
+
+    if (!customer) {
+      return null
+    }
+
+    return PrismaCustomerDetailsMapper.toDomain(customer)
+  }
+
+  async findByUserId(id: string): Promise<Customer | null> {
+    const customer = await this.prisma.customer.findUnique({
+      where: {
+        userId: id,
       },
     })
 

@@ -44,13 +44,16 @@ describe('Get Delivery Details (e2e)', () => {
   })
 
   test('[GET] /deliveries/:id', async () => {
-    const user = await userFactory.makePrismaUser()
+    const deliveryUser = await userFactory.makePrismaUser()
 
     const deliveryWorker = await deliveryWorkerFactory.makePrismaDeliveryWorker(
-      { userId: user.id },
+      { userId: deliveryUser.id },
     )
 
-    const customer = await customerFactory.makePrismaCustomer()
+    const customerUser = await userFactory.makePrismaUser()
+    const customer = await customerFactory.makePrismaCustomer({
+      userId: customerUser.id,
+    })
 
     const createdAt = new Date()
     const pickedUpAt = new Date()

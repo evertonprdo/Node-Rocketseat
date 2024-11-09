@@ -7,29 +7,35 @@ import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-databas
 
 import { CustomerFactory } from '@/infra/_test/factories/admin/customer.factory'
 import { AccessTokenFactory } from '@/infra/_test/factories/access-token.factory'
+import { UserFactory } from '@/infra/_test/factories/admin/user.factory'
 
 describe('Get Customer (e2e)', () => {
   let app: INestApplication
   let accessTokenFactory: AccessTokenFactory
 
+  let userFactory: UserFactory
   let customerFactory: CustomerFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, AdminDatabaseModule],
-      providers: [CustomerFactory, AccessTokenFactory],
+      providers: [CustomerFactory, AccessTokenFactory, UserFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
     accessTokenFactory = moduleRef.get(AccessTokenFactory)
 
+    userFactory = moduleRef.get(UserFactory)
     customerFactory = moduleRef.get(CustomerFactory)
 
     await app.init()
   })
 
   test('[GET] /customers/:id', async () => {
-    const customer = await customerFactory.makePrismaCustomer()
+    const user = await userFactory.makePrismaUser()
+    const customer = await customerFactory.makePrismaCustomer({
+      userId: user.id,
+    })
 
     const accessToken = accessTokenFactory.makeAdmin()
 

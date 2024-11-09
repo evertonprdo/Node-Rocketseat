@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common'
 
+import { DomainEvents } from '@/core/events/domain-events'
+
 import { Delivery } from '@/domain/admin/entities/delivery'
 import { PaginationParams } from '@/domain/_shared/repositories/pagination-params'
 
@@ -67,6 +69,8 @@ export class PrismaDeliveriesRepository implements DeliveriesRepository {
     await this.prisma.delivery.create({
       data,
     })
+
+    DomainEvents.dispatchEventsForAggregate(delivery.id)
   }
 
   async delete(delivery: Delivery) {

@@ -32,6 +32,8 @@ export class FetchCustomersController {
       throw new BadRequestException()
     }
 
-    return { customers: result.value.customers.map(CustomerPresenter.toHTTP) }
+    return {
+      customers: result.value.customers.map(CustomerPresenter.toHTTP),
+    }
   }
 }

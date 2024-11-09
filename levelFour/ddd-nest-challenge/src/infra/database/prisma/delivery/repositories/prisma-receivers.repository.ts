@@ -20,7 +20,6 @@ export class PrismaReceiversRepository implements ReceiversRepository {
       return null
     }
 
-    console.log(receiver)
     return PrismaReceiverMapper.toDomain(receiver)
   }
 }

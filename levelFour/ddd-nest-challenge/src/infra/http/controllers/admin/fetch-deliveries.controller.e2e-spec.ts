@@ -2,6 +2,7 @@ import { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 
+import { UserFactory } from '@/infra/_test/factories/admin/user.factory'
 import { DeliveryFactory } from '@/infra/_test/factories/admin/delivery.factory'
 import { CustomerFactory } from '@/infra/_test/factories/admin/customer.factory'
 import { AccessTokenFactory } from '@/infra/_test/factories/access-token.factory'
@@ -13,13 +14,20 @@ describe('Fetch Delivery (e2e)', () => {
   let app: INestApplication
   let accessTokenFactory: AccessTokenFactory
 
+  let userFactory: UserFactory
   let customerFactory: CustomerFactory
   let deliveryFactory: DeliveryFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, AdminDatabaseModule],
-      providers: [CustomerFactory, DeliveryFactory, AccessTokenFactory],
+      providers: [
+        UserFactory,
+        CustomerFactory,
+        DeliveryFactory,
+        AccessTokenFactory,
+        UserFactory,
+      ],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -27,13 +35,20 @@ describe('Fetch Delivery (e2e)', () => {
 
     customerFactory = moduleRef.get(CustomerFactory)
     deliveryFactory = moduleRef.get(DeliveryFactory)
+    userFactory = moduleRef.get(UserFactory)
 
     await app.init()
   })
 
   test('[GET] /deliveries', async () => {
+    const users = await Promise.all(
+      Array.from({ length: 3 }, () => userFactory.makePrismaUser()),
+    )
+
     const customers = await Promise.all(
-      Array.from({ length: 3 }, () => customerFactory.makePrismaCustomer()),
+      users.map((user) =>
+        customerFactory.makePrismaCustomer({ userId: user.id }),
+      ),
     )
 
     const deliveries = await Promise.all(

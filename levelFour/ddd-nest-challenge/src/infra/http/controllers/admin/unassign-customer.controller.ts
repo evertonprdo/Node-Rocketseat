@@ -12,12 +12,12 @@ import { Roles } from '@/infra/auth/roles/roles.decorator'
 
 import { ResourceNotFoundError } from '@/domain/_shared/errors/resource-not-found.error'
 
-import { NestDeleteCustomerUseCase } from '@/infra/injectable-use-cases/admin/nest-delete-customer.use-case'
+import { NestUnassignCustomerUseCase } from '@/infra/injectable-use-cases/admin/nest-delete-customer.use-case'
 
 @Controller('/customers/:id')
 @Roles(Role.ADMIN)
-export class DeleteCustomerController {
-  constructor(private deleteCustomer: NestDeleteCustomerUseCase) {}
+export class UnassignCustomerController {
+  constructor(private deleteCustomer: NestUnassignCustomerUseCase) {}
 
   @Delete()
   @HttpCode(204)

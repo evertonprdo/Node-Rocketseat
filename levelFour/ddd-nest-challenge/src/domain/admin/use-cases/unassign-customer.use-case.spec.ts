@@ -3,17 +3,17 @@ import { makeInMemoryCustomersRepository } from '../_tests/repositories/factorie
 
 import { InMemoryCustomersRepository } from '../_tests/repositories/in-memory-customers.repository'
 
-import { DeleteCustomerUseCase } from './delete-customer.use-case'
+import { UnassignCustomerUseCase } from './unassign-customer.use-case'
 
 let customersRepository: InMemoryCustomersRepository
 
-let sut: DeleteCustomerUseCase
+let sut: UnassignCustomerUseCase
 
 describe('Use Cases: Delete Customer', () => {
   beforeEach(() => {
     customersRepository = makeInMemoryCustomersRepository()
 
-    sut = new DeleteCustomerUseCase(customersRepository)
+    sut = new UnassignCustomerUseCase(customersRepository)
   })
 
   it('should delete a customer', async () => {

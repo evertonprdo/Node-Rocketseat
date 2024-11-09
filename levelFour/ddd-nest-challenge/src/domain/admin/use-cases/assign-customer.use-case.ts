@@ -8,9 +8,13 @@ import { CustomersRepository } from '../repositories/customers.repository'
 
 import { InvalidCEPError } from './errors/invalid-cep.error'
 import { EmailAlreadyInUseError } from './errors/email-already-in-use.error'
+import { ResourceNotFoundError } from '@/domain/_shared/errors/resource-not-found.error'
 
-interface CreateCustomerUseCaseRequest {
-  name: string
+import { UsersRepository } from '../repositories/users.repository'
+import { UserAlreadyAssignedError } from './errors/user-already-assigned.error'
+
+interface AssignCustomerUseCaseRequest {
+  userId: string
   email: string
   cep: string
   city: string
@@ -20,26 +24,32 @@ interface CreateCustomerUseCaseRequest {
   neighborhood: string
 }
 
-type CreateCustomerUseCaseResponse = Either<
-  EmailAlreadyInUseError,
+type AssignCustomerUseCaseResponse = Either<
+  | InvalidCEPError
+  | EmailAlreadyInUseError
+  | ResourceNotFoundError
+  | UserAlreadyAssignedError,
   {
     customer: Customer
   }
 >
 
-export class CreateCustomerUseCase {
-  constructor(private customersRepository: CustomersRepository) {}
+export class AssignCustomerUseCase {
+  constructor(
+    private customersRepository: CustomersRepository,
+    private usersRepository: UsersRepository,
+  ) {}
 
   async execute({
+    userId,
     cep,
     city,
     email,
-    name,
     neighborhood,
     number,
     state,
     street,
-  }: CreateCustomerUseCaseRequest): Promise<CreateCustomerUseCaseResponse> {
+  }: AssignCustomerUseCaseRequest): Promise<AssignCustomerUseCaseResponse> {
     if (!CEP.isValidCEP(cep)) {
       return left(new InvalidCEPError(cep))
     }
@@ -49,6 +59,20 @@ export class CreateCustomerUseCase {
 
     if (customerWithSameEmail) {
       return left(new EmailAlreadyInUseError(email))
+    }
+
+    const user = await this.usersRepository.findById(userId)
+
+    if (!user) {
+      return left(new ResourceNotFoundError())
+    }
+
+    const customerWithSameUseId = await this.customersRepository.findByUserId(
+      user.id.toString(),
+    )
+
+    if (customerWithSameUseId) {
+      return left(new UserAlreadyAssignedError('CUSTOMER'))
     }
 
     const address = new Address({
@@ -61,7 +85,7 @@ export class CreateCustomerUseCase {
     })
 
     const customer = Customer.create({
-      name,
+      userId: user.id,
       email,
       address,
     })

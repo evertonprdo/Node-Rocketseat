@@ -119,8 +119,6 @@ describe('Get Delivery Details', () => {
       .get(`/app/deliveries/${delivery.id.toString()}/details`)
       .set('Authorization', `Bearer ${accessToken}`)
 
-    console.log(response.body)
-
     expect(response.statusCode).toBe(200)
     expect(response.body.delivery).toMatchObject({
       deliveryId: delivery.id.toString(),

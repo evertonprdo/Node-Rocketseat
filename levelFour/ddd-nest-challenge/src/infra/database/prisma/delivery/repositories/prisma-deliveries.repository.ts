@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common'
 
-import { PrismaService } from '../../prisma.service'
-import { Delivery } from '@/domain/delivery/entities/delivery'
+import { DomainEvents } from '@/core/events/domain-events'
 
+import { Delivery } from '@/domain/delivery/entities/delivery'
 import {
   DeliveriesRepository,
   FindManyPendingByCity,
   findManyDeliveredByDeliveryWorkerId,
 } from '@/domain/delivery/repositories/deliveries.repository'
 
+import { PrismaService } from '../../prisma.service'
 import { PrismaDeliveryMapper } from '../mappers/prisma-delivery.mapper'
 import { PrismaDeliveryDetailsMapper } from '../mappers/prisma-delivery-details.mapper'
 
@@ -104,5 +105,7 @@ export class PrismaDeliveriesRepository implements DeliveriesRepository {
       },
       data,
     })
+
+    DomainEvents.dispatchEventsForAggregate(delivery.id)
   }
 }

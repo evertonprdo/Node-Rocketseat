@@ -11,7 +11,7 @@ import { Roles } from '@/infra/auth/roles/roles.decorator'
 
 import { ResourceNotFoundError } from '@/domain/_shared/errors/resource-not-found.error'
 
-import { CustomerPresenter } from '../../presenters/admin/customer.presenter'
+import { CustomerDetailsPresenter } from '../../presenters/admin/customer-details.presenter'
 import { NestGetCustomerUseCase } from '@/infra/injectable-use-cases/admin/nest-get-customer.use-case'
 
 @Controller('/customers/:id')
@@ -37,6 +37,6 @@ export class GetCustomerController {
       }
     }
 
-    return { customer: CustomerPresenter.toHTTP(result.value.customer) }
+    return { customer: CustomerDetailsPresenter.toHTTP(result.value.customer) }
   }
 }

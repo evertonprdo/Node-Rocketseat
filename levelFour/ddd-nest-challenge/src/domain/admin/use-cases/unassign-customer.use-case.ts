@@ -4,18 +4,18 @@ import { CustomersRepository } from '../repositories/customers.repository'
 
 import { ResourceNotFoundError } from '@/domain/_shared/errors/resource-not-found.error'
 
-interface DeleteCustomerUseCaseRequest {
+interface UnassignCustomerUseCaseRequest {
   customerId: string
 }
 
-type DeleteCustomerUseCaseResponse = Either<ResourceNotFoundError, null>
+type UnassignCustomerUseCaseResponse = Either<ResourceNotFoundError, null>
 
-export class DeleteCustomerUseCase {
+export class UnassignCustomerUseCase {
   constructor(private customersRepository: CustomersRepository) {}
 
   async execute({
     customerId,
-  }: DeleteCustomerUseCaseRequest): Promise<DeleteCustomerUseCaseResponse> {
+  }: UnassignCustomerUseCaseRequest): Promise<UnassignCustomerUseCaseResponse> {
     const customer = await this.customersRepository.findById(customerId)
 
     if (!customer) {

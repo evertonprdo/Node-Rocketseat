@@ -4,14 +4,14 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Address } from '@/domain/_shared/entities/value-objects/address'
 
 export interface CustomerProps {
-  name: string
+  userId: UniqueEntityId
   email: string
   address: Address
 }
 
 export class Customer extends Entity<CustomerProps> {
-  get name() {
-    return this.props.name
+  get userId() {
+    return this.props.userId
   }
 
   get email() {
@@ -20,10 +20,6 @@ export class Customer extends Entity<CustomerProps> {
 
   get address() {
     return this.props.address
-  }
-
-  set name(name: string) {
-    this.props.name = name
   }
 
   set email(email: string) {

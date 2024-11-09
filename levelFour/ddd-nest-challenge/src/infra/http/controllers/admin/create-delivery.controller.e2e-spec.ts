@@ -5,6 +5,7 @@ import request from 'supertest'
 import { AppModule } from '@/infra/app.module'
 import { AdminDatabaseModule } from '@/infra/database/prisma/admin/admin-database.module'
 
+import { UserFactory } from '@/infra/_test/factories/admin/user.factory'
 import { CustomerFactory } from '@/infra/_test/factories/admin/customer.factory'
 import { AccessTokenFactory } from '@/infra/_test/factories/access-token.factory'
 
@@ -16,11 +17,12 @@ describe('Create Delivery (e2e)', () => {
 
   let prisma: PrismaService
   let customerFactory: CustomerFactory
+  let userFactory: UserFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, AdminDatabaseModule],
-      providers: [CustomerFactory, AccessTokenFactory],
+      providers: [CustomerFactory, AccessTokenFactory, UserFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -28,12 +30,16 @@ describe('Create Delivery (e2e)', () => {
 
     prisma = moduleRef.get(PrismaService)
     customerFactory = moduleRef.get(CustomerFactory)
+    userFactory = moduleRef.get(UserFactory)
 
     await app.init()
   })
 
   test('[POST] /deliveries', async () => {
-    const customer = await customerFactory.makePrismaCustomer()
+    const user = await userFactory.makePrismaUser()
+    const customer = await customerFactory.makePrismaCustomer({
+      userId: user.id,
+    })
 
     const accessToken = accessTokenFactory.makeAdmin()
 

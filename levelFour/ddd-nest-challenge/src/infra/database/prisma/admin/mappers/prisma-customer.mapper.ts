@@ -19,7 +19,7 @@ export class PrismaCustomerMapper {
 
     return Customer.create(
       {
-        name: raw.name,
+        userId: new UniqueEntityId(raw.userId),
         email: raw.email,
         address,
       },
@@ -29,8 +29,8 @@ export class PrismaCustomerMapper {
 
   static toPrisma(customer: Customer): Prisma.CustomerUncheckedCreateInput {
     return {
+      userId: customer.userId.toString(),
       id: customer.id.toString(),
-      name: customer.name,
       email: customer.email,
       cep: customer.address.cep.value,
       state: customer.address.state,

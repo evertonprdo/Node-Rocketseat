@@ -30,4 +30,13 @@ export class AccessTokenFactory {
       ...overwrite,
     })
   }
+
+  makeUser(overwrite: Partial<AccessTokenPayloadProps> = {}) {
+    return this.jwt.sign({
+      sub: new UniqueEntityId().toString(),
+      adminId: null,
+      deliveryWorkerId: null,
+      ...overwrite,
+    })
+  }
 }

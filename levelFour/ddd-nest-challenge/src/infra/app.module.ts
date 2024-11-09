@@ -9,6 +9,8 @@ import { AuthModule } from './auth/auth.module'
 import { AuthHttpModule } from './http/auth-http.module'
 import { AdminHttpModule } from './http/admin-http.module'
 import { DeliveryHttpModule } from './http/delivery-http.module'
+import { NotificationHttpModule } from './http/notification-http.module'
+
 import { EventsModule } from './events/events.module'
 
 @Module({
@@ -22,6 +24,7 @@ import { EventsModule } from './events/events.module'
     AuthHttpModule,
     AdminHttpModule,
     DeliveryHttpModule,
+    NotificationHttpModule,
     EventsModule,
   ],
   providers: [EnvService],

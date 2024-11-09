@@ -16,8 +16,12 @@ export class ReceiverFactory {
   constructor(private prisma: PrismaService) {}
 
   async makePrismaReceiver(data: Partial<ReceiverProps> = {}) {
-    const receiver = makeReceiver(data)
-    const user = makeUser()
+    const user = data.name ? makeUser({ name: data.name }) : makeUser()
+
+    const receiver = makeReceiver({
+      name: user.name,
+      ...data,
+    })
 
     await this.prisma.user.create({
       data: PrismaUserMapper.toPrisma(user),

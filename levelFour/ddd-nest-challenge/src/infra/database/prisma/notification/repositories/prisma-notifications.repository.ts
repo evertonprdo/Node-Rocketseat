@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common'
 
 import { Notification } from '@/domain/notification/entities/notification'
-import { NotificationsRepository } from '@/domain/notification/repositories/notifications-repository'
+import {
+  FindManyByRecipientIdParams,
+  NotificationsRepository,
+} from '@/domain/notification/repositories/notifications.repository'
 
 import { PrismaService } from '../../prisma.service'
 import { PrismaNotificationMapper } from '../mappers/prisma-notification.mapper'
@@ -22,6 +25,26 @@ export class PrismaNotificationsRepository implements NotificationsRepository {
     }
 
     return PrismaNotificationMapper.toDomain(notification)
+  }
+
+  async findManyByRecipientId({
+    page,
+    recipientId,
+    unreadyOnly,
+  }: FindManyByRecipientIdParams) {
+    const take = 20
+
+    const notification = await this.prisma.notification.findMany({
+      where: {
+        recipientId,
+        readAt: unreadyOnly ? { equals: null } : undefined,
+      },
+
+      take,
+      skip: (page - 1) * take,
+    })
+
+    return notification.map(PrismaNotificationMapper.toDomain)
   }
 
   async create(notification: Notification) {

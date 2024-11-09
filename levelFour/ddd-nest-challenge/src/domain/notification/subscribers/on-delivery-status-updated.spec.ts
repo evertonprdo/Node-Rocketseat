@@ -15,7 +15,7 @@ import {
   SendNotificationUseCase,
   SendNotificationUseCaseRequest,
   SendNotificationUseCaseResponse,
-} from '../use-cases/send-notification'
+} from '../use-cases/send-notification.use-case'
 
 import { OnDeliveryStatusUpdated } from './on-delivery-status-updated'
 import { makeCustomer } from '@/domain/admin/_tests/factories/make-customer'

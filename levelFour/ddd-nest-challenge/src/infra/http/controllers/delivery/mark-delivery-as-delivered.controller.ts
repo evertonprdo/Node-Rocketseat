@@ -1,5 +1,4 @@
 import {
-  Put,
   Param,
   HttpCode,
   Controller,
@@ -7,6 +6,7 @@ import {
   NotFoundException,
   BadRequestException,
   Body,
+  Patch,
 } from '@nestjs/common'
 
 import { z } from 'zod'
@@ -43,7 +43,7 @@ export class MarkDeliveryAsDeliveredController {
     private markDeliveryAsDelivered: NestMarkDeliveryAsDeliveredUseCase,
   ) {}
 
-  @Put()
+  @Patch()
   @HttpCode(204)
   async handle(
     @Param('id') deliveryId: string,

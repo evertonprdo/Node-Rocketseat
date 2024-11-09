@@ -4,6 +4,7 @@ export class CustomerPresenter {
   static toHTTP(customer: Customer) {
     return {
       id: customer.id.toString(),
+      userId: customer.userId.toString(),
       email: customer.email,
       cep: customer.address.cep.toDecorated(),
       state: customer.address.state,

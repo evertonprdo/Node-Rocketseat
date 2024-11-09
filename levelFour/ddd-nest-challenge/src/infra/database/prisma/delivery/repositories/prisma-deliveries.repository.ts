@@ -37,7 +37,13 @@ export class PrismaDeliveriesRepository implements DeliveriesRepository {
         id,
       },
       include: {
-        customer: true,
+        customer: {
+          include: {
+            user: {
+              select: { name: true },
+            },
+          },
+        },
         attachment: true,
       },
     })

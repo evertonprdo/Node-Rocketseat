@@ -48,7 +48,7 @@ describe('Mark Delivery As Delivered', () => {
     await app.init()
   })
 
-  test('[PUT] /app/deliveries/:id/deliver', async () => {
+  test('[PATCH] /app/deliveries/:id/deliver', async () => {
     const receiver = await receiverFactory.makePrismaReceiver()
     const deliveryWorker = await deliveryWorkerFactory.makePrismaDeliveryWorker(
       {
@@ -70,7 +70,7 @@ describe('Mark Delivery As Delivered', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .put(`/app/deliveries/${delivery.id.toString()}/deliver`)
+      .patch(`/app/deliveries/${delivery.id.toString()}/deliver`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         attachmentId: attachment.id.toString(),
@@ -93,11 +93,11 @@ describe('Mark Delivery As Delivered', () => {
     })
   })
 
-  test('[PUT] /app/deliveries/:id/deliver, roles: [DELIVERY_WORKER]', async () => {
+  test('[PATCH] /app/deliveries/:id/deliver, roles: [DELIVERY_WORKER]', async () => {
     const accessToken = accessTokenFactory.makeAdmin()
 
     const response = await request(app.getHttpServer())
-      .put('/app/deliveries/any-uuid/deliver')
+      .patch('/app/deliveries/any-uuid/deliver')
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(403)

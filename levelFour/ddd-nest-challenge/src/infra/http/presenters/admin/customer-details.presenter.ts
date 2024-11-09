@@ -5,6 +5,7 @@ export class CustomerDetailsPresenter {
     return {
       userId: customer.userId.toString(),
       customerId: customer.customerId.toString(),
+      name: customer.name,
       email: customer.email,
       cep: customer.address.cep.toDecorated(),
       state: customer.address.state,

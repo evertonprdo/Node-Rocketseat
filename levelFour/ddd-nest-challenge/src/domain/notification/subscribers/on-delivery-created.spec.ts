@@ -4,7 +4,7 @@ import {
   SendNotificationUseCase,
   SendNotificationUseCaseRequest,
   SendNotificationUseCaseResponse,
-} from '../use-cases/send-notification'
+} from '../use-cases/send-notification.use-case'
 
 import { makeDelivery } from '@/domain/admin/_tests/factories/make-delivery'
 import { makeCustomer } from '@/domain/admin/_tests/factories/make-customer'

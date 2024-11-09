@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common'
 
+import { FetchRecipientNotificationUseCase } from '@/domain/notification/use-cases/fetch-recipient-notifications.use-case'
 import { PrismaNotificationsRepository } from '@/infra/database/prisma/notification/repositories/prisma-notifications.repository'
 
-import { SendNotificationUseCase } from '@/domain/notification/use-cases/send-notification.use-case'
-
 @Injectable()
-export class NestSendNotificationUseCase extends SendNotificationUseCase {
+export class NestFetchRecipientNotificationsUseCase extends FetchRecipientNotificationUseCase {
   constructor(notificationsRepository: PrismaNotificationsRepository) {
     super(notificationsRepository)
   }

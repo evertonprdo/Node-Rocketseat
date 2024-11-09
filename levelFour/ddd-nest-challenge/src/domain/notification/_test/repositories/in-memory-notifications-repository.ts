@@ -1,5 +1,8 @@
 import { Notification } from '../../entities/notification'
-import { NotificationsRepository } from '../../repositories/notifications-repository'
+import {
+  FindManyByRecipientIdParams,
+  NotificationsRepository,
+} from '../../repositories/notifications.repository'
 
 export class InMemoryNotificationsRepository
   implements NotificationsRepository
@@ -14,6 +17,19 @@ export class InMemoryNotificationsRepository
     }
 
     return notification
+  }
+
+  async findManyByRecipientId({
+    page,
+    recipientId,
+    unreadyOnly,
+  }: FindManyByRecipientIdParams) {
+    const notifications = this.items
+      .filter((item) => item.recipientId.toString() === recipientId)
+      .filter((item) => !!item.readAt === unreadyOnly)
+
+    const take = 20
+    return notifications.slice((page - 1) * take, page * take)
   }
 
   async create(notification: Notification) {

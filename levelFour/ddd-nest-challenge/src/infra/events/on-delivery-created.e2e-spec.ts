@@ -6,6 +6,7 @@ import { DomainEvents } from '@/core/events/domain-events'
 
 import { PrismaService } from '../database/prisma/prisma.service'
 
+import { UserFactory } from '../_test/factories/admin/user.factory'
 import { CustomerFactory } from '../_test/factories/admin/customer.factory'
 import { AccessTokenFactory } from '../_test/factories/access-token.factory'
 
@@ -19,6 +20,7 @@ describe('On Delivery Created (e2e)', () => {
   let accessTokenFactory: AccessTokenFactory
 
   let prisma: PrismaService
+  let userFactory: UserFactory
   let customerFactory: CustomerFactory
 
   beforeAll(async () => {
@@ -29,13 +31,19 @@ describe('On Delivery Created (e2e)', () => {
         NotificationDatabaseModule,
         DeliveryDatabaseModule,
       ],
-      providers: [PrismaService, CustomerFactory, AccessTokenFactory],
+      providers: [
+        PrismaService,
+        UserFactory,
+        CustomerFactory,
+        AccessTokenFactory,
+      ],
     }).compile()
 
     app = moduleRef.createNestApplication()
     accessTokenFactory = moduleRef.get(AccessTokenFactory)
 
     prisma = moduleRef.get(PrismaService)
+    userFactory = moduleRef.get(UserFactory)
     customerFactory = moduleRef.get(CustomerFactory)
 
     DomainEvents.shouldRun = true
@@ -44,7 +52,10 @@ describe('On Delivery Created (e2e)', () => {
   })
 
   it('should send a notification when delivery is created', async () => {
-    const customer = await customerFactory.makePrismaCustomer()
+    const user = await userFactory.makePrismaUser()
+    const customer = await customerFactory.makePrismaCustomer({
+      userId: user.id,
+    })
 
     const accessToken = accessTokenFactory.makeAdmin()
 
@@ -58,7 +69,7 @@ describe('On Delivery Created (e2e)', () => {
     await vi.waitFor(async () => {
       const notificationOnDatabase = await prisma.notification.findFirst({
         where: {
-          recipientId: customer.id.toString(),
+          recipientId: user.id.toString(),
         },
       })
 

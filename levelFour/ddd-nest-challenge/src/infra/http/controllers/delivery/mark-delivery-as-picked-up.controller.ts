@@ -1,11 +1,11 @@
 import {
-  Put,
   Param,
   HttpCode,
   Controller,
   NotFoundException,
   ConflictException,
   BadRequestException,
+  Patch,
 } from '@nestjs/common'
 
 import { Role } from '@/infra/auth/roles/role.enum'
@@ -26,7 +26,7 @@ export class MarkDeliveryAsPickedUpController {
     private markDeliveryAsPickedUp: NestMarkDeliveryAsPickedUpUseCase,
   ) {}
 
-  @Put()
+  @Patch()
   @HttpCode(204)
   async handle(
     @Param('id') deliveryId: string,

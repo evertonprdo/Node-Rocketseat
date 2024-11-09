@@ -4,7 +4,7 @@ import { DomainEvents } from '@/core/events/domain-events'
 import { DeliveryCreatedEvent } from '@/domain/admin/events/delivery-created.event'
 import { CustomersRepository } from '@/domain/admin/repositories/customers.repository'
 
-import { SendNotificationUseCase } from '../use-cases/send-notification'
+import { SendNotificationUseCase } from '../use-cases/send-notification.use-case'
 
 export class OnDeliveryCreated implements EventHandler {
   constructor(

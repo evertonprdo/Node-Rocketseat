@@ -6,10 +6,10 @@ import { DomainEvents } from '@/core/events/domain-events'
 
 import { PrismaService } from '../database/prisma/prisma.service'
 
+import { UserFactory } from '../_test/factories/admin/user.factory'
 import { CustomerFactory } from '../_test/factories/admin/customer.factory'
 import { DeliveryFactory } from '../_test/factories/admin/delivery.factory'
 import { AccessTokenFactory } from '../_test/factories/access-token.factory'
-import { ReceiverFactory } from '../_test/factories/delivery/receiver.factory'
 import { DeliveryWorkerFactory } from '../_test/factories/delivery/delivery-worker.factory'
 
 import { AppModule } from '../app.module'
@@ -17,12 +17,13 @@ import { AdminDatabaseModule } from '../database/prisma/admin/admin-database.mod
 import { DeliveryDatabaseModule } from '../database/prisma/delivery/delivery-database.module'
 import { NotificationDatabaseModule } from '../database/prisma/notification/notification-database.module'
 
-describe('On Delivery Created (e2e)', () => {
+describe('On Delivery Updated (e2e)', () => {
   let app: INestApplication
   let accessTokenFactory: AccessTokenFactory
 
   let prisma: PrismaService
-  let receiverFactory: ReceiverFactory
+  let userFactory: UserFactory
+  let customerFactory: CustomerFactory
   let deliveryFactory: DeliveryFactory
   let deliveryWorkerFactory: DeliveryWorkerFactory
 
@@ -35,9 +36,10 @@ describe('On Delivery Created (e2e)', () => {
         DeliveryDatabaseModule,
       ],
       providers: [
-        PrismaService,
-        CustomerFactory,
         AccessTokenFactory,
+        PrismaService,
+        UserFactory,
+        CustomerFactory,
         DeliveryFactory,
         DeliveryWorkerFactory,
       ],
@@ -47,7 +49,10 @@ describe('On Delivery Created (e2e)', () => {
     accessTokenFactory = moduleRef.get(AccessTokenFactory)
 
     prisma = moduleRef.get(PrismaService)
-    receiverFactory = moduleRef.get(CustomerFactory)
+
+    userFactory = moduleRef.get(UserFactory)
+    customerFactory = moduleRef.get(CustomerFactory)
+
     deliveryFactory = moduleRef.get(DeliveryFactory)
     deliveryWorkerFactory = moduleRef.get(DeliveryWorkerFactory)
 
@@ -56,36 +61,38 @@ describe('On Delivery Created (e2e)', () => {
     await app.init()
   })
 
-  it('should send a notification when delivery is created', async () => {
-    const receiver = await receiverFactory.makePrismaReceiver()
+  it('should send a notification when delivery is updated', async () => {
+    const user = await userFactory.makePrismaUser()
+    const customer = await customerFactory.makePrismaCustomer({
+      userId: user.id,
+    })
 
     const deliveryWorker = await deliveryWorkerFactory.makePrismaDeliveryWorker(
       {
-        operationCity: receiver.address.city,
+        operationCity: customer.address.city,
       },
     )
 
-    const delivery = await deliveryFactory.makePrismaDelivery()
+    const delivery = await deliveryFactory.makePrismaDelivery({
+      customerId: customer.id,
+    })
 
     const accessToken = accessTokenFactory.makeDeliveryWorker({
       deliveryWorkerId: deliveryWorker.id.toString(),
     })
 
     await request(app.getHttpServer())
-      .put(`app/deliveries/${delivery.id.toString()}/pick-up`)
+      .patch(`/app/deliveries/${delivery.id.toString()}/pick-up`)
       .set('Authorization', `Bearer ${accessToken}`)
 
     await vi.waitFor(async () => {
       const notificationOnDatabase = await prisma.notification.findFirst({
         where: {
-          recipientId: receiver.id.toString(),
+          recipientId: user.id.toString(),
         },
       })
 
       expect(notificationOnDatabase).not.toBeNull()
-      expect(notificationOnDatabase).toMatchObject({
-        readAt: expect.any(Date),
-      })
     })
   })
 })

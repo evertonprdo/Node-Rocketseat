@@ -44,7 +44,7 @@ describe('Mark Delivery As Picked Up', () => {
     await app.init()
   })
 
-  test('[PUT] /app/deliveries/:id/return', async () => {
+  test('[PATCH] /app/deliveries/:id/return', async () => {
     const receiver = await receiverFactory.makePrismaReceiver()
     const deliveryWorker = await deliveryWorkerFactory.makePrismaDeliveryWorker(
       {
@@ -64,7 +64,7 @@ describe('Mark Delivery As Picked Up', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .put(`/app/deliveries/${delivery.id.toString()}/return`)
+      .patch(`/app/deliveries/${delivery.id.toString()}/return`)
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(204)
@@ -81,11 +81,11 @@ describe('Mark Delivery As Picked Up', () => {
     })
   })
 
-  test('[PUT] /app/deliveries/:id/return, roles: [DELIVERY_WORKER]', async () => {
+  test('[PATCH] /app/deliveries/:id/return, roles: [DELIVERY_WORKER]', async () => {
     const accessToken = accessTokenFactory.makeAdmin()
 
     const response = await request(app.getHttpServer())
-      .put('/app/deliveries/any-uuid/return')
+      .patch('/app/deliveries/any-uuid/return')
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(403)

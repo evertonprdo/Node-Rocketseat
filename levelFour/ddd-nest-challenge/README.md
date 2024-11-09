@@ -14,7 +14,7 @@
 - [x] It must be possible to list orders with delivery addresses near the deliverer's location.
 - [x] It must be possible to change a user's password.
 - [x] It must be possible to list a user's deliveries.
-- [ ] It must be possible to notify the recipient whenever the status of the order changes.
+- [x] It must be possible to notify the recipient whenever the status of the order changes.
 
 ### Business Rules
 

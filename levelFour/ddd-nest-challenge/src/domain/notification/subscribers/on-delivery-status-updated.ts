@@ -3,7 +3,7 @@ import { DomainEvents } from '@/core/events/domain-events'
 
 import { CustomersRepository } from '@/domain/admin/repositories/customers.repository'
 
-import { SendNotificationUseCase } from '../use-cases/send-notification'
+import { SendNotificationUseCase } from '../use-cases/send-notification.use-case'
 import { DeliveryStatusUpdatedEvent } from '@/domain/delivery/events/delivery-status-updated.event'
 
 export class OnDeliveryStatusUpdated implements EventHandler {

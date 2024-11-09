@@ -14,6 +14,9 @@ export class PrismaReceiversRepository implements ReceiversRepository {
       where: {
         id,
       },
+      include: {
+        user: true,
+      },
     })
 
     if (!receiver) {

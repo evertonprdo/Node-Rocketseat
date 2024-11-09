@@ -44,7 +44,7 @@ describe('Mark Delivery As Picked Up', () => {
     await app.init()
   })
 
-  test('[PUT] /app/deliveries/:id/pick-up', async () => {
+  test('[PATCH] /app/deliveries/:id/pick-up', async () => {
     const receiver = await receiverFactory.makePrismaReceiver()
     const deliveryWorker = await deliveryWorkerFactory.makePrismaDeliveryWorker(
       {
@@ -61,30 +61,32 @@ describe('Mark Delivery As Picked Up', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .put(`/app/deliveries/${delivery.id.toString()}/pick-up`)
+      .patch(`/app/deliveries/${delivery.id.toString()}/pick-up`)
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(204)
 
-    const deliveryOnDatabase = await prisma.delivery.findUnique({
-      where: {
-        id: delivery.id.toString(),
-      },
-    })
+    await vi.waitFor(async () => {
+      const deliveryOnDatabase = await prisma.delivery.findFirst({
+        where: {
+          id: delivery.id.toString(),
+        },
+      })
 
-    expect(deliveryOnDatabase).toBeTruthy()
-    expect(deliveryOnDatabase).toMatchObject({
-      status: 'PICKED_UP',
-      pickedUpAt: expect.any(Date),
-      deliveryWorkerId: deliveryWorker.id.toString(),
+      expect(deliveryOnDatabase).toBeTruthy()
+      expect(deliveryOnDatabase).toMatchObject({
+        status: 'PICKED_UP',
+        pickedUpAt: expect.any(Date),
+        deliveryWorkerId: deliveryWorker.id.toString(),
+      })
     })
   })
 
-  test('[PUT] /app/deliveries/:id/pick-up, roles: [DELIVERY_WORKER]', async () => {
+  test('[PATCH] /app/deliveries/:id/pick-up, roles: [DELIVERY_WORKER]', async () => {
     const accessToken = accessTokenFactory.makeAdmin()
 
     const response = await request(app.getHttpServer())
-      .put('/app/deliveries/any-uuid/pick-up')
+      .patch('/app/deliveries/any-uuid/pick-up')
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(403)

@@ -5,18 +5,18 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import { NotAllowedError } from '@/domain/_shared/errors/not-allowed-error'
 
-import { ReadNotificationUseCase } from './read-notification'
+import { GetNotificationUseCase } from './get-notification.use-case'
 
 let notificationRepository: InMemoryNotificationsRepository
-let sut: ReadNotificationUseCase
+let sut: GetNotificationUseCase
 
-describe('Read Notification', () => {
+describe('Get Notification', () => {
   beforeEach(() => {
     notificationRepository = new InMemoryNotificationsRepository()
-    sut = new ReadNotificationUseCase(notificationRepository)
+    sut = new GetNotificationUseCase(notificationRepository)
   })
 
-  it('should be able to read a notification', async () => {
+  it('should be able to get a notification', async () => {
     const notification = makeNotification()
 
     await notificationRepository.create(notification)
@@ -27,10 +27,12 @@ describe('Read Notification', () => {
     })
 
     expect(result.isRight()).toBe(true)
-    expect(notificationRepository.items[0].readAt).toEqual(expect.any(Date))
+    expect(result.value).toEqual({
+      notification: notificationRepository.items[0],
+    })
   })
 
-  it('should not be able to read a notification from another user', async () => {
+  it('should not be able to get a notification from another user', async () => {
     const notification = makeNotification({
       recipientId: new UniqueEntityId('recipient-1'),
     })

@@ -24,7 +24,8 @@ Develop a REST API, this time using Fastify, Knex, TypeScript, and other tools t
 
 Develop an application for gym check-ins. Here, you will learn about SOLID principles, Design Patterns, Docker for initializing the database, JWT and Refresh Token, RBAC, and various other concepts.
 
--  [Class project](/03-implementing-solid/)
+-  [Class project](/03-implementing-solid/api-node-SOLID/)
+-  [Challenge](/03-implementing-solid/challenge/)
 
 ## Level 04 - DDD and NestJS
 

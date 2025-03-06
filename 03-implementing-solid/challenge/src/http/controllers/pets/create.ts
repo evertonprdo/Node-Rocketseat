@@ -23,17 +23,18 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     environment_need: z.enum(ENVIRONMENTS_NEED),
     independence_level: z.enum(INDEPENDENCE_LEVEL),
     adoption_requirements: z.array(z.string().trim()),
-    org_id: z.string().uuid(),
   })
 
   const { adoption_requirements: adoptReqs, ...rest } =
     createPetBodySchema.parse(request.body)
 
+  const orgId = request.user.sub
+
   try {
     const createPetUseCase = makeCreatePetUseCase()
     const adoptReqsUseCase = makeAdoptReqsUseCase()
 
-    const { pet } = await createPetUseCase.execute(rest)
+    const { pet } = await createPetUseCase.execute({ ...rest, org_id: orgId })
 
     await adoptReqsUseCase.execute({
       petId: pet.id,

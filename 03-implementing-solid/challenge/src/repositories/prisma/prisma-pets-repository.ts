@@ -32,7 +32,7 @@ export class PrismaPetsRepository implements PetsRepository {
         energy_level: energyLevel,
         independence_level: independenceLevel,
         org: {
-          city,
+          city: { contains: city, mode: 'insensitive' },
         },
       },
       include: { adoption_requirements: true },

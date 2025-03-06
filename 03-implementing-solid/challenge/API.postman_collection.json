@@ -1,0 +1,303 @@
+{
+	"info": {
+		"_postman_id": "7d43e1fb-6eda-4d8e-934b-4c47321bb96c",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36908842"
+	},
+	"item": [
+		{
+			"name": "Org",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"sample\",\r\n    \"email\": \"sample@mail.com\",\r\n    \"password\": \"123456\",\r\n    \"whatsapp\": \"+55988887777\",\r\n    \"cep\": \"00000000\",\r\n    \"state\": \"sample state\",\r\n    \"city\": \"sample city\",\r\n    \"address\": \"R. sample, n 405\",\r\n    \"latitude\": -23.1870891,\r\n    \"longitude\": -50.6583164\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/orgs",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"orgs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Session",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"\r",
+							"pm.collectionVariables.set(\"JWT_TOKEN\", response.token)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"sample@mail.com\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/sessions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"sessions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orgs nearby",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/orgs/nearby?latitude=-23.18&longitude=-50.65",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"orgs",
+						"nearby"
+					],
+					"query": [
+						{
+							"key": "latitude",
+							"value": "-23.18"
+						},
+						{
+							"key": "longitude",
+							"value": "-50.65"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"sample pet\",\r\n    \"description\": \"sample description\",\r\n    \"age\": \"PUPPY\",\r\n    \"size\": \"SMALL\",\r\n    \"energy_level\": \"HIGH\",\r\n    \"environment_need\": \"BOTH\",\r\n    \"independence_level\": \"LOW\",\r\n    \"adoption_requirements\": [\"sample requiriment 1\", \"sample requirement 2\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/pets",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"pets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"const pet = response.pets[0]\r",
+							"\r",
+							"pm.collectionVariables.set(\"PET_ID\", pet.id)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/pets?city=sample",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"pets"
+					],
+					"query": [
+						{
+							"key": "city",
+							"value": "sample"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/pets/{{PET_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"pets",
+						"{{PET_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Token refresh",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"\r",
+							"pm.collectionVariables.set(\"JWT_TOKEN\", response.token)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/token/refresh",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"token",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3333",
+			"type": "string"
+		},
+		{
+			"key": "JWT_TOKEN",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "PET_ID",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

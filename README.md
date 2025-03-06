@@ -32,3 +32,6 @@ Develop an application for gym check-ins. Here, you will learn about SOLID princ
 Fundamentals of Domain-Driven Design and Clean Architecture in building a REST API for a forum. You will learn how to design the application's architecture using DDD concepts, create Value Objects and Relationships, handle errors functionally, develop use cases, write unit tests, and apply Subdomains and Domain Events.
 
 NestJS: Key concepts of the framework, such as dependency injection, controllers, and services, as well as integrating other tools like Prisma, Zod, and Vitest. Throughout this module, we will integrate with the previously developed "core" code.
+
+-  [Class project](/04-ddd-and-nestjs/nest-clean/)
+-  [Challenge](/04-ddd-and-nestjs/challenge/)

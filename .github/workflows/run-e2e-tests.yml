@@ -17,6 +17,10 @@ jobs:
           POSTGRESQL_PASSWORD: docker
           POSTGRESQL_DATABASE: apisolid
 
+    defaults:
+      run:
+        working-directory: 03-implementing-solid/api-node-SOLID
+
     steps:
       - uses: actions/checkout@v3
 
@@ -26,13 +30,8 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 03-implementing-solid/api-node-SOLID/package-lock.json
 
-      - name: install dependencies
-        working-directory: 03-implementing-solid/api-node-SOLID
-        run: npm ci
-
-      - name: run tests
-        working-directory: 03-implementing-solid/api-node-SOLID
-        run: npm run test:e2e
+      - run: npm ci
+      - run: npm run test:e2e
         env:
           JWT_SECRET: testing
           DATABASE_URL: "postgresql://docker:docker@localhost:5432/apisolid?schema=public"

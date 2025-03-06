@@ -17,6 +17,9 @@ Develop a RESTful API with Node.js, focusing on the fundamentals of the technolo
 
 Develop a REST API, this time using Fastify, Knex, TypeScript, and other tools to assist in the development process.
 
+-  [Class project](/02-routes-and-http/api-rest/)
+-  [Challenge](/02-routes-and-http/challenge/)
+
 ## Level 03 - Implementing SOLID
 
 Develop an application for gym check-ins. Here, you will learn about SOLID principles, Design Patterns, Docker for initializing the database, JWT and Refresh Token, RBAC, and various other concepts.

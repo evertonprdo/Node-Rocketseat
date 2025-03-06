@@ -64,18 +64,18 @@ This project is an API for a gym management system built with Node.js following 
 
 ## Technologies Used
 
--  ![Fastify](https://www.fastify.io/)
--  ![fastify/jwt](https://github.com/fastify/fastify-jwt)
--  ![fastify/cookie](https://github.com/fastify/fastify-cookie)
--  ![Zod](https://zod.dev/)
--  ![Prisma](https://www.prisma.io/)
--  ![Vitest](https://vitest.dev/)
+-  [Fastify](https://www.fastify.io/)
+-  [fastify/jwt](https://github.com/fastify/fastify-jwt)
+-  [fastify/cookie](https://github.com/fastify/fastify-cookie)
+-  [Zod](https://zod.dev/)
+-  [Prisma](https://www.prisma.io/)
+-  [Vitest](https://vitest.dev/)
 
 ## Getting Started
 
 ### Prerequisites
 
--  ![Docker](https://www.docker.com/) installed on your machine.
+-  [Docker](https://www.docker.com/) installed on your machine.
 -  Node.js and npm installed.
 -  A basic understanding of RESTful APIs.
 
@@ -84,7 +84,7 @@ This project is an API for a gym management system built with Node.js following 
 1. **Navigate to the project directory:**
 
 ```bash
-   cd 03-implementing-solid/apiNodeSOLID
+   cd 03-implementing-solid/api-node-SOLID
 ```
 
 2. **Start Docker services:**
@@ -113,15 +113,7 @@ This project is an API for a gym management system built with Node.js following 
 
 ## Postman Collection
 
-A Postman collection named `API.postman_colletion.json` is available in the root of the project. Import it into Postman to test the endpoints. The collection includes requests for:
-
--  User registration
--  Sessions for admin and member
--  Token refresh
--  Fetching the user profile (User Me)
--  Gym creation, search, and nearby search
--  Check-in and validation workflows
--  Check-in history and metrics
+A Postman collection named `API.postman_colletion.json` is available in the root of the project. Import it into Postman to test the endpoints.
 
 Node: The order in which HTTP requests are organized is such that if executed from top to bottom, all business rules are satisfied without the need for manual fixes. (JTW expires in 10 min)
 

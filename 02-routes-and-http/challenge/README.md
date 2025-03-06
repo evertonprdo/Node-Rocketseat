@@ -61,6 +61,26 @@ This API uses cookie-based authentication. When a user logs in via the `/session
 -  **GET `/meals`**  
     List all meals for the authenticated user.
 
+-  **GET `/meals/:id`**  
+    List a meal.
+
+-  **DELETE `/meals/:id`**  
+    Remove a meal.
+
+-  **PUT `/meals/:id`**  
+   Update an existing meal.
+
+**Request Body Example:**
+
+```json
+{
+   "name": "meal01",
+   "description": "description update",
+   "date_time": "2025-01-01T20:00:00z",
+   "within_diet": true
+}
+```
+
 **You can also import the `API.postman_colletion.json` Postman collection to quickly test the API endpoints:**
 
 ## Project Setup

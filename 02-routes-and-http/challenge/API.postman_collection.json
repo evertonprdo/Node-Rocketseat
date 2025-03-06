@@ -123,6 +123,72 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Meal",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"meal01\",\r\n    \"description\": \"description update\",\r\n    \"date_time\": \"2025-01-01T20:00:00z\",\r\n    \"within_diet\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3333/meals/d1b85756-b66e-41e9-b29d-f3aeb518028b",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"meals",
+						"d1b85756-b66e-41e9-b29d-f3aeb518028b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Meal",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3333/meals/d1b85756-b66e-41e9-b29d-f3aeb518028b",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"meals",
+						"d1b85756-b66e-41e9-b29d-f3aeb518028b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Meal",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3333/meals/d1b85756-b66e-41e9-b29d-f3aeb518028b",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"meals",
+						"d1b85756-b66e-41e9-b29d-f3aeb518028b"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

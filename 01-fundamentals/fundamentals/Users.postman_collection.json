@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "ed228ab6-3ae1-41f2-95b1-f3dc2d5a6f56",
+		"name": "Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36908842"
+	},
+	"item": [
+		{
+			"name": "Search",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/users?search=email@cd.com.br",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "email@cd.com.br"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mary Doe\",\r\n    \"email\": \"mary@mail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mary Doe\",\r\n    \"email\": \"mary_doe@mail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/0e97b3c4-16db-408e-9e2b-13f1c887d5c2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"0e97b3c4-16db-408e-9e2b-13f1c887d5c2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/users/0e97b3c4-16db-408e-9e2b-13f1c887d5c2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"0e97b3c4-16db-408e-9e2b-13f1c887d5c2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

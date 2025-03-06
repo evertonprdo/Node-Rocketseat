@@ -1,7 +1,28 @@
-# Trilha Node - RocketSeat
+# Node Rocketseat
 
-Bem-vindo ao repositório das aulas da trilha de Node da [RocketSeat](https://www.rocketseat.com.br/). Com o educador [Diego Fernandes](https://github.com/diego3g)
+Welcome to the repository for the Node track classes from [RocketSeat](https://www.rocketseat.com.br/). taught by [Diego Fernandes](https://github.com/diego3g)
 
 ## Sobre
 
-Este repositório contém o código-fonte desenvolvido durante as aulas da trilha de Node da RocketSeat. O objetivo é acompanhar o progresso no curso e compartilhar soluções e aprendizados.
+This repository contains the source code developed during the Node track classes at RocketSeat. The goal is to track progress in the course and share solutions and learnings.
+
+## Level 01 - Fundamentals
+
+Develop a RESTful API with Node.js, focusing on the fundamentals of the technology, without using external frameworks or libraries. We will learn about Node.js internal modules, especially HTTP and Streams, as well as HTTP fundamentals such as Requests, Responses, Headers, status codes, and different types of parameters.
+
+-  [Class project](/01-fundamentals/fundamentals/)
+-  [Challenge](/01-fundamentals/challenge/)
+
+## Level 02 - Routes and HTTP
+
+Develop a REST API, this time using Fastify, Knex, TypeScript, and other tools to assist in the development process.
+
+## Level 03 - Implementing SOLID
+
+Develop an application for gym check-ins. Here, you will learn about SOLID principles, Design Patterns, Docker for initializing the database, JWT and Refresh Token, RBAC, and various other concepts.
+
+## Level 04 - DDD and NestJS
+
+Fundamentals of Domain-Driven Design and Clean Architecture in building a REST API for a forum. You will learn how to design the application's architecture using DDD concepts, create Value Objects and Relationships, handle errors functionally, develop use cases, write unit tests, and apply Subdomains and Domain Events.
+
+NestJS: Key concepts of the framework, such as dependency injection, controllers, and services, as well as integrating other tools like Prisma, Zod, and Vitest. Throughout this module, we will integrate with the previously developed "core" code.

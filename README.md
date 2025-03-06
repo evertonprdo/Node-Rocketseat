@@ -24,6 +24,8 @@ Develop a REST API, this time using Fastify, Knex, TypeScript, and other tools t
 
 Develop an application for gym check-ins. Here, you will learn about SOLID principles, Design Patterns, Docker for initializing the database, JWT and Refresh Token, RBAC, and various other concepts.
 
+-  [Class project](/03-implementing-solid/)
+
 ## Level 04 - DDD and NestJS
 
 Fundamentals of Domain-Driven Design and Clean Architecture in building a REST API for a forum. You will learn how to design the application's architecture using DDD concepts, create Value Objects and Relationships, handle errors functionally, develop use cases, write unit tests, and apply Subdomains and Domain Events.

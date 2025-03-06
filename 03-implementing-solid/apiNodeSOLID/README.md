@@ -6,22 +6,22 @@ This project is an API for a gym management system built with Node.js following 
 
 ## Table of Contents
 
--  ![Features](#features)
--  ![Requirements](#requirements)
+-  [Features](#features)
+-  [Requirements](#requirements)
 
-   -  ![Functional Requirements](#functional-requirements)
-   -  ![Business Rules](#business-rules)
-   -  ![Non-Functional Requirements](#non-functional-requirements)
+   -  [Functional Requirements](#functional-requirements)
+   -  [Business Rules](#business-rules)
+   -  [Non-Functional Requirements](#non-functional-requirements)
 
--  ![Technologies Used](#technologies-used)
--  ![Getting Started](#getting-started)
+-  [Technologies Used](#technologies-used)
+-  [Getting Started](#getting-started)
 
-   -  ![Prerequisites](#prerequisites)
-   -  ![Installation](#installation)
+   -  [Prerequisites](#prerequisites)
+   -  [Installation](#installation)
 
--  ![Postman Collection](#postman-collection)
--  ![Testing](#testing)
--  ![Environment Variables](#environment-variables)
+-  [Postman Collection](#postman-collection)
+-  [Testing](#testing)
+-  [Environment Variables](#environment-variables)
 
 ## Features
 

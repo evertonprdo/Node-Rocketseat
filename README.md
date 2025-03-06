@@ -2,7 +2,7 @@
 
 Welcome to the repository for the Node track classes from [RocketSeat](https://www.rocketseat.com.br/). taught by [Diego Fernandes](https://github.com/diego3g)
 
-## Sobre
+## About
 
 This repository contains the source code developed during the Node track classes at RocketSeat. The goal is to track progress in the course and share solutions and learnings.
 

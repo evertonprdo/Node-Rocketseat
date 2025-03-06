@@ -1,6 +1,6 @@
 # Fundamentals - Tasks API
 
-[!API Screenshot](screenshots/image.png)
+![API Screenshot](screenshots/image.png)
 
 ## Overview
 

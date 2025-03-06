@@ -14,5 +14,10 @@ jobs:
           node-version: 18
           cache: 'npm'
 
-      - run: npm ci
-      - run: npm run test
+      - name: install dependencies
+        working-directory: 03-implementing-solid/api-node-SOLID
+        run: npm ci
+
+      - name: run tests
+        working-directory: 03-implementing-solid/api-node-SOLID
+        run: npm run test

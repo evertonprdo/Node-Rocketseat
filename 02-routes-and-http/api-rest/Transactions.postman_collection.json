@@ -1,0 +1,90 @@
+{
+	"info": {
+		"_postman_id": "81eef84b-5b25-4d1d-8f3c-12a9c817e276",
+		"name": "Transactions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36908842"
+	},
+	"item": [
+		{
+			"name": "Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"transaction01\",\r\n    \"amount\": 3000,\r\n    \"type\": \"credit\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/transactions/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"transactions",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/transactions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Item",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/transactions/2f910802-1247-440e-b30f-2b78c7cc5e2c",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"transactions",
+						"2f910802-1247-440e-b30f-2b78c7cc5e2c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Summary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/transactions/summary",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"transactions",
+						"summary"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

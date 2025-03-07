@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 async function main() {
-  const cpf = '187.943.710-40' // random CPF
+  const cpf = '18794371040' // random CPF
   const user = await prisma.user.upsert({
     where: { cpf },
     update: {},

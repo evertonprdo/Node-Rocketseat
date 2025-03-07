@@ -1,14 +1,14 @@
 import { EventHandler } from '@/core/events/event-handler'
 import { DomainEvents } from '@/core/events/domain-events'
 
-import { ReceiversRepository } from '@/domain/delivery/repositories/receivers.repository'
+import { CustomersRepository } from '@/domain/admin/repositories/customers.repository'
 
 import { SendNotificationUseCase } from '../use-cases/send-notification.use-case'
 import { DeliveryStatusUpdatedEvent } from '@/domain/delivery/events/delivery-status-updated.event'
 
 export class OnDeliveryStatusUpdated implements EventHandler {
   constructor(
-    private receiversRepository: ReceiversRepository,
+    private customersRepository: CustomersRepository,
     private sendNotification: SendNotificationUseCase,
   ) {
     this.setupSubscriptions()
@@ -24,7 +24,7 @@ export class OnDeliveryStatusUpdated implements EventHandler {
   private async sendNewDeliveryNotification({
     delivery,
   }: DeliveryStatusUpdatedEvent) {
-    const receiver = await this.receiversRepository.findById(
+    const receiver = await this.customersRepository.findById(
       delivery.receiverId.toString(),
     )
 
@@ -38,7 +38,7 @@ export class OnDeliveryStatusUpdated implements EventHandler {
 
     if (receiver) {
       await this.sendNotification.execute({
-        recipientId: receiver.id.toString(),
+        recipientId: receiver.userId.toString(),
         title: `Delivery status updated: "${delivery.status}"`,
         content: messages[delivery.status],
       })

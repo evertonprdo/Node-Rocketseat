@@ -77,6 +77,8 @@ describe('On Delivery Updated (e2e)', () => {
       customerId: customer.id,
     })
 
+    DomainEvents.dispatchEventsForAggregate(delivery.id)
+
     const accessToken = accessTokenFactory.makeDeliveryWorker({
       deliveryWorkerId: deliveryWorker.id.toString(),
     })
@@ -89,6 +91,9 @@ describe('On Delivery Updated (e2e)', () => {
       const notificationOnDatabase = await prisma.notification.findFirst({
         where: {
           recipientId: user.id.toString(),
+          title: {
+            contains: '"PICKED_UP"',
+          },
         },
       })
 

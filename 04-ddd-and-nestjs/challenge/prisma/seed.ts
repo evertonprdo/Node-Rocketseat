@@ -19,6 +19,7 @@ async function main() {
     where: { email },
     update: {},
     create: {
+      id: '607012d8-db76-41bc-bfac-eedad8bd4568',
       email,
       userId: user.id,
     },

@@ -55,8 +55,6 @@ describe('Read notification (e2e)', () => {
       .patch(`/notifications/${notification.id.toString()}`)
       .set('Authorization', `Bearer ${accessToken}`)
 
-    console.log(response.body)
-
     expect(response.statusCode).toEqual(204)
 
     const notificationOnDatabase = await prisma.notification.findUnique({

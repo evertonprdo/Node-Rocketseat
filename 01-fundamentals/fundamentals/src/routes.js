@@ -11,7 +11,6 @@ export const routes = [
       handler: (request, response) => {
          const { search } = request.query
 
-         console.log(search)
          const users = database.select(
             'users',
             search

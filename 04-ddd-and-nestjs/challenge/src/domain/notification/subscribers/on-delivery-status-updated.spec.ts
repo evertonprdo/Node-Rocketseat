@@ -2,14 +2,13 @@ import { MockInstance } from 'vitest'
 
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-import { makeReceiver } from '@/domain/delivery/_tests/factories/make-receiver'
 import { makeDelivery } from '@/domain/delivery/_tests/factories/make-delivery'
 
+import { makeInMemoryCustomersRepository } from '@/domain/admin/_tests/repositories/factories/make-in-memory-customers-repository'
 import { makeInMemoryDeliveriesRepository } from '@/domain/delivery/_tests/repositories/factories/make-in-memory-deliveries.repository'
-import { makeInMemoryReceiversRepository } from '@/domain/delivery/_tests/repositories/factories/make-in-memory-receivers.repository'
 
 import { InMemoryNotificationsRepository } from '../_test/repositories/in-memory-notifications-repository'
-import { InMemoryReceiversRepository } from '@/domain/delivery/_tests/repositories/in-memory-receivers.repository'
+import { InMemoryCustomersRepository } from '@/domain/admin/_tests/repositories/in-memory-customers.repository'
 import { InMemoryDeliveriesRepository } from '@/domain/delivery/_tests/repositories/in-memory-deliveries.repository'
 
 import {
@@ -19,8 +18,9 @@ import {
 } from '../use-cases/send-notification.use-case'
 
 import { OnDeliveryStatusUpdated } from './on-delivery-status-updated'
+import { makeCustomer } from '@/domain/admin/_tests/factories/make-customer'
 
-let receiversRepository: InMemoryReceiversRepository
+let customersRepository: InMemoryCustomersRepository
 let deliveriesRepository: InMemoryDeliveriesRepository
 let notificationsRepository: InMemoryNotificationsRepository
 
@@ -34,7 +34,7 @@ let sendNotificationUseCase: SendNotificationUseCase
 
 describe('On Delivery Status Updated', () => {
   beforeEach(() => {
-    receiversRepository = makeInMemoryReceiversRepository()
+    customersRepository = makeInMemoryCustomersRepository()
     deliveriesRepository = makeInMemoryDeliveriesRepository()
     notificationsRepository = new InMemoryNotificationsRepository()
 
@@ -44,18 +44,18 @@ describe('On Delivery Status Updated', () => {
 
     sendNotificationExecuteSpy = vi.spyOn(sendNotificationUseCase, 'execute')
 
-    new OnDeliveryStatusUpdated(receiversRepository, sendNotificationUseCase)
+    new OnDeliveryStatusUpdated(customersRepository, sendNotificationUseCase)
   })
 
   it('should send a notification when a delivery status updated', async () => {
-    const receiver = makeReceiver()
+    const customer = makeCustomer()
     const delivery = makeDelivery({
-      receiverId: receiver.id,
+      receiverId: customer.id,
     })
 
     delivery.markAsPickedUp(new UniqueEntityId())
 
-    receiversRepository.items.push(receiver)
+    customersRepository.items.push(customer)
     deliveriesRepository.save(delivery)
 
     await vi.waitFor(() => {

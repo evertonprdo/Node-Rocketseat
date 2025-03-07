@@ -977,7 +977,7 @@
 			"response": []
 		},
 		{
-			"name": "Deliveries to delivery",
+			"name": "Deliveries pending nearby",
 			"event": [
 				{
 					"listen": "test",

@@ -126,6 +126,8 @@ The project uses Vitest for testing. To run the tests, execute:
    npm run test:e2e
 ```
 
+Note: To run the E2E tests, you will need to have docker running `docker-compose up` if it is not already done.
+
 ## Environment Variables
 
 Create a `.env` file in the root of the project with the following variables (example):

@@ -45,6 +45,14 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
       throw new Error()
     }
 
+    const user = await this.customersRepository.usersRepository.findById(
+      customer.userId.toString(),
+    )
+
+    if (!user) {
+      throw new Error()
+    }
+
     const deliveryDetailsProps: DeliveryDetailsProps = {
       deliveryId: delivery.id,
       status: delivery.status,
@@ -55,7 +63,7 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
 
       customer: {
         id: customer.id,
-        name: customer.name,
+        name: user.name,
         email: customer.email,
         address: customer.address,
       },

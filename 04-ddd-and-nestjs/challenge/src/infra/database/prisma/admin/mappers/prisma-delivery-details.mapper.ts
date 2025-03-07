@@ -16,7 +16,7 @@ import {
 import { Attachment } from '@/domain/_shared/entities/attachment'
 
 type PrismaDeliveryDetails = {
-  customer: PrismaCustomer
+  customer: { user: PrismaUser } & PrismaCustomer
   deliveryWorker: ({ user: PrismaUser } & PrismaDeliveryWorker) | null
   attachment: PrismaAttachment | null
 } & PrismaDelivery
@@ -57,7 +57,7 @@ export class PrismaDeliveryDetailsMapper {
       status: raw.status,
       customer: {
         id: new UniqueEntityId(raw.customer.id),
-        name: raw.customer.name,
+        name: raw.customer.user.name,
         email: raw.customer.email,
         address: customerAddress,
       },

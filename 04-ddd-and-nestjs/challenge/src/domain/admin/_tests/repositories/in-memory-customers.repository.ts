@@ -40,6 +40,7 @@ export class InMemoryCustomersRepository implements CustomersRepository {
       userId: user.id,
       cpf: user.cpf,
       name: user.name,
+      email: customer.email,
       phone: user.phone,
       address: customer.address,
     })

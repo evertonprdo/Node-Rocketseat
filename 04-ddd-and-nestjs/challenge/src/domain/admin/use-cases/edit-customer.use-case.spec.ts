@@ -19,14 +19,13 @@ describe('Use Cases: Edit Customer', () => {
 
   it('should edit a customer', async () => {
     const address = makeAddress({ city: 'old-city' })
-    const customer = makeCustomer({ name: 'John Doe', address })
+    const customer = makeCustomer({ address })
     customersRepository.items.push(customer)
 
     const result = await sut.execute({
       customerId: customer.id.toString(),
       cep: customer.address.cep.toDecorated(),
       email: 'new@email.com',
-      name: 'Mary',
       city: 'new-city',
       state: customer.address.state,
       neighborhood: customer.address.neighborhood,

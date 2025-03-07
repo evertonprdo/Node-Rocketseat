@@ -21,15 +21,20 @@ describe('Use Case: Get Delivery Details', () => {
   })
 
   it('should return a delivery details', async () => {
-    const user = makeUser()
+    const deliveryUser = makeUser()
     deliveriesRepository.deliveryWorkersRepository.usersRepository.items.push(
-      user,
+      deliveryUser,
     )
 
-    const deliveryWorker = makeDeliveryWorker({ userId: user.id })
+    const deliveryWorker = makeDeliveryWorker({ userId: deliveryUser.id })
     deliveriesRepository.deliveryWorkersRepository.items.push(deliveryWorker)
 
-    const customer = makeCustomer()
+    const customerUser = makeUser()
+    deliveriesRepository.customersRepository.usersRepository.items.push(
+      customerUser,
+    )
+
+    const customer = makeCustomer({ userId: customerUser.id })
     deliveriesRepository.customersRepository.items.push(customer)
 
     const delivery = makeDelivery({
@@ -46,8 +51,8 @@ describe('Use Case: Get Delivery Details', () => {
     expect(result.value).toEqual({
       deliveryDetails: expect.objectContaining({
         deliveryId: delivery.id,
-        customer: expect.objectContaining({ name: customer.name }),
-        deliveryWorker: expect.objectContaining({ name: user.name }),
+        customer: expect.objectContaining({ name: customerUser.name }),
+        deliveryWorker: expect.objectContaining({ name: deliveryUser.name }),
       }),
     })
   })

@@ -2,6 +2,20 @@
 
 ![API Screenshot](screenshots/image.png)
 
+This API is a backend solution developed as part of the Rocketseat Node.js course. It serves as a robust platform for managing a Q&A system with the following functionalities:
+
+-  **User Account Management:** Create new accounts and manage user data.
+-  **Authentication**: Secure user login and session management using JWT tokens.
+-  **File Uploads**: Handle file attachments using Cloudflare's R2 Object Storage, enabling users to upload and associate files with their content.
+-  **Q&A Features**:
+
+   -  **Questions:** Users can post, update, retrieve, and delete questions.
+   -  **Answers**: Users can submit answers to questions, update them, or mark one as the best answer.
+   -  **Comments**: Both questions and answers support comments to foster discussion.
+
+-  **Notifications**: Manage notifications to keep users informed about interactions on their posts.
+-  **Data Validation & Security**: Integrates robust validation and security measures (e.g., password encryption) to ensure data integrity and user privacy.
+
 ## Table of Contents
 
 -  [Technologies Used](#technologies-used)
@@ -16,10 +30,17 @@
 
 ## Technologies Used
 
--  [NestJS](https://nestjs.com/)
--  [Zod](https://zod.dev/)
--  [Prisma](https://www.prisma.io/)
--  [Vitest](https://vitest.dev/)
+The API is built using a modern tech stack that leverages the following technologies:
+
+-  **Node.js & TypeScript**: Provides a solid and type-safe foundation for building scalable server-side applications.
+-  **NestJS**: A progressive framework that helps organize the codebase with modules, controllers, and services, making it easier to maintain and scale.
+-  **Prisma**: An ORM used for efficient database management and type-safe database queries.
+-  **Cloudflare R2 Object Storage**: Utilized for file storage, allowing secure and reliable file uploads through an S3-compatible API.
+-  **Redis**: Implements caching and supports session management to improve performance.
+-  **JWT & Passport**: Ensures secure authentication and authorization throughout the API.
+-  **Zod**: Offers schema-based validation to ensure that incoming requests are correctly structured.
+-  **Day.js**: Simplifies date manipulation and formatting.
+-  **Bcryptjs**: Provides strong password hashing for secure user authentication.
 
 ## Getting Started
 

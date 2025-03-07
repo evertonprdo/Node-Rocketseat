@@ -1,0 +1,1011 @@
+{
+	"info": {
+		"_postman_id": "2a8d9b4b-ee61-4797-a4dc-b954d9796019",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36908842"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"sample\",\r\n    \"email\": \"sample@mail.com\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/accounts",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Session",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"\r",
+							"pm.collectionVariables.set(\"JWT_TOKEN\", response.access_token)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"sample@mail.com\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/sessions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"sessions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Attachment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"\r",
+							"pm.collectionVariables.set(\"ATTACHMENT_ID\", response.attachmentId)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/evert/Downloads/2150163752.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/attachments",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"attachments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Question",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"sample question\",\r\n    \"content\": \"sample description\",\r\n    \"attachments\": [\"{{ATTACHMENT_ID}}\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/questions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"questions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Questions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"const question = response.questions[0]\r",
+							"\r",
+							"pm.collectionVariables.set(\"QUESTION_ID\", question.id)\r",
+							"pm.collectionVariables.set(\"QUESTION_SLUG\", question.slug)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/questions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"questions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Question",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"sample question update\",\r\n    \"content\": \"sample description update\",\r\n    \"attachments\": [\"{{ATTACHMENT_ID}}\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/questions/{{QUESTION_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"questions",
+						"{{QUESTION_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Question answer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"sample answer\",\r\n    \"attachments\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/questions/{{QUESTION_ID}}/answers",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"questions",
+						"{{QUESTION_ID}}",
+						"answers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Question answers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"const answer = response.answers[0]\r",
+							"\r",
+							"pm.collectionVariables.set(\"ANSWER_ID\", answer.id)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/questions/{{QUESTION_ID}}/answers",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"questions",
+						"{{QUESTION_ID}}",
+						"answers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Answer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"sample answer updated\",\r\n    \"attachments\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/answers/{{ANSWER_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"answers",
+						"{{ANSWER_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Question comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"sample question comment\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/questions/{{QUESTION_ID}}/comments",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"questions",
+						"{{QUESTION_ID}}",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Question comments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"const comment = response.comments[0]\r",
+							"\r",
+							"pm.collectionVariables.set(\"QUESTION_COMMENT_ID\", comment.commentId)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/questions/{{QUESTION_ID}}/comments",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"questions",
+						"{{QUESTION_ID}}",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Answer comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"sample answer comment\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/answers/{{ANSWER_ID}}/comments",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"answers",
+						"{{ANSWER_ID}}",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Answer comments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"const comment = response.comments[0]\r",
+							"\r",
+							"pm.collectionVariables.set(\"ANSWER_COMMENT_ID\", comment.commentId)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/answers/{{ANSWER_ID}}/comments",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"answers",
+						"{{ANSWER_ID}}",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Question by slug",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/questions/{{QUESTION_SLUG}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"questions",
+						"{{QUESTION_SLUG}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Quest chose best answer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/answers/{{ANSWER_ID}}/choose-as-best",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"answers",
+						"{{ANSWER_ID}}",
+						"choose-as-best"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Answer comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/answers/comments/{{ANSWER_COMMENT_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"answers",
+						"comments",
+						"{{ANSWER_COMMENT_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Question comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/questions/comments/{{QUESTION_COMMENT_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"questions",
+						"comments",
+						"{{QUESTION_COMMENT_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Answer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/answers/{{ANSWER_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"answers",
+						"{{ANSWER_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Question",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/questions/{{QUESTION_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"questions",
+						"{{QUESTION_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Session of seeded account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"\r",
+							"pm.collectionVariables.set(\"JWT_TOKEN_SEEDED\", response.access_token)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"notiication@mail.com\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/sessions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"sessions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Notification read",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN_SEEDED}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/notifications/e1ecc3ea-02af-42ba-939a-7d7ba6ae518c/read",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"notifications",
+						"e1ecc3ea-02af-42ba-939a-7d7ba6ae518c",
+						"read"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3333",
+			"type": "string"
+		},
+		{
+			"key": "JWT_TOKEN",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ATTACHMENT_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "QUESTION_SLUG",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "QUESTION_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ANSWER_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "QUESTION_COMMENT_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ANSWER_COMMENT_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "JWT_TOKEN_SEEDED",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

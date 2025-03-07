@@ -20,7 +20,7 @@ async function main() {
       recipientId: '6bc178c7-64c6-4587-ace5-79371dce016c',
       title: 'Sample notification',
       content:
-        'This is a seeded notification if you want to see the current notifications in the database, run `npx prisma studio` and open the notifications table', // 123456
+        'This is a seeded notification if you want to see the current notifications in the database, run `npx prisma studio` and open the notifications table',
     },
   })
   console.log({ notificationAcc, notification })

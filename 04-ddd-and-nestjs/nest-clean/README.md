@@ -1,4 +1,4 @@
-# Forum API - NestJS with DDD principles
+# Q&A API - NestJS with DDD principles
 
 ![API Screenshot](screenshots/image.png)
 

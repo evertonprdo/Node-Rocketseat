@@ -7,6 +7,7 @@ export class NotificationPresenter {
       id: notification.id.toString(),
       title: notification.title,
       content: notification.content,
+      readAt: notification.readAt,
       createdAt: notification.createdAt,
     }
   }

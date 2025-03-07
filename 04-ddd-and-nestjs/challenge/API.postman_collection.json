@@ -1,0 +1,1902 @@
+{
+	"info": {
+		"_postman_id": "23b904d3-b8ad-470b-9a80-db052976be66",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36908842"
+	},
+	"item": [
+		{
+			"name": "Register user (admin)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"sample admin\",\r\n    \"cpf\": \"330.575.000-64\",\r\n    \"password\": \"123456\",\r\n    \"phone\": \"+99 999 9 9999 9999\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register user (deliverer)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"sample deliverer\",\r\n    \"cpf\": \"762.872.720-40\",\r\n    \"password\": \"123456\",\r\n    \"phone\": \"+99 999 9 9999 9999\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register user (customer/receiver)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"sample customer\",\r\n    \"cpf\": \"479.776.650-69\",\r\n    \"password\": \"123456\",\r\n    \"phone\": \"+99 999 9 9999 9999\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register user to delete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"sample to delete\",\r\n    \"cpf\": \"555.806.320-37\",\r\n    \"password\": \"123456\",\r\n    \"phone\": \"+99 999 9 9999 9999\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Session seeded of admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"\r",
+							"pm.collectionVariables.set(\"ADMIN_JWT_TOKEN\", response.access_token)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cpf\": \"187.943.710-40\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"const { users } = response\r",
+							"\r",
+							"const rootAdmin = users.find((it) => it.name === 'admin' || it.name === 'root admin')\r",
+							"const admin = users.find((it) => it.name === 'sample admin')\r",
+							"const customer = users.find((it) => it.name === 'sample customer')\r",
+							"const deliverer = users.find((it) => it.name === 'sample deliverer')\r",
+							"const toDelete = users.find((it) => it.name === 'sample to delete')\r",
+							"\r",
+							"pm.collectionVariables.set(\"USER_ROOT_ADMIN_ID\", rootAdmin.id)\r",
+							"pm.collectionVariables.set(\"USER_ADMIN_ID\", admin.id)\r",
+							"pm.collectionVariables.set(\"USER_CUSTOMER_ID\", customer.id)\r",
+							"pm.collectionVariables.set(\"USER_DELIVERER_ID\", deliverer.id)\r",
+							"pm.collectionVariables.set(\"USER_TO_DELETE\", toDelete.id)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Assign (admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"{{USER_ADMIN_ID}}\",\r\n    \"email\": \"sampleadmin@mail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/admins/assign",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admins",
+						"assign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Assign (deliverer)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"{{USER_DELIVERER_ID}}\",\r\n    \"operationZone\": \"sample city\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/delivery-workers/assign",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"delivery-workers",
+						"assign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Assign (customer)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"{{USER_CUSTOMER_ID}}\",\r\n    \"email\": \"samplecustomer@mail.com\",\r\n    \"cep\": \"69901-399\",\r\n    \"city\": \"sample city\",\r\n    \"state\": \"sample state\",\r\n    \"street\": \"sample street\",\r\n    \"number\": \"333\",\r\n    \"neighborhood\": \"sample neighborhood\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/customers",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deliverers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"const deliverer = response.delivery_workers[0]\r",
+							"\r",
+							"pm.collectionVariables.set(\"DELIVERER_ID\", deliverer.deliveryWorkerId)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/delivery-workers",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"delivery-workers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"const customer = response.customers[0]\r",
+							"\r",
+							"pm.collectionVariables.set(\"CUSTOMER_ID\", customer.id)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/customers",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User (root)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"root admin\",\r\n    \"phone\": \"+99 999 9 9999 9999\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/{{USER_ROOT_ADMIN_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"{{USER_ROOT_ADMIN_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"rootadmin@mail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/admins/607012d8-db76-41bc-bfac-eedad8bd4568",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admins",
+						"607012d8-db76-41bc-bfac-eedad8bd4568"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deliverer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"operationZone\": \"sample city update\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/delivery-workers/{{DELIVERER_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"delivery-workers",
+						"{{DELIVERER_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"samplecustomer@mail.com\",\r\n    \"cep\": \"69901-399\",\r\n    \"city\": \"sample city update\",\r\n    \"state\": \"sample state update\",\r\n    \"street\": \"sample street update\",\r\n    \"number\": \"333\",\r\n    \"neighborhood\": \"sample neighborhood update\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/customers/{{CUSTOMER_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"customers",
+						"{{CUSTOMER_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delivery",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customerId\": \"{{CUSTOMER_ID}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/deliveries",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"deliveries"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deliveries",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"const delivery = response.deliveries[0]\r",
+							"\r",
+							"pm.collectionVariables.set(\"DELIVERY_ID\", delivery.id)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/deliveries",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"deliveries"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/users/{{USER_ROOT_ADMIN_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"{{USER_ROOT_ADMIN_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/admins/607012d8-db76-41bc-bfac-eedad8bd4568",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admins",
+						"607012d8-db76-41bc-bfac-eedad8bd4568"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deliverer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/delivery-workers/{{DELIVERER_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"delivery-workers",
+						"{{DELIVERER_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/customers/{{CUSTOMER_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"customers",
+						"{{CUSTOMER_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delivery",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/deliveries/{{DELIVERY_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"deliveries",
+						"{{DELIVERY_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Session (deliverer)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"\r",
+							"pm.collectionVariables.set(\"DELIVERER_JWT_TOKEN\", response.access_token)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cpf\": \"762.872.720-40\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deliveries to delivery",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{DELIVERER_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/app/deliveries/nearby",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"app",
+						"deliveries",
+						"nearby"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delivery pick up",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{DELIVERER_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/app/deliveries/{{DELIVERY_ID}}/pick-up",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"app",
+						"deliveries",
+						"{{DELIVERY_ID}}",
+						"pick-up"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deliveries to delivery",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{DELIVERER_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/app/deliveries/to-delivery",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"app",
+						"deliveries",
+						"to-delivery"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Attachment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"\r",
+							"pm.collectionVariables.set(\"ATTACHMENT_ID\", response.attachmentId)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{DELIVERER_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/evert/Downloads/2150063215.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/attachments",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"attachments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delivery delivered",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{DELIVERER_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"attachmentId\": \"{{ATTACHMENT_ID}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/app/deliveries/{{DELIVERY_ID}}/deliver",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"app",
+						"deliveries",
+						"{{DELIVERY_ID}}",
+						"deliver"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deliveries history",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{DELIVERER_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/app/deliveries/delivered-history",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"app",
+						"deliveries",
+						"delivered-history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delivery (app)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{DELIVERER_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/app/deliveries/{{DELIVERY_ID}}/details",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"app",
+						"deliveries",
+						"{{DELIVERY_ID}}",
+						"details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delivery returned",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{DELIVERER_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/app/deliveries/{{DELIVERY_ID}}/return",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"app",
+						"deliveries",
+						"{{DELIVERY_ID}}",
+						"return"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Session (customer)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"\r",
+							"pm.collectionVariables.set(\"CUSTOMER_JWT_TOKEN\", response.access_token)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cpf\": \"479.776.650-69\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Notifications",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"const notification = response.notifications[0]\r",
+							"\r",
+							"pm.collectionVariables.set(\"NOTIFICATION_ID\", notification.id)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{CUSTOMER_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/notifications",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"notifications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Notification",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{CUSTOMER_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/notifications/{{NOTIFICATION_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"notifications",
+						"{{NOTIFICATION_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Notification",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{CUSTOMER_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/notifications/{{NOTIFICATION_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"notifications",
+						"{{NOTIFICATION_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delivery",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/deliveries/{{DELIVERY_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"deliveries",
+						"{{DELIVERY_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/customers/{{CUSTOMER_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"customers",
+						"{{CUSTOMER_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deliverer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/delivery-workers/{{DELIVERER_ID}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"delivery-workers",
+						"{{DELIVERER_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/users/{{USER_TO_DELETE}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"{{USER_TO_DELETE}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ROOT_ADMIN_JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/admins/ <!-- adminId: you can open prisma and get a UUID or delete the root admin: 607012d8-db76-41bc-bfac-eedad8bd4568 -->",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admins",
+						" <!-- adminId: you can open prisma and get a UUID or delete the root admin: 607012d8-db76-41bc-bfac-eedad8bd4568 -->"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3333",
+			"type": "string"
+		},
+		{
+			"key": "ROOT_ADMIN_JWT_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "USER_ROOT_ADMIN_ID",
+			"value": ""
+		},
+		{
+			"key": "USER_ADMIN_ID",
+			"value": ""
+		},
+		{
+			"key": "USER_CUSTOMER_ID",
+			"value": ""
+		},
+		{
+			"key": "USER_DELIVERER_ID",
+			"value": ""
+		},
+		{
+			"key": "CUSTOMER_ID",
+			"value": ""
+		},
+		{
+			"key": "DELIVERER_ID",
+			"value": ""
+		},
+		{
+			"key": "DELIVERY_ID",
+			"value": ""
+		},
+		{
+			"key": "DELIVERER_JWT_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "ADMIN_JWT_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "ATTACHMENT_ID",
+			"value": ""
+		},
+		{
+			"key": "CUSTOMER_JWT_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "NOTIFICATION_ID",
+			"value": ""
+		},
+		{
+			"key": "USER_TO_DELETE",
+			"value": ""
+		}
+	]
+}

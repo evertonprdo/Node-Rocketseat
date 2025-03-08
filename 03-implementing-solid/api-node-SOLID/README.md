@@ -115,7 +115,7 @@ This project is an API for a gym management system built with Node.js following 
 
 A Postman collection named `API.postman_colletion.json` is available in the root of the project. Import it into Postman to test the endpoints.
 
-Node: The order in which HTTP requests are organized is such that if executed from top to bottom, all business rules are satisfied without the need for manual fixes. (JTW expires in 10 min)
+Note: The order in which HTTP requests are organized is such that if executed from top to bottom, all business rules are satisfied without the need for manual fixes. (JTW expires in 10 min)
 
 ## Testing
 

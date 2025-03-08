@@ -21,7 +21,6 @@ export class GetDeliveryDetailsController {
 
   @Get()
   async handle(@Param('id') deliveryId: string) {
-    console.log(deliveryId)
     const result = await this.getDeliveryDetails.execute({
       deliveryId,
     })
@@ -38,6 +37,8 @@ export class GetDeliveryDetailsController {
       }
     }
 
-    return { delivery: DeliveryDetailsPresenter.toHTTP(result.value.delivery) }
+    return {
+      delivery: DeliveryDetailsPresenter.toHTTP(result.value.delivery),
+    }
   }
 }

@@ -41,7 +41,7 @@ describe('Fetch Delivered History', () => {
     await app.init()
   })
 
-  test('[GET] /app/deliveries/delivered-history', async () => {
+  test('[GET] /app/deliveries/history', async () => {
     const city = 'test-town'
 
     const receivers = await Promise.all(
@@ -83,7 +83,65 @@ describe('Fetch Delivered History', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .get('/app/deliveries/delivered-history')
+      .get('/app/deliveries/history')
+      .set('Authorization', `Bearer ${accessToken}`)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body.deliveries).toHaveLength(6)
+
+    expect(response.body.deliveries).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: deliveries[0].id.toString() }),
+        expect.objectContaining({ id: deliveries[1].id.toString() }),
+        expect.objectContaining({ id: deliveries[2].id.toString() }),
+      ]),
+    )
+  })
+
+  test('[GET] /app/deliveries/history?status=DELIVERED', async () => {
+    const city = 'test-town'
+
+    const receivers = await Promise.all(
+      Array.from({ length: 3 }, () => {
+        const address = makeAddress({ city })
+        return receiverFactory.makePrismaReceiver({ address })
+      }),
+    )
+
+    const deliveryWorker = await deliveryWorkerFactory.makePrismaDeliveryWorker(
+      { operationCity: city },
+    )
+
+    const deliveries = await Promise.all(
+      receivers.map((receiver) =>
+        deliveryFactory.makePrismaDelivery({
+          status: 'DELIVERED',
+          receiverId: receiver.id,
+          pickedUpAt: new Date(),
+          deliveredAt: new Date(),
+          deliveryWorkerId: deliveryWorker.id,
+        }),
+      ),
+    )
+
+    await Promise.all(
+      receivers.map((receiver) =>
+        deliveryFactory.makePrismaDelivery({
+          status: 'PICKED_UP',
+          receiverId: receiver.id,
+          pickedUpAt: new Date(),
+          deliveryWorkerId: deliveryWorker.id,
+        }),
+      ),
+    )
+
+    const accessToken = accessTokenFactory.makeDeliveryWorker({
+      deliveryWorkerId: deliveryWorker.id.toString(),
+    })
+
+    const response = await request(app.getHttpServer())
+      .get('/app/deliveries/history')
+      .query({ status: 'DELIVERED' })
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(200)
@@ -98,11 +156,11 @@ describe('Fetch Delivered History', () => {
     )
   })
 
-  test('[GET] /app/deliveries/delivered-history, roles: [DELIVERY_WORKER]', async () => {
+  test('[GET] /app/deliveries/history, roles: [DELIVERY_WORKER]', async () => {
     const accessToken = accessTokenFactory.makeAdmin()
 
     const response = await request(app.getHttpServer())
-      .get('/app/deliveries/delivered-history')
+      .get('/app/deliveries/history')
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(403)

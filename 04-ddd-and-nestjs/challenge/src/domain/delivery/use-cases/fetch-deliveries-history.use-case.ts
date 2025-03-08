@@ -1,28 +1,32 @@
 import { Either, right } from '@/core/either'
 import { DeliveriesRepository } from '../repositories/deliveries.repository'
 import { Delivery } from '../entities/delivery'
+import { StatusKeys } from '@/domain/_shared/entities/types/delivery'
 
-interface FetchDeliveredHistoryUseCaseRequest {
+interface FetchDeliveriesHistoryUseCaseRequest {
   page: number
   deliveryWorkerId: string
+  status?: StatusKeys
 }
 
-type FetchDeliveredHistoryUseCaseResponse = Either<
+type FetchDeliveriesHistoryUseCaseResponse = Either<
   null,
   { deliveries: Delivery[] }
 >
 
-export class FetchDeliveredHistoryUseCase {
+export class FetchDeliveriesHistoryUseCase {
   constructor(private deliveriesRepository: DeliveriesRepository) {}
 
   async execute({
     page,
     deliveryWorkerId,
-  }: FetchDeliveredHistoryUseCaseRequest): Promise<FetchDeliveredHistoryUseCaseResponse> {
+    status,
+  }: FetchDeliveriesHistoryUseCaseRequest): Promise<FetchDeliveriesHistoryUseCaseResponse> {
     const deliveries =
-      await this.deliveriesRepository.findManyDeliveredByDeliveryWorkerId({
+      await this.deliveriesRepository.findManyByDeliveryWorkerId({
         page,
         deliveryWorkerId,
+        status,
       })
 
     return right({ deliveries })

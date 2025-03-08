@@ -5,6 +5,7 @@ import { DomainEvents } from '@/core/events/domain-events'
 import { Delivery } from '@/domain/delivery/entities/delivery'
 import {
   DeliveriesRepository,
+  FindManyByDeliveryWorker,
   FindManyPendingByCity,
   findManyDeliveredByDeliveryWorkerId,
 } from '@/domain/delivery/repositories/deliveries.repository'
@@ -16,6 +17,25 @@ import { PrismaDeliveryDetailsMapper } from '../mappers/prisma-delivery-details.
 @Injectable()
 export class PrismaDeliveriesRepository implements DeliveriesRepository {
   constructor(private prisma: PrismaService) {}
+
+  async findManyByDeliveryWorkerId({
+    deliveryWorkerId,
+    page,
+    status,
+  }: FindManyByDeliveryWorker): Promise<Delivery[]> {
+    const take = 20
+
+    const deliveries = await this.prisma.delivery.findMany({
+      where: {
+        deliveryWorkerId,
+        status,
+      },
+      take,
+      skip: (page - 1) * take,
+    })
+
+    return deliveries.map(PrismaDeliveryMapper.toDomain)
+  }
 
   async findById(id: string) {
     const delivery = await this.prisma.delivery.findUnique({

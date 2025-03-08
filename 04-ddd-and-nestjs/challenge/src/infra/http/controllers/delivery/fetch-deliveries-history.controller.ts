@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get } from '@nestjs/common'
+import { BadRequestException, Controller, Get, Query } from '@nestjs/common'
 
 import { z } from 'zod'
 import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
@@ -10,33 +10,34 @@ import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { CurrentUser } from '@/infra/auth/current-user.decorator'
 
 import { DeliveryPresenter } from '../../presenters/delivery/delivery.presenter'
-import { NestFetchDeliveredHistoryUseCase } from '@/infra/injectable-use-cases/delivery/nest-fetch-delivered-history'
+import { NestFetchDeliveriesHistoryUseCase } from '@/infra/injectable-use-cases/delivery/nest-fetch-deliveries-history'
 
-const fetchDeliveredHistoryBodySchema = z.object({
+const fetchDeliveriesHistoryQuerySchema = z.object({
   page: z.coerce.number().default(1),
+  status: z.enum(['PICKED_UP', 'DELIVERED', 'RETURNED']).optional(),
 })
 
-type FetchDeliveredHistoryBodySchema = z.infer<
-  typeof fetchDeliveredHistoryBodySchema
+type FetchDeliveriesHistoryQuerySchema = z.infer<
+  typeof fetchDeliveriesHistoryQuerySchema
 >
 
-const bodyValidationPipe = new ZodValidationPipe(
-  fetchDeliveredHistoryBodySchema,
+const queryValidationPipe = new ZodValidationPipe(
+  fetchDeliveriesHistoryQuerySchema,
 )
 
-@Controller('/app/deliveries/delivered-history')
+@Controller('/app/deliveries/history')
 @Roles(Role.DELIVERY_WORKER)
-export class FetchDeliveredHistoryController {
+export class FetchDeliveriesHistoryController {
   constructor(
-    private fetchDeliveredHistory: NestFetchDeliveredHistoryUseCase,
+    private fetchDeliveredHistory: NestFetchDeliveriesHistoryUseCase,
   ) {}
 
   @Get()
   async handle(
-    @Body(bodyValidationPipe) body: FetchDeliveredHistoryBodySchema,
+    @Query(queryValidationPipe) query: FetchDeliveriesHistoryQuerySchema,
     @CurrentUser() deliveryWorker: UserPayload,
   ) {
-    const { page } = body
+    const { page, status } = query
     const { deliveryWorkerId } = deliveryWorker
 
     if (!deliveryWorkerId) {
@@ -46,6 +47,7 @@ export class FetchDeliveredHistoryController {
     const result = await this.fetchDeliveredHistory.execute({
       deliveryWorkerId,
       page,
+      status,
     })
 
     if (result.isLeft()) {

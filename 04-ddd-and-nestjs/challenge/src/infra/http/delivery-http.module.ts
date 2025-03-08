@@ -18,8 +18,8 @@ import { NestMarkDeliveryAsReturnedUseCase } from '../injectable-use-cases/deliv
 import { MarkDeliveryAsDeliveredController } from './controllers/delivery/mark-delivery-as-delivered.controller'
 import { NestMarkDeliveryAsDeliveredUseCase } from '../injectable-use-cases/delivery/nest-mark-delivery-as-delivered.use-case'
 
-import { FetchDeliveredHistoryController } from './controllers/delivery/fetch-delivered-history.controller'
-import { NestFetchDeliveredHistoryUseCase } from '../injectable-use-cases/delivery/nest-fetch-delivered-history'
+import { FetchDeliveriesHistoryController } from './controllers/delivery/fetch-deliveries-history.controller'
+import { NestFetchDeliveriesHistoryUseCase } from '../injectable-use-cases/delivery/nest-fetch-deliveries-history'
 
 import { FetchDeliveriesToDeliveryController } from './controllers/delivery/fetch-deliveries-to-delivery.controller'
 import { NestFetchDeliveriesToDeliveryUseCase } from '../injectable-use-cases/delivery/nest-fetch-deliveries-to-delivery'
@@ -35,7 +35,7 @@ import { NestUploadAndCreateAttachmentUseCase } from '../injectable-use-cases/de
     MarkDeliveryAsPickedUpController,
     MarkDeliveryAsReturnedController,
     MarkDeliveryAsDeliveredController,
-    FetchDeliveredHistoryController,
+    FetchDeliveriesHistoryController,
     FetchDeliveriesToDeliveryController,
     UploadAttachmentController,
   ],
@@ -45,7 +45,7 @@ import { NestUploadAndCreateAttachmentUseCase } from '../injectable-use-cases/de
     NestMarkDeliveryAsPickedUpUseCase,
     NestMarkDeliveryAsReturnedUseCase,
     NestMarkDeliveryAsDeliveredUseCase,
-    NestFetchDeliveredHistoryUseCase,
+    NestFetchDeliveriesHistoryUseCase,
     NestFetchDeliveriesToDeliveryUseCase,
     NestUploadAndCreateAttachmentUseCase,
   ],

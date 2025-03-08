@@ -11,6 +11,7 @@ import { DeliveryDetails } from '../../entities/value-objects/delivery-details'
 
 import {
   DeliveriesRepository,
+  FindManyByDeliveryWorker,
   findManyDeliveredByDeliveryWorkerId,
   FindManyPendingByCity,
 } from '../../repositories/deliveries.repository'
@@ -24,6 +25,19 @@ export class InMemoryDeliveriesRepository implements DeliveriesRepository {
     public deliveryAttachmentsRepository: InMemoryDeliveryAttachmentsRepository,
     public attachmentsRepository: InMemoryAttachmentsRepository,
   ) {}
+
+  async findManyByDeliveryWorkerId({
+    deliveryWorkerId,
+    page,
+    status,
+  }: FindManyByDeliveryWorker): Promise<Delivery[]> {
+    const deliveries = this.items
+      .filter((item) => item.deliveryWorkerId?.toString() === deliveryWorkerId)
+      .filter((item) => item.status === status || !status)
+
+    const take = 20
+    return deliveries.slice((page - 1) * take, page * take)
+  }
 
   async findById(id: string) {
     const delivery = this.items.find((item) => item.id.toString() === id)

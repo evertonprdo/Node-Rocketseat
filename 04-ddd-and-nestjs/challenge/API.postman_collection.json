@@ -1081,59 +1081,6 @@
 			"response": []
 		},
 		{
-			"name": "Deliveries to delivery",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{DELIVERER_JWT_TOKEN}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}/app/deliveries/to-delivery",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"app",
-						"deliveries",
-						"to-delivery"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Attachment",
 			"event": [
 				{
@@ -1275,14 +1222,25 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/app/deliveries/delivered-history",
+					"raw": "{{base_url}}/app/deliveries/history?status=DELIVERED&page=1",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"app",
 						"deliveries",
-						"delivered-history"
+						"history"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "DELIVERED",
+							"description": "enum(PICKED_UP, DELIVERED, RETURNED)"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
 					]
 				}
 			},

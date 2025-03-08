@@ -7,7 +7,6 @@ import {
   DeliveriesRepository,
   FindManyByDeliveryWorker,
   FindManyPendingByCity,
-  findManyDeliveredByDeliveryWorkerId,
 } from '@/domain/delivery/repositories/deliveries.repository'
 
 import { PrismaService } from '../../prisma.service'
@@ -73,37 +72,6 @@ export class PrismaDeliveriesRepository implements DeliveriesRepository {
     }
 
     return PrismaDeliveryDetailsMapper.toDomain(delivery)
-  }
-
-  async findManyDeliveredByDeliveryWorkerId({
-    page,
-    deliveryWorkerId,
-  }: findManyDeliveredByDeliveryWorkerId) {
-    const take = 20
-
-    const deliveries = await this.prisma.delivery.findMany({
-      where: {
-        deliveryWorkerId,
-        status: 'DELIVERED',
-      },
-      take,
-      skip: (page - 1) * take,
-    })
-
-    return deliveries.map(PrismaDeliveryMapper.toDomain)
-  }
-
-  async findManyPickedUpByDeliveryWorkerId(
-    deliveryWorkerId: string,
-  ): Promise<Delivery[]> {
-    const deliveries = await this.prisma.delivery.findMany({
-      where: {
-        deliveryWorkerId,
-        status: 'PICKED_UP',
-      },
-    })
-
-    return deliveries.map(PrismaDeliveryMapper.toDomain)
   }
 
   async findManyPendingByCity({ city, page }: FindManyPendingByCity) {

@@ -14,7 +14,10 @@ import { NestFetchRecipientNotificationsUseCase } from '@/infra/injectable-use-c
 
 const fetchNotificationsParamsSchema = z.object({
   page: z.coerce.number().default(1),
-  unreadyOnly: z.coerce.boolean().default(false),
+  unreadyOnly: z
+    .enum(['0', '1', 'true', 'false'])
+    .transform((val) => val === '1' || val === 'true')
+    .default('0'),
 })
 
 type FetchNotificationsParamsSchema = z.infer<

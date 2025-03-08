@@ -1,6 +1,6 @@
 import {
   BadRequestException,
-  Body,
+  Query,
   Controller,
   Get,
   NotFoundException,
@@ -20,16 +20,16 @@ import { ResourceNotFoundError } from '@/domain/_shared/errors/resource-not-foun
 import { DeliveryPresenter } from '../../presenters/delivery/delivery.presenter'
 import { NestFetchPendingDeliveriesNearbyUseCase } from '@/infra/injectable-use-cases/delivery/nest-fetch-pending-deliveries-nearby.use-case'
 
-const fetchPendingDeliveriesNearbyBodySchema = z.object({
+const fetchPendingDeliveriesNearbyQuerySchema = z.object({
   page: z.coerce.number().default(1),
 })
 
-type FetchPendingDeliveriesNearbyBodySchema = z.infer<
-  typeof fetchPendingDeliveriesNearbyBodySchema
+type FetchPendingDeliveriesNearbyQuerySchema = z.infer<
+  typeof fetchPendingDeliveriesNearbyQuerySchema
 >
 
-const bodyValidationPipe = new ZodValidationPipe(
-  fetchPendingDeliveriesNearbyBodySchema,
+const queryValidationPipe = new ZodValidationPipe(
+  fetchPendingDeliveriesNearbyQuerySchema,
 )
 
 @Controller('/app/deliveries/nearby')
@@ -41,10 +41,10 @@ export class FetchPendingDeliveriesNearbyController {
 
   @Get()
   async handle(
-    @Body(bodyValidationPipe) body: FetchPendingDeliveriesNearbyBodySchema,
+    @Query(queryValidationPipe) query: FetchPendingDeliveriesNearbyQuerySchema,
     @CurrentUser() deliveryWorker: UserPayload,
   ) {
-    const { page } = body
+    const { page } = query
     const { deliveryWorkerId } = deliveryWorker
 
     if (!deliveryWorkerId) {

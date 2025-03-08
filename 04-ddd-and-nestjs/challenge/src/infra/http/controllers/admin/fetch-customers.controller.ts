@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get } from '@nestjs/common'
+import { BadRequestException, Controller, Get, Query } from '@nestjs/common'
 
 import { z } from 'zod'
 import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
@@ -9,13 +9,13 @@ import { Roles } from '@/infra/auth/roles/roles.decorator'
 import { CustomerPresenter } from '../../presenters/admin/customer.presenter'
 import { NestFetchCustomersUseCase } from '@/infra/injectable-use-cases/admin/nest-fetch-customers.use-case'
 
-const fetchCustomersBodySchema = z.object({
+const fetchCustomersQuerySchema = z.object({
   page: z.coerce.number().default(1),
 })
 
-type FetchCustomersBodySchema = z.infer<typeof fetchCustomersBodySchema>
+type FetchCustomersQuerySchema = z.infer<typeof fetchCustomersQuerySchema>
 
-const bodyValidationPipe = new ZodValidationPipe(fetchCustomersBodySchema)
+const queryValidationPipe = new ZodValidationPipe(fetchCustomersQuerySchema)
 
 @Controller('/customers')
 @Roles(Role.ADMIN)
@@ -23,8 +23,8 @@ export class FetchCustomersController {
   constructor(private fetchCustomers: NestFetchCustomersUseCase) {}
 
   @Get()
-  async handle(@Body(bodyValidationPipe) body: FetchCustomersBodySchema) {
-    const { page } = body
+  async handle(@Query(queryValidationPipe) query: FetchCustomersQuerySchema) {
+    const { page } = query
 
     const result = await this.fetchCustomers.execute({ page })
 

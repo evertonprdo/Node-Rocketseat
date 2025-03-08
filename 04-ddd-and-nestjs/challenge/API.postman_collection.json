@@ -396,12 +396,18 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/delivery-workers",
+					"raw": "{{base_url}}/delivery-workers?page=1",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"delivery-workers"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -438,12 +444,18 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/customers",
+					"raw": "{{base_url}}/customers?page=1",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"customers"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -724,12 +736,18 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/deliveries",
+					"raw": "{{base_url}}/deliveries?page=1",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"deliveries"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -1016,7 +1034,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/app/deliveries/nearby",
+					"raw": "{{base_url}}/app/deliveries/nearby?page=1",
 					"host": [
 						"{{base_url}}"
 					],
@@ -1024,6 +1042,12 @@
 						"app",
 						"deliveries",
 						"nearby"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -1435,12 +1459,23 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/notifications",
+					"raw": "{{base_url}}/notifications?page=1&unreadyOnly=0",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"notifications"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "unreadyOnly",
+							"value": "0",
+							"description": "enum('0', '1', 'true', 'false')"
+						}
 					]
 				}
 			},
